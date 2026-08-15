@@ -42,6 +42,7 @@ export default function NowPage() {
 
       <List title="Studying" items={now.studying} />
       <List title="Building" items={now.building} />
+      <List title="Recently completed" items={now.recentlyCompleted ?? []} />
 
       <section className="border-line border-t py-7">
         <h2 className="text-ink-subtle mb-3 text-xs font-medium tracking-wider uppercase">

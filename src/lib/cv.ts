@@ -90,6 +90,37 @@ export const education: Education[] = [
  */
 export const researchExperience: ResearchExperience[] = [];
 
+export type IndependentStudy = {
+  title: string;
+  context: string;
+  period: string;
+  highlights: string[];
+  /** Site-relative path to the project page. */
+  url?: string;
+  github?: string;
+};
+
+/**
+ * Independent research and reproduction studies — self-directed empirical work
+ * with a stated question, a protocol, and reported results. Distinct from
+ * `academicProjects` (assessed coursework) and from `researchExperience`
+ * (formal positions). Nothing here is a publication.
+ */
+export const independentStudies: IndependentStudy[] = [
+  {
+    title: "Driver Drowsiness Detection — Reproduction & Evaluation Study",
+    context: "Independent Computer Vision Study",
+    period: "2026",
+    highlights: [
+      "Rebuilt and evaluated a classical eye-state and temporal-alerting pipeline under a subject-disjoint protocol on the MRL Eye Dataset (84,898 images, 37 subjects), training a lightweight CNN from scratch against a HOG+SVM baseline and measuring both frame-level and event-level behaviour.",
+      "Designed an oracle-classifier decomposition showing that once classification accuracy was sufficient, the historical temporal threshold — not residual classification error — remained the dominant source of false alerts under a simulated-sequence protocol.",
+      "Produced a fully reproducible pipeline: deterministic splits, automated leakage checks, three-seed ablations, generated result artifacts, structured failure analysis, a documented limitations and safety boundary, and 145 automated tests.",
+    ],
+    url: "/projects/driver-drowsiness-reproduction",
+    github: "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction",
+  },
+];
+
 export type AcademicProject = {
   title: string;
   context: string;
@@ -154,11 +185,14 @@ export const skills: SkillGroup[] = [
     items: ["Python", "TypeScript", "JavaScript", "Java", "SQL"],
   },
   {
-    group: "AI systems",
-    // All four evidenced by Obelo. Computer vision is deliberately absent: the
-    // two computer-vision projects are unverified and unpublished, so there is
-    // nothing to point at yet.
+    group: "AI/ML",
+    // Computer vision is evidenced by the driver-drowsiness reproduction study
+    // (public, reproducible, subject-disjoint evaluation). The rest is Obelo.
+    // Still deliberately absent until a project demonstrates them: ROS 2,
+    // Gazebo, SLAM, reinforcement learning, robot control, state estimation,
+    // motion planning. Areas before libraries — keep this list short.
     items: [
+      "Computer Vision",
       "Multimodal AI systems",
       "Retrieval-augmented generation",
       "LLM and model integration",
@@ -175,6 +209,7 @@ export const skills: SkillGroup[] = [
       "Node.js",
       "Express",
       "MongoDB",
+      "PyTorch",
       "PostgreSQL",
       "Redis",
       "Docker",

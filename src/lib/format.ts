@@ -25,6 +25,7 @@ export function formatDate(partial: string): string {
 /** "August 2026 — present" / "August 2026 — December 2026". Empty when undated. */
 export function formatDateRange(start?: string, end?: string): string {
   if (!start) return end ? formatDate(end) : "";
+  if (end === start) return formatDate(start);
   return `${formatDate(start)} — ${end ? formatDate(end) : "present"}`;
 }
 

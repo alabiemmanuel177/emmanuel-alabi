@@ -1,0 +1,304 @@
+---
+title: "Driver Drowsiness Detection — Reproduction & Evaluation Study"
+slug: "driver-drowsiness-reproduction"
+type: "reproduction-study"
+topics:
+  - Computer Vision
+  - Reproducibility
+  - Eye-State Classification
+  - Model Evaluation
+  - Temporal Decision Systems
+technologies:
+  - Python
+  - PyTorch
+  - OpenCV
+  - scikit-learn
+status: "completed"
+startDate: "2026-08"
+endDate: "2026-08"
+summary: >
+  A leakage-safe reproduction of a widely replicated eye-state and
+  temporal-alerting pipeline, built to locate where its system-level failures
+  actually originate.
+github: "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction"
+featured: true
+order: 1
+draft: false
+---
+
+<Note title="Scope and safety">
+This project detects prolonged eye closure as an experimental computer-vision
+proxy. It does not clinically diagnose drowsiness and is not a certified or
+validated driver-safety system.
+</Note>
+
+## Overview
+
+I rebuilt a widely replicated eye-state and temporal-alerting pipeline under a
+leakage-safe, subject-independent evaluation protocol to determine where its
+system-level failures actually originate.
+
+The implementation that motivated it is a common one: Haar-cascade eye
+detection, a small grayscale CNN, and a hard-coded temporal score threshold.
+Versions of it appear in a great many student projects. Almost none of them are
+evaluated — the one I started from had no dataset, no data split, and no metric
+of any kind.
+
+This is a clean-room reproduction. No file, weight, or asset from the historical
+implementation is used: the data pipeline, models, evaluation, temporal
+analysis, failure analysis and reproducibility tooling are all newly written.
+Historical design choices are reproduced only where a comparison required it.
+
+## Research question
+
+> How reliably can a lightweight eye-state classifier combined with a simple
+> temporal threshold detect prolonged eye closure, and what trade-offs arise
+> between sensitivity, false alarms, and latency?
+
+A second question emerged during the work and produced the more interesting
+result: **how much of the system's event-level error comes from the classifier,
+and how much from the temporal decision rule?** Answering that required building
+an oracle decomposition, described below.
+
+## Why reproduce it
+
+The historical style of project concentrates almost entirely on the classifier —
+its architecture, its accuracy — without ever establishing whether classification
+is the system's actual bottleneck. That is an empirical question, and it had not
+been asked of this pipeline. Reproducing it properly was the only way to find
+out.
+
+## Experimental design
+
+**Dataset.** The MRL Eye Dataset (Fusek, VŠB-TUO) — 84,898 infrared grayscale
+eye images across 37 subjects, annotated for subject, gender, eyewear, eye
+state, reflections, lighting and sensor. The dataset has no explicit
+redistribution licence, so the repository does not redistribute it; it verifies
+a SHA-256 checksum on download and hard-fails on mismatch.
+
+**Subject-disjoint splits.** 26 training, 5 validation and 6 test subjects —
+58,977 / 13,177 / 12,744 images. This matters more than it might appear:
+consecutive MRL frames of one person are near-duplicates, so a random
+image-level split would measure memorisation rather than generalisation. Three
+leakage checks enforce the constraint, and those checks are themselves covered
+by tests. The test split was read **once**, after model selection was frozen on
+validation.
+
+**Models.** A 287,138-parameter CNN trained from scratch, against a tuned
+HOG + linear SVM baseline under identical preprocessing. A second,
+historical-style architecture with 2,682,658 parameters — roughly 9.3× the size
+— was trained for comparison.
+
+**Temporal layer.** Four alerting rules compared on byte-identical sequences:
+a consecutive-frame rule, a rolling-fraction rule, a PERCLOS-like rule, and a
+reproduction of the historical ±1 score rule.
+
+**Decomposition.** Every rule re-run with the classifier replaced by
+ground-truth labels, separating rule-induced from classifier-induced error.
+
+<ArchitectureDiagram
+  stages={[
+    "Infrared eye image",
+    "Preprocess (shared contract)",
+    "Eye-state classifier (CNN or HOG+SVM)",
+    "Per-frame closure probability",
+    "Temporal rule (consecutive · rolling · PERCLOS · historical)",
+    "Alert decision",
+  ]}
+  caption="Figure 1 — The evaluated pipeline. The oracle decomposition substitutes ground-truth labels at the third stage while leaving everything downstream identical, which is what isolates rule-induced error."
+/>
+
+## Frame-level evaluation
+
+| Model | Accuracy | Balanced acc. | Macro F1 | ROC AUC | ECE |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| HOG + linear SVM | 0.9158 | 0.9156 | 0.9157 | 0.9731 | 0.0710 |
+| CNN (287,138 params) | 0.9901 | 0.9902 | 0.9901 | 0.9994 | 0.0076 |
+
+Test split: 12,744 images from 6 unseen subjects, 6,245 closed and 6,499 open,
+with CLOSED as the positive class.
+
+These are single-run figures from the frozen primary run, evaluated once after
+selection. They are not the headline of this project: 0.99 on a balanced
+two-class problem is unremarkable, and the repository says so directly. No
+comparison is made against published MRL accuracies, because the reported
+figures in the literature do not state whether their splits are
+subject-independent — they are not the same measurement.
+
+## Multi-seed ablations
+
+Eighteen training runs, three deterministic seeds per arm, identical splits and
+schedule, with only the stated factor varying. Reported as mean ± sample
+standard deviation of test balanced accuracy.
+
+| Arm | Params | Test balanced accuracy |
+| --- | ---: | ---: |
+| CNN 24×24 | 287,138 | 0.9926 ± 0.0003 |
+| CNN 32×32 (primary) | 287,138 | 0.9916 ± 0.0012 |
+| CNN 48×48 | 287,138 | 0.9911 ± 0.0020 |
+| CNN + CLAHE | 287,138 | 0.9900 ± 0.0006 |
+| CNN, no augmentation | 287,138 | 0.9887 ± 0.0044 |
+| Historical-style architecture | 2,682,658 | 0.9857 ± 0.0009 |
+
+The conservative reading is the correct one. Input-resolution differences fall
+within run-to-run variation and are not treated as meaningful. Augmentation did
+not establish a clear improvement. CLAHE did not improve the result. The only
+difference that survives inspection is that the historical-style architecture
+consistently underperformed the primary one while using roughly 9.3× as many
+parameters.
+
+Three seeds are enough to separate robust differences from single-run noise.
+They do not establish statistical significance, and nothing here is claimed as
+significant.
+
+## The system-level finding
+
+Once the eye-state classifier reached sufficiently high accuracy, the temporal
+alerting rule became the dominant source of false-alert behaviour. The
+historical threshold continued producing approximately the same false-alert rate
+even when the classifier was replaced by oracle ground-truth predictions.
+
+| Classifier feeding the historical rule | False alerts/hour | Event recall |
+| --- | ---: | ---: |
+| This study's CNN | 19.2 | 0.865 |
+| Oracle (ground truth) | 20.4 | 0.883 |
+
+Those false alerts were therefore structural to the rule rather than caused by
+residual classification error. The mechanism is visible once measured: at 30 FPS
+the historical rule can fire after roughly 0.53 seconds of closure, well short of
+the 1.0-second definition of a prolonged-closure event used here, so ordinary
+longer blinks activate it.
+
+**This is not the claim that classifier quality is irrelevant.** Running the
+identical rule grid on the weaker HOG+SVM baseline collapses event F1 from 0.958
+to 0.759. Classifier accuracy clearly matters — up to a threshold of competence,
+beyond which the temporal rule dominates. Frame-level errors compound
+temporally: a 7.4-point frame-accuracy gap becomes a much larger event-level gap,
+because a rule needs a run of correct frames rather than a single one.
+
+## Temporal rule comparison
+
+<Note title="Simulated evaluation">
+Per-frame closure probabilities are the trained model's **real** scores on real
+held-out images, sampled as contiguous capture runs. The **episode timeline is
+simulated** by a documented Poisson process, because MRL is a still-image
+corpus. Comparisons between rules are sound — every rule sees byte-identical
+sequences — but **absolute alert rates are properties of the simulation and are
+not transferable to deployed driving conditions.**
+</Note>
+
+Evaluated over 50.0 simulated minutes across 5 unseen test subjects containing
+111 ground-truth events.
+
+| Rule | Event recall | Event precision | Event F1 | False alerts/hr | Median latency |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| PERCLOS | 0.919 | 1.000 | 0.958 | 0 | 1.17 s |
+| Rolling fraction | 0.919 | 1.000 | 0.958 | 0 | 1.17 s |
+| Historical score rule (tuned) | 0.856 | 0.990 | 0.918 | 1.2 | 1.00 s |
+| Consecutive frames | 0.964 | 0.843 | 0.899 | 24 | 0.47 s |
+
+The best rule, `perclos(window=60, threshold=0.6)`, recorded **no false alerts
+over the 50-minute simulated evaluation**. That is an observed count over a
+bounded evaluation, not a demonstrated rate of zero, and the evaluation cannot
+establish a true zero false-alert rate.
+
+Note that the historical rule appears twice in this study under different
+conditions: tuned on validation like every other rule, it reaches 1.2 false
+alerts per hour; at its own hard-coded constant, which is how it is actually
+used, it produces the 19.2 per hour reported above.
+
+## Failure analysis
+
+126 errors on 12,744 test images — 49 missed closures and 77 spurious closures.
+
+Errors concentrate sharply in one measured sensing condition: glasses under poor
+lighting with large infrared reflections, at 10.16% error over 374 images. That
+is roughly 30% of all errors arising from roughly 2.9% of the data.
+
+The right interpretation is not that glasses are difficult. Holding eyewear and
+lighting constant and varying only the reflections makes the point: the same
+glasses under the same poor lighting **without** large reflections show a 0.38%
+error rate over 800 images, against 10.16% with them. Error concentration
+appears associated with infrared specular reflections produced by spectacle
+lenses under particular lighting and sensing conditions, which suggests a
+sensing-geometry problem rather than eyewear alone.
+
+Head pose, gaze angle, partial closure, camera distance and motion blur are
+**untested rather than null** — the corpus does not annotate them.
+
+## Runtime
+
+Measured on an Apple M4 Pro (mps), Python 3.12, torch 2.13, OpenCV 4.14.
+
+| Stage | p50 | p95 |
+| --- | ---: | ---: |
+| CNN only, batch 1 | 0.67 ms | 1.09 ms |
+| Preprocess + classify, two eyes | 1.12 ms | 1.22 ms |
+| Haar detection, face present | 3.82 ms | 3.93 ms |
+| Composed frame budget | 4.94 ms | 5.15 ms |
+
+The composed row is a **sum of separately measured stages**, not an end-to-end
+measurement, and it should not be read as a frame-rate claim. The conclusion
+worth keeping is that the classical Haar detector costs substantially more of
+the measured budget than the learned classifier does. The classifier is not the
+bottleneck.
+
+The live webcam execution path was smoke-tested on real hardware — 150 frames
+captured, face and eye detection, classification, temporal update, overlay
+rendering and clean teardown all exercised, with zero frames written to disk. No
+accuracy, false-alert or frame-rate claim in this study derives from that
+uncontrolled session.
+
+## Reproducibility
+
+```bash
+make setup      # environment from the pinned lockfile
+make all        # data → train → ablations → evaluate → reports
+make test       # 145 tests, plus a README-freshness check
+```
+
+Every table and figure in the repository is generated from saved artifacts, and
+the README is rendered from them — the renderer hard-fails on an unresolved
+placeholder, so the documentation cannot drift from the results. Splits are
+deterministic, leakage checks are tested, dataset integrity is checksum-verified,
+and metrics and configuration are stored alongside each experiment. No cloud
+experiment tracker is required to reproduce any of it.
+
+## Limitations
+
+1. **Not a drowsiness detector.** It detects prolonged eye closure as an
+   experimental proxy, and does not clinically diagnose drowsiness.
+2. **Every offline number starts from a correctly-cropped eye.** MRL supplies
+   pre-cropped images, so the Haar detection stage — the pipeline's dominant
+   real-world failure mode — is bypassed entirely. These results are an **upper
+   bound** on end-to-end performance.
+3. **Temporal episode timelines are simulated.** Rule comparisons and the oracle
+   decomposition are sound; absolute alert rates are not transferable to
+   deployment.
+4. **The corpus is not driving data** — it is infrared, indoor, seated and
+   near-frontal.
+5. **The test split contains no women.** That is an absent measurement, not a
+   small effect.
+6. **Head pose, gaze, partial closure and motion blur are untested.**
+7. **Three seeds** separate robust effects from noise but cannot support a
+   significance claim.
+8. **No cross-dataset validation.**
+9. **Live webcam operation is smoke-tested, not quantitatively evaluated.**
+
+## What I would tell a reviewer
+
+The interesting part of this project is not the classifier accuracy. It is the
+negative result, the ablations that came out null and were reported null, the
+literature comparison I declined because the split protocols were not
+comparable, and the decomposition I built specifically to find out whether my
+own model was the problem.
+
+## Links
+
+- **Code** — [github.com/alabiemmanuel177/driver-drowsiness-reproduction](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction)
+- **Release** — [v1.0.0](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/releases/tag/v1.0.0), frozen at commit `bd305a3`
+- **Manuscript draft** — [`paper/manuscript.tex`](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/blob/v1.0.0/paper/manuscript.tex). A working draft; not submitted and not peer-reviewed.
+- **Reproduction instructions** — [README](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction#readme)
+- **Generated reports and figures** — [`reports/`](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/tree/v1.0.0/reports)
+
+MIT licensed (code only; the dataset is not redistributed).

@@ -16,6 +16,8 @@ export type NowSnapshot = {
   updated: string;
   studying: string[];
   building: string[];
+  /** Work finished recently enough to be worth surfacing. Keep it short. */
+  recentlyCompleted?: string[];
   /** One or two sentences on the current state of research work. */
   research: string;
   /** The concrete next step, not an aspiration. */
@@ -34,6 +36,10 @@ export const now: NowSnapshot = {
   ],
 
   building: ["Mathematics for Intelligent Systems", "ROS 2 Robotics Foundations"],
+
+  recentlyCompleted: [
+    "Driver Drowsiness Detection — Reproduction & Evaluation Study: a reproducible computer-vision study of eye-state classification and temporal alerting for prolonged eye closure.",
+  ],
 
   research:
     "Currently conducting literature exploration around embodied AI and autonomous robot navigation.",

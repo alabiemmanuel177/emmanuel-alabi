@@ -130,6 +130,28 @@ Design, Implementation and Management.}
         \href{https://emmanuelalabi.com/research/research-programme-2026}{emmanuelalabi.com/research/research-programme-2026}
 \end{cvitems}
 
+%% ------------------------ Independent research & reproduction studies ------
+\cvsection{Independent Research \& Reproduction Studies}
+
+\cventry{Driver Drowsiness Detection --- Reproduction \& Evaluation Study}{2026}
+{\small Independent computer vision study.
+\href{https://github.com/alabiemmanuel177/driver-drowsiness-reproduction}{github.com/alabiemmanuel177/driver-drowsiness-reproduction}}
+\begin{cvitems}
+  \item Rebuilt and evaluated a classical eye-state and temporal-alerting
+        pipeline under a subject-disjoint protocol on the MRL Eye Dataset
+        (84,898 images, 37 subjects), training a lightweight CNN from scratch
+        against a HOG+SVM baseline and measuring frame- and event-level
+        behaviour.
+  \item Designed an oracle-classifier decomposition showing that once
+        classification accuracy was sufficient, the historical temporal
+        threshold --- not residual classification error --- remained the
+        dominant source of false alerts under a simulated-sequence protocol.
+  \item Built a fully reproducible pipeline: deterministic splits, automated
+        leakage checks, three-seed ablations, generated result artifacts,
+        structured failure analysis, and 145 automated tests.
+  \item \href{https://www.emmanuelalabi.com/projects/driver-drowsiness-reproduction}{emmanuelalabi.com/projects/driver-drowsiness-reproduction}
+\end{cvitems}
+
 %% -------------------------------------------- Selected academic projects ---
 \cvsection{Selected Academic Projects}
 
@@ -198,15 +220,15 @@ Supervisor: Dr.\ Stephen Maitanmi.}
 {\small
 \textbf{Programming} \quad Python, TypeScript, JavaScript, Java, SQL\par
 \vspace{0.25em}
-\textbf{AI systems} \quad Multimodal AI systems, retrieval-augmented generation,
-LLM and model integration, evaluation and quality systems\par
+\textbf{AI/ML} \quad Computer vision, multimodal AI systems,
+retrieval-augmented generation, LLM and model integration, evaluation systems\par
 \vspace{0.25em}
 \textbf{Systems \& engineering} \quad React, Next.js, Node.js, Express, MongoDB,
-PostgreSQL, Redis, Docker, CI/CD\par
+PyTorch, PostgreSQL, Redis, Docker, CI/CD\par
 }
 
 % Deliberately absent until evidenced by real work: ROS 2, Gazebo, SLAM,
 % reinforcement learning, robot control, state estimation, motion planning.
-% Computer vision is also absent until a verified CV project is published.
+% Computer vision is now evidenced by the driver-drowsiness reproduction study.
 
 \end{document}

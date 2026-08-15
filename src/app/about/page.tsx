@@ -81,6 +81,15 @@ export default function AboutPage() {
         </p>
 
         <p>
+          The first completed piece of that is a{" "}
+          <Link href="/projects/driver-drowsiness-reproduction">
+            reproduction and evaluation study
+          </Link>{" "}
+          of an eye-state and temporal-alerting pipeline, run under a
+          subject-independent protocol.
+        </p>
+
+        <p>
           For what I am working on this month specifically, see{" "}
           <Link href="/now">what I&rsquo;m doing now</Link>. For the programme
           itself — how I intend to work, and what will be published — see{" "}

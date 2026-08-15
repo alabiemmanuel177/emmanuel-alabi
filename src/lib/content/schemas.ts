@@ -83,6 +83,7 @@ export type ResearchFrontmatter = z.infer<typeof ResearchSchema>;
 export const projectTypes = [
   "research",
   "research-engineering",
+  "reproduction-study",
   "academic-project",
   "robotics",
   "machine-learning",
