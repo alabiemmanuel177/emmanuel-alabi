@@ -43,14 +43,20 @@ export const site = {
     "Personal research site of Emmanuel Alabi — software engineer working toward research in embodied AI, robot learning, computer vision, autonomous systems, and multimodal intelligence.",
 
   /**
-   * Set NEXT_PUBLIC_SITE_URL in the Vercel project once the domain is attached.
-   * Falls back to the Vercel-generated URL, then to the intended custom domain.
+   * The canonical hostname is **www.emmanuelalabi.com**; the apex 308-redirects
+   * to it. This is a permanent identity — it goes on the CV, GitHub profile,
+   * ORCID, applications, and any future paper — so it must not drift.
+   *
+   * `NEXT_PUBLIC_SITE_URL` is set on the Vercel project and is what production
+   * actually uses. The Vercel-generated URL is the preview-deployment fallback,
+   * and the literal below is the local-development default. If the canonical
+   * hostname ever changes, change it in all three places at once.
    */
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
     (process.env.VERCEL_PROJECT_PRODUCTION_URL
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "https://emmanuelalabi.com"),
+      : "https://www.emmanuelalabi.com"),
 
   locale: "en_GB",
 
