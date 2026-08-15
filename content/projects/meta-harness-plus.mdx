@@ -1,0 +1,149 @@
+---
+title: "Meta-Harness Plus — Experimental Search Over LLM Agent Harnesses"
+slug: "meta-harness-plus"
+type: "research-engineering"
+topics:
+  - Multi-Objective Optimisation
+  - Ablation Studies
+  - Language Models
+  - Experimental Methodology
+technologies:
+  - Python
+  - Pareto optimisation
+  - Successive halving
+  - Ablation attribution
+status: "paused"
+startDate: "2026-04"
+endDate: "2026-05"
+summary: >
+  A framework for searching over LLM harnesses under a fixed compute budget:
+  Pareto search across accuracy, tokens and latency; successive-halving
+  evaluation; and drop-one ablation to attribute gains to individual components.
+github: "https://github.com/alabiemmanuel177/meta-harness-plus"
+featured: true
+order: 3
+draft: false
+---
+
+<Note title="On how this was built">
+This project was heavily AI-assisted. Roughly three quarters of its commits
+carry `Co-Authored-By: Claude` trailers, and the repository history shows that
+plainly rather than hiding it. I am stating it here for the same reason: what
+should be assessed is whether I can account for the design decisions, the
+experimental setup, and the conclusions — not how many characters I typed.
+Everything below is what I would defend in an interview.
+</Note>
+
+## Overview
+
+A *harness* is the code around a fixed language model — prompting, retrieval,
+few-shot selection, sampling, voting. Recent work automates the search over that
+code rather than over model weights. This project takes one such system,
+Meta-Harness (Lee et al., arXiv:2603.28052), identifies three limitations that
+follow from its framing, and implements a fix for each in a composable
+framework.
+
+It is engineering in service of a method question, so it sits under projects
+rather than research: it has a hypothesis and controlled experiments, but the
+effect sizes are small and the benchmarks are mid-tier. I would rather say that
+here than let a reader discover it.
+
+## The three limitations
+
+The original ranks candidates by a single score, evaluates every proposal
+against the full eval set, and does not record which component of a winning
+harness was responsible for the win. Each of those has a consequence:
+
+| Limitation | Consequence | Fix implemented |
+| --- | --- | --- |
+| Scalar objective | A harness that gains 2 points at 3× the tokens looks strictly better | Pareto search over (accuracy, −tokens, −latency) |
+| Full eval per proposal | Compute is spent evaluating candidates that were never viable | Successive halving: cheap screen, full eval only for survivors |
+| No component attribution | The proposer must re-infer what worked from traces each round | Drop-one ablation, attributing a measured delta to each component |
+
+## Method
+
+**Pareto search.** Candidates are ranked by non-dominated sorting over a vector
+objective rather than collapsed to a scalar, so the search maintains a frontier
+instead of a single best. The point is to surface the cost curve rather than
+hide it — the interesting output is "same accuracy, half the tokens", which a
+scalar objective cannot express.
+
+**Successive halving.** Each iteration screens candidates on a small fixed
+subset and promotes only the top `k/η` to full evaluation, in the style of
+Hyperband. The framework tracks token and latency spend against a fixed budget
+`B` and refuses to exceed it.
+
+**Drop-one attribution.** When a candidate reaches the frontier, each component
+is swapped for a minimal baseline and re-scored on the screening set. The delta
+is that component's attributed value. Those values are stored per component and
+used to weight how aggressively the proposer mutates each one.
+
+<ArchitectureDiagram
+  stages={[
+    "Proposer (harness candidates)",
+    "Screening eval (small subset)",
+    "Successive halving (top k/η survive)",
+    "Full eval",
+    "Pareto frontier (accuracy · tokens · latency)",
+    "Drop-one ablation → per-component attribution",
+  ]}
+  caption="Figure 1 — One search iteration. Attribution feeds back into the proposer's mutation weights, so the loop is closed rather than open."
+/>
+
+## Experimental setup
+
+Runs cover a deterministic offline toy classification task and public
+benchmarks — GSM8K, LawBench, AG News, 20 Newsgroups, Symptom2Disease — across
+more than one model provider, with multiple seeds per cell. Baselines include
+DSPy-style bootstrapped few-shot and OPRO-style instruction bootstrapping, so
+the comparison is against real methods rather than against an unoptimised
+strawman. A local bakeoff runs the full loop end-to-end against two local models
+via Ollama. The suite is 394 tests.
+
+## Results, including the ones that did not work
+
+On the local bakeoff, both models reached 0.80 accuracy with three-point
+frontiers, from baselines of 0.65 and 0.60 respectively — for `gpt-oss:20b`,
+0.65 → 0.80 in 24 minutes.
+
+The attribution results are the more honest finding. On those runs, every
+component reported a mean delta at noise level — `−0.019`, `−0.056`, and in the
+second model `0.000` with variance around `0.008`. The ablation machinery worked
+and reported, correctly, that on a six-item screening subset it could not
+distinguish any component's contribution from noise. A framework that reports
+"no signal" when there is no signal is behaving properly; the temptation to read
+those numbers as a component ranking is exactly what the method is meant to
+prevent.
+
+Across the public benchmarks the wins are small — roughly 1 to 10 points — and
+one headline cell, AG News, still loses to OPRO. That loss is documented in the
+repository rather than dropped.
+
+## Limitations
+
+The repository contains its own assessment, `HONEST_ASSESSMENT.md`, which opens:
+*"Would this wow the world? No — not in its current form."* It is accurate.
+
+- The wins are on mid-tier benchmarks against modest baselines. A +2 point gain
+  on AG News is a footnote.
+- The thesis that harnesses are an optimisable layer is not new — DSPy, OPRO,
+  TextGrad and ProTeGi all stake versions of it.
+- Total experimental spend was under five dollars, which is charming and also
+  tells you the experiments are small.
+- The screening subsets are small enough that attribution has little statistical
+  power, as the noise-level deltas above demonstrate.
+- The agent-task path is infrastructure only; it has not produced a result.
+
+## What I would do next
+
+Pick one frontier benchmark where the effect size cannot be waved away — SWE-bench
+Verified is the obvious candidate, since the agent infrastructure already exists
+— and run it hard with a real budget. Failing that, run the attribution machinery
+on a screening set large enough to resolve component contributions above noise,
+which is the cheaper experiment and answers a cleaner question.
+
+## Repository
+
+Source, the eight-section paper draft, the results files for every benchmark
+cell, and the self-assessment:
+[github.com/alabiemmanuel177/meta-harness-plus](https://github.com/alabiemmanuel177/meta-harness-plus)
