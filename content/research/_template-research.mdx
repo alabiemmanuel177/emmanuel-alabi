@@ -1,0 +1,142 @@
+---
+title: "TEMPLATE — Research Project Title"
+slug: "template-research"
+status: "exploring"
+startDate: "2026-01"
+researchAreas:
+  - Embodied AI
+summary: >
+  One or two sentences describing what is being investigated. No result is
+  claimed here unless one exists.
+question: >
+  The single, explicit research question. Write it as a question.
+collaborators: []
+github: ""
+paper: ""
+demo: ""
+featured: false
+draft: true
+---
+
+{/*
+  This file is a template. It is `draft: true`, so it is excluded from every
+  production build and never appears in the sitemap.
+
+  To start a real research page: copy it, rename the file AND the `slug` to
+  match, delete every TODO, and set `draft: false` only once the page passes the
+  content quality gate below.
+
+  Quality gate — before publishing, confirm:
+    · the primary claim is supported by something linkable
+    · every metric traces to a specific experiment
+    · the methodology is understandable to someone outside the project
+    · limitations are stated
+    · external work is properly referenced
+    · the repository exists and its links resolve
+    · the status accurately represents maturity
+    · no confidential or proprietary material remains
+*/}
+
+## Abstract
+
+TODO — 100–250 words stating the problem, the method, the principal result, and
+the contribution. If there is no result yet, describe the objective and say so
+plainly. Do not invent numbers to fill this section.
+
+## Research question
+
+TODO — restate the question from the frontmatter, and say what would count as an
+answer. A question you cannot imagine an experiment resolving is not yet a
+research question.
+
+## Motivation
+
+TODO — why the problem matters, what the existing limitation is, and why this
+particular investigation is justified rather than an arbitrary variation.
+
+## Related work
+
+TODO — a concise overview, with references. Deep literature review belongs in a
+separate note under `/writing`; link to it rather than expanding here.
+
+Example inline citation: transformers <Cite n={1} /> underpin most of the
+multimodal encoders used in this area.
+
+## Method
+
+TODO — describe the approach precisely enough that someone could implement it.
+
+<ArchitectureDiagram
+  stages={[
+    "Sensors",
+    "Perception",
+    "Scene representation",
+    "Semantic reasoning",
+    "Navigation policy",
+    "Motion planner",
+    "Robot",
+  ]}
+  caption="Figure 1 — TODO: caption describing what flows between stages and what each stage is responsible for."
+/>
+
+## Experimental setup
+
+TODO — environment, simulator, hardware, dataset, baseline methods, model,
+compute budget, protocol, and the random seeds used.
+
+| Component | Setting |
+| --------- | ------- |
+| Simulator | TODO    |
+| Dataset   | TODO    |
+| Hardware  | TODO    |
+| Seeds     | TODO    |
+
+## Metrics
+
+TODO — define each measurement explicitly, including how it is computed and over
+how many episodes or samples. Ambiguous metrics make results unfalsifiable.
+
+## Results
+
+TODO — tables, charts, and demonstrations. Report the full set of runs, not the
+favourable subset.
+
+## Ablations
+
+TODO — if applicable. Which component is actually responsible for the effect?
+
+## Failure analysis
+
+TODO — required before this page can be considered mature. What failed, what was
+unexpected, and under what conditions the method breaks down.
+
+## Limitations
+
+TODO — state them explicitly. A limitations section that reads as marketing is
+worse than none.
+
+## Reproducibility
+
+TODO — repository, requirements, dataset access, configuration files, model
+weights if distributable, environment details, and the exact commands.
+
+```bash
+git clone TODO
+cd TODO
+pip install -r requirements.txt
+python -m experiments.run --config configs/TODO.yaml --seed 0
+```
+
+## Citation
+
+TODO — add once a formal manuscript exists. Until then, this section should say
+that no manuscript exists rather than showing a speculative BibTeX entry.
+
+<References
+  items={[
+    {
+      text: "Vaswani et al. Attention Is All You Need. NeurIPS, 2017.",
+      url: "https://arxiv.org/abs/1706.03762",
+    },
+  ]}
+/>

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Validate content
+        run: npm run content:validate
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Assert no draft content in the build output
+        run: |
+          # Draft entries must not be prerendered (spec §56). Anything with
+          # `draft: true` should have no corresponding HTML in .next/server/app.
+          set -euo pipefail
+          leaked=0
+          for f in content/*/*.mdx; do
+            slug="$(basename "$f" .mdx)"
+            case "$slug" in _*) continue ;; esac
+            if grep -qE '^draft:[[:space:]]*true' "$f"; then
+              collection="$(basename "$(dirname "$f")")"
+              if [ -e ".next/server/app/$collection/$slug.html" ]; then
+                echo "::error file=$f::draft content was prerendered to $collection/$slug.html"
+                leaked=1
+              fi
+            fi
+          done
+          exit $leaked

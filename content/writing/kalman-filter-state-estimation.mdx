@@ -1,0 +1,134 @@
+---
+title: "State Estimation for Mobile Robots: The Kalman Filter From First Principles"
+slug: "kalman-filter-state-estimation"
+type: "research-note"
+publishedAt: "2026-09-05"
+topics:
+  - Robotics
+  - Probability
+  - State Estimation
+relatedResearch:
+  - research-programme-2026
+summary: >
+  Deriving the linear Kalman filter as recursive Bayesian estimation under
+  Gaussian assumptions, implementing it without a filtering library, and testing
+  it against a simulated differential-drive robot.
+draft: true
+---
+
+{/*
+  DRAFT — not published. This file exists so the writing pipeline (math, code
+  highlighting, references, related research) is exercised end to end before
+  there is finished work to publish.
+
+  Before setting `draft: false`, this note must contain the things that
+  distinguish a real note from a generic explainer: my own derivation steps, my
+  own implementation, a run against data I generated, and at least one thing I
+  got wrong first. If it cannot demonstrate genuine understanding, it does not
+  get published.
+*/}
+
+## Setup
+
+A mobile robot's state at time $t$ is $x_t \in \mathbb{R}^n$. We never observe it
+directly; we observe $z_t \in \mathbb{R}^m$, and we know roughly what control
+$u_t$ we applied. The estimation problem is to maintain the posterior
+
+$$
+p(x_t \mid z_{1:t}, u_{1:t})
+$$
+
+recursively — updating it as each new measurement arrives, without re-processing
+the entire history.
+
+Under two assumptions, that posterior stays Gaussian and the recursion closes in
+closed form:
+
+1. the process and measurement models are linear,
+2. the process and measurement noise are zero-mean Gaussian and independent.
+
+$$
+\begin{aligned}
+x_t &= F_t x_{t-1} + B_t u_t + w_t, \qquad w_t \sim \mathcal{N}(0, Q_t) \\
+z_t &= H_t x_t + v_t, \qquad\qquad\quad\; v_t \sim \mathcal{N}(0, R_t)
+\end{aligned}
+$$
+
+## The recursion
+
+Predict:
+
+$$
+\hat{x}_{t|t-1} = F_t \hat{x}_{t-1|t-1} + B_t u_t
+\qquad
+P_{t|t-1} = F_t P_{t-1|t-1} F_t^\top + Q_t
+$$
+
+Update, with innovation $y_t = z_t - H_t \hat{x}_{t|t-1}$ and innovation
+covariance $S_t = H_t P_{t|t-1} H_t^\top + R_t$:
+
+$$
+K_t = P_{t|t-1} H_t^\top S_t^{-1}
+\qquad
+\hat{x}_{t|t} = \hat{x}_{t|t-1} + K_t y_t
+\qquad
+P_{t|t} = (I - K_t H_t) P_{t|t-1}
+$$
+
+TODO — the derivation of $K_t$ as the gain minimising $\mathrm{tr}(P_{t|t})$, in
+my own steps rather than quoted.
+
+## Implementation
+
+```python title="kalman.py"
+import numpy as np
+
+
+class KalmanFilter:
+    """Linear Kalman filter. No filtering library — the point is the mechanics."""
+
+    def __init__(self, F, B, H, Q, R, x0, P0):
+        self.F, self.B, self.H = F, B, H
+        self.Q, self.R = Q, R
+        self.x, self.P = x0, P0
+
+    def predict(self, u):
+        self.x = self.F @ self.x + self.B @ u
+        self.P = self.F @ self.P @ self.F.T + self.Q
+        return self.x, self.P
+
+    def update(self, z):
+        y = z - self.H @ self.x                      # innovation
+        S = self.H @ self.P @ self.H.T + self.R      # innovation covariance
+        K = self.P @ self.H.T @ np.linalg.inv(S)     # gain
+        self.x = self.x + K @ y
+        I = np.eye(self.P.shape[0])
+        # Joseph form: stays positive-definite under numerical error.
+        self.P = (I - K @ self.H) @ self.P @ (I - K @ self.H).T + K @ self.R @ K.T
+        return self.x, self.P
+```
+
+TODO — the numerical failure I hit with the naive $(I - K_t H_t) P$ update, and
+why the Joseph form fixed it.
+
+## Evaluation
+
+TODO — run against a simulated differential-drive trajectory with known ground
+truth. Report RMSE against a dead-reckoning baseline over fixed seeds, and show
+where the filter's covariance is overconfident.
+
+## Limitations
+
+TODO — where linearity stops being defensible for a real robot, and what that
+implies about the EKF and UKF as the next notes in this sequence.
+
+<References
+  items={[
+    {
+      text: "Kalman, R. E. A New Approach to Linear Filtering and Prediction Problems. Journal of Basic Engineering, 1960.",
+    },
+    {
+      text: "Thrun, Burgard & Fox. Probabilistic Robotics. MIT Press, 2005.",
+    },
+  ]}
+/>
