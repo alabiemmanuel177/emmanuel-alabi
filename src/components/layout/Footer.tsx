@@ -45,6 +45,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/now" className="text-ink-muted hover:text-ink">
+                  Now
+                </Link>
+              </li>
+              <li>
                 <Link href="/cv" className="text-ink-muted hover:text-ink">
                   CV
                 </Link>

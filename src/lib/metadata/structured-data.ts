@@ -1,5 +1,6 @@
 import { absoluteUrl, isoDate } from "./index";
 import { profileLinks, site } from "@/lib/site";
+import { focusLabels, researchProfile } from "@/lib/research-profile";
 import type { Publication } from "@/lib/content/schemas";
 
 /**
@@ -20,7 +21,7 @@ export function personJsonLd(): Json {
     email: `mailto:${site.email}`,
     jobTitle: site.title,
     description: site.tagline,
-    knowsAbout: site.researchInterests.map((i) => i.title),
+    knowsAbout: [...focusLabels, ...researchProfile.broaderInterests],
     sameAs: profileLinks().map((l) => l.href),
   };
 }

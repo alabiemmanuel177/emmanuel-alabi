@@ -6,12 +6,12 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { education } from "@/lib/cv";
 import { engineeringSummary, engineeringSystems } from "@/lib/engineering";
 import { pageMetadata } from "@/lib/metadata";
-import { site } from "@/lib/site";
+import { researchProfile } from "@/lib/research-profile";
 
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "Emmanuel Alabi — software engineer moving into AI and robotics research. Background, research interests, current focus, and education.",
+    "Emmanuel Alabi — software engineer working toward AI and robotics research. Background, research interests, current focus, and education.",
   path: "/about",
 });
 
@@ -22,7 +22,7 @@ export default function AboutPage() {
 
       <div className="prose-research py-12">
         <p>
-          I am a software engineer working towards research in artificial
+          I am a software engineer working toward research in artificial
           intelligence and robotics. My interest is in systems that have to
           operate in the physical world: agents that perceive an environment,
           build some representation of it, reason about what to do, and then act
@@ -49,36 +49,42 @@ export default function AboutPage() {
         <h2>Research interests</h2>
 
         <p>
-          These are the areas I am investigating. They are interests rather than
-          claims of expertise, and I expect them to narrow as the work gives me a
-          reason to narrow them.
+          These are the areas I am currently exploring. They are interests rather
+          than claims of expertise, and I expect them to narrow as the work gives
+          me a reason to narrow them.
         </p>
 
         <dl>
-          {site.researchInterests.map((interest) => (
-            <div key={interest.title} className="mt-4">
-              <dt className="text-ink font-medium">{interest.title}</dt>
-              <dd className="text-ink-muted mt-1">{interest.description}</dd>
+          {researchProfile.currentFocus.map((area) => (
+            <div key={area.title} className="mt-4">
+              <dt className="text-ink font-medium">{area.title}</dt>
+              <dd className="text-ink-muted mt-1">{area.description}</dd>
             </div>
           ))}
         </dl>
+
+        <p className="text-ink-muted text-sm">
+          Adjacent territory I read in but am not yet focused on:{" "}
+          {researchProfile.broaderInterests.join(", ").toLowerCase()}.
+        </p>
 
         <h2>Current focus</h2>
 
         <p>
           My current work is the foundational phase of a research programme
-          beginning in August 2026: mathematics for intelligent systems,
-          state estimation and rigid-body geometry, machine learning implemented
-          from first principles, and reproductions of published baselines in
+          beginning in August 2026: mathematics for intelligent systems, state
+          estimation and rigid-body geometry, machine learning implemented from
+          first principles, and reproductions of published baselines in
           perception and navigation. The intent is to reach the point where I can
           formulate a research question precisely enough to answer it with
           controlled experiments.
         </p>
 
         <p>
-          The full programme, including how I intend to work and what will be
-          published, is described under{" "}
-          <Link href="/research/research-programme-2026">Research</Link>.
+          For what I am working on this month specifically, see{" "}
+          <Link href="/now">what I&rsquo;m doing now</Link>. For the programme
+          itself — how I intend to work, and what will be published — see{" "}
+          <Link href="/research">Research</Link>.
         </p>
 
         <h2>Engineering background</h2>
@@ -89,7 +95,8 @@ export default function AboutPage() {
           <ul>
             {engineeringSystems.map((system) => (
               <li key={system.name}>
-                <strong>{system.name}</strong> — {system.contribution}
+                <strong>{system.name}</strong>
+                {system.role ? ` (${system.role})` : ""} — {system.contribution}
               </li>
             ))}
           </ul>
@@ -109,11 +116,19 @@ export default function AboutPage() {
                 {item.period ? ` · ${item.period}` : ""}
                 <br />
                 {item.qualification}
+                {item.location ? (
+                  <>
+                    <br />
+                    <span className="text-ink-muted text-sm">
+                      {item.location}
+                    </span>
+                  </>
+                ) : null}
                 {item.coursework && item.coursework.length > 0 ? (
                   <>
                     <br />
                     <span className="text-ink-muted text-sm">
-                      Relevant coursework: {item.coursework.join(", ")}
+                      Relevant coursework: {item.coursework.join("; ")}.
                     </span>
                   </>
                 ) : null}

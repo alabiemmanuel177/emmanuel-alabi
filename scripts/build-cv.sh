@@ -6,7 +6,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 src="$root/cv"
 out="$src/generated"
 public="$root/public/cv"
-name="emmanuel-alabi-cv"
+name="emmanuel-alabi-academic-cv"
 
 if ! command -v pdflatex >/dev/null 2>&1; then
   echo "error: pdflatex not found." >&2

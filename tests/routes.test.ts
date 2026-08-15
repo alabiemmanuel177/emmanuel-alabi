@@ -18,6 +18,7 @@ const ROUTES = [
   "log/page.tsx",
   "log/[slug]/page.tsx",
   "about/page.tsx",
+  "now/page.tsx",
   "cv/page.tsx",
   "contact/page.tsx",
   "not-found.tsx",

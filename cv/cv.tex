@@ -1,104 +1,183 @@
-% Academic CV — Emmanuel Alabi
+% Academic CV v0 — Emmanuel Alabi
 % Build with: npm run cv:build   (see cv/README.md)
 %
-% Structure follows the academic ordering: research first, engineering after.
-% Fill in every TODO. Delete any section that has no real content — an empty
-% section is worse than an absent one.
+% v0 is deliberately conservative. There is no Publications section, and no
+% heading stands empty over nothing. As the research portfolio develops,
+% Research & Technical Experience grows and the engineering sections move down.
+%
+% Deliberately uses only packages shipped with BasicTeX (no titlesec, no
+% enumitem) so it builds on a minimal TeX install and in CI.
 
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[margin=2cm]{geometry}
+\usepackage[margin=1.9cm]{geometry}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage{titlesec}
-\usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
 
 \definecolor{accent}{HTML}{1B4F8F}
-\hypersetup{colorlinks=true, urlcolor=accent}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=accent,
+  pdftitle={Emmanuel Alabi --- Academic CV},
+  pdfauthor={Emmanuel Alabi}
+}
 
-\titleformat{\section}{\normalsize\bfseries\scshape}{}{0pt}{}[\vspace{-0.6em}\rule{\textwidth}{0.4pt}]
-\titlespacing{\section}{0pt}{1.4em}{0.7em}
-
-\setlist[itemize]{leftmargin=1.2em, itemsep=0.15em, topsep=0.2em}
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\fancyfoot[L]{\footnotesize Academic CV v0 --- August 2026}
+\fancyfoot[L]{\footnotesize Emmanuel Alabi --- Academic CV v0, August 2026}
 \fancyfoot[R]{\footnotesize\thepage}
 
-\newcommand{\entry}[3]{%
-  \noindent\textbf{#1}\hfill{\small #2}\\[0.1em]%
-  {\small #3}\par\vspace{0.4em}%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\leftmargini}{1.2em}
+
+% Section heading: small caps, bold, followed by a rule.
+\newcommand{\cvsection}[1]{%
+  \vspace{1.15em}%
+  {\normalsize\bfseries\scshape #1}\par
+  \vspace{0.25em}%
+  \hrule height 0.4pt
+  \vspace{0.6em}%
+}
+
+% \cventry{title}{right-aligned dates or empty}
+\newcommand{\cventry}[2]{%
+  \textbf{#1}\hfill{\small #2}\par\vspace{0.15em}%
+}
+
+% Tight bullet list.
+\newenvironment{cvitems}{%
+  \begin{itemize}%
+    \setlength{\itemsep}{0.12em}%
+    \setlength{\parskip}{0pt}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\topsep}{0.25em}%
+    \setlength{\partopsep}{0pt}%
+}{%
+  \end{itemize}%
+  \vspace{0.35em}%
 }
 
 \begin{document}
 
-%% ---------------------------------------------------------------- Header ---
+%% ------------------------------------------------------------------ Header --
 \begin{center}
-  {\LARGE\bfseries Emmanuel Alabi}\\[0.35em]
-  {\small Software Engineer \& AI/Robotics Researcher}\\[0.5em]
+  {\LARGE\bfseries Emmanuel Alabi}\\[0.4em]
+  {\small Software Engineer working toward AI \& Robotics Research}\\[0.55em]
   {\small
     \href{mailto:alabiemmanuel177@gmail.com}{alabiemmanuel177@gmail.com}
     \enspace\textbullet\enspace
     \href{https://emmanuelalabi.com}{emmanuelalabi.com}
     \enspace\textbullet\enspace
     \href{https://github.com/alabiemmanuel177}{github.com/alabiemmanuel177}
-    % TODO: add LinkedIn, and ORCID once formal publications exist.
+    \enspace\textbullet\enspace
+    \href{https://www.linkedin.com/in/olasub/}{linkedin.com/in/olasub}
+    % Add ORCID here once formal publications exist.
   }
 \end{center}
 
-%% ---------------------------------------------------- Research interests ---
-\section{Research Interests}
+%% ------------------------------------------------------- Research interests --
+\cvsection{Research Interests}
+
 Embodied AI; robot learning; computer vision; autonomous systems; multimodal
-intelligence. Specifically, how agents build representations of physical
-environments that support reasoning and control.
+intelligence. Specifically, how an agent's representation of a physical
+environment should be shaped by having to move through it, and when learned
+components genuinely outperform well-specified classical methods.
 
-%% ---------------------------------------------------------- Education -----
-\section{Education}
-\entry{Babcock University}{TODO: dates}{%
-  BSc (Hons) Software Engineering.
-  % TODO: relevant coursework, only what you actually took.
-  % TODO: classification only if verified against the final official transcript.
-}
+\vspace{0.4em}
+{\small\textit{Broader interests:} machine learning, robotics, state estimation,
+planning, reinforcement learning.}
 
-%% ----------------------------------------------- Research experience ------
-% Formal research positions only. Delete this section if there are none —
-% self-directed study belongs under Research Projects, not here.
-% \section{Research Experience}
-% \entry{Role, Group/Lab}{dates}{What you did, and what came of it.}
+%% -------------------------------------------------------------- Education ---
+\cvsection{Education}
 
-%% ------------------------------------------------- Research projects ------
-\section{Research}
-\entry{Research Programme 2026--2027}{2026 --- present}{%
-  Foundational programme in mathematics, state estimation, perception and
-  robot learning, working towards an independent research question in embodied
-  multimodal autonomy.
-  \href{https://emmanuelalabi.com/research/research-programme-2026}{emmanuelalabi.com/research/research-programme-2026}
-}
+\cventry{Babcock University --- BSc (Hons) Software Engineering}{2019 --- 2023}
+{\small Ilishan-Remo, Ogun State, Nigeria. School of Computing and Engineering
+Sciences.}
 
-%% ------------------------------------------------------ Publications ------
-% Add only when real. Never list a manuscript as if it were peer reviewed.
-% \section{Publications}
+\vspace{0.4em}
+{\small\textit{Relevant coursework:} Algorithms and Data Structures; Discrete
+Mathematics; Introductory Statistics; Introduction to Operations Research;
+Artificial Intelligence and Applications; Introduction to Big Data Engineering;
+Computer Organization and Assembly Language; Operating System I; Database System
+Design, Implementation and Management.}
 
-%% -------------------------------------------------- Selected projects -----
-% \section{Selected Projects}
-% \entry{Project name}{dates}{One or two lines. Link to the site page and repo.}
+% Degree classification deliberately omitted from v0. Verified value, if you
+% choose to include it: Second Class Upper (C-GPA 4.00 / 5.00).
 
-%% --------------------------------------------- Engineering experience -----
-% TODO: 3--4 roles, emphasising AI systems, distributed systems, computer
-% vision, ML infrastructure. Problem / contribution / technical depth / outcome.
-% Avoid startup sales metrics unless academically relevant.
-% \section{Engineering Experience}
-% \entry{Role, Company}{dates}{\begin{itemize}\item ...\end{itemize}}
+%% --------------------------------------- Research & technical experience ----
+\cvsection{Research \& Technical Experience}
 
-%% ------------------------------------------------------- Open source ------
-% \section{Open Source}
+\cventry{Independent Research Programme --- Embodied \& Multimodal Autonomy}{2026 --- present}
+\begin{cvitems}
+  \item Self-directed programme building the mathematical, machine-learning and
+        robotics foundations required to conduct independent research: linear
+        algebra, probability, optimisation, state estimation and rigid-body
+        geometry, each with implementations written from first principles.
+  \item Reproducing published baselines in perception and navigation before
+        extending them, on the principle that a reproduction which fails is
+        itself a result worth documenting.
+  \item Working toward a research question in embodied, multimodal autonomy
+        precise enough to investigate with controlled experiments rather than
+        demonstrations.
+  \item Programme and progress documented publicly at
+        \href{https://emmanuelalabi.com/research/research-programme-2026}{emmanuelalabi.com/research/research-programme-2026}
+\end{cvitems}
 
-%% --------------------------------------------------- Technical skills -----
-% TODO: only things you would be comfortable being examined on.
-% \section{Technical Skills}
+% TODO(emmanuel): add the final-year Research Project (SENG490, Babcock, 2023)
+% here once you can state its question, method and outcome accurately.
+
+%% ------------------------------------------ Selected engineering projects ---
+\cvsection{Selected Engineering Projects}
+
+\cventry{Obelo --- Multimodal AI Infrastructure}{}
+\begin{cvitems}
+  \item Production AI platform combining multimodal generation,
+        retrieval-augmented context, asynchronous orchestration, model routing
+        and evaluation systems.
+  \item Experimentation across multiple image-generation and language-model
+        families; structured creative pipelines; reliability mechanisms for
+        long-running AI workflows.
+  \item \href{https://emmanuelalabi.com/projects/obelo-multimodal-ai-infrastructure}{emmanuelalabi.com/projects/obelo-multimodal-ai-infrastructure}
+\end{cvitems}
+
+% TODO(emmanuel): add Computer Vision Similarity Analysis once its write-up is
+% accurate, and one strong distributed/backend system.
+
+%% -------------------------------------- Selected technical experience -------
+\cvsection{Selected Technical Experience}
+
+\cventry{Founder / Lead Engineer --- Obelo}{}
+\begin{cvitems}
+  \item Designed and developed a production AI platform: multimodal generation,
+        retrieval-augmented brand context, model routing across model families,
+        asynchronous orchestration, and evaluation and quality systems.
+\end{cvitems}
+
+\cventry{Software Engineer --- SPay Business}{}
+\begin{cvitems}
+  \item Production mobile-financial systems: authentication improvements,
+        application performance, interface redesign, CI/CD automation and
+        over-the-air mobile deployments.
+\end{cvitems}
+
+% TODO(emmanuel): add dates to both entries, plus two further roles chosen for
+% technical substance (distributed systems, ML infrastructure, computer vision)
+% rather than commercial story.
+
+%% ---------------------------------------- Open source / technical work ------
+% TODO(emmanuel): uncomment and fill once there is something substantive.
+% \cvsection{Open Source / Technical Work}
+
+%% ------------------------------------------------------ Technical skills ----
+% TODO(emmanuel): list only what you would be comfortable being examined on.
+% Suggested grouping: Languages / ML & Robotics / Systems & Tools.
+% \cvsection{Technical Skills}
 
 \end{document}

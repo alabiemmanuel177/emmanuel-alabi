@@ -43,6 +43,7 @@ const STATIC_ROUTES = new Set([
   "/writing",
   "/log",
   "/about",
+  "/now",
   "/cv",
   "/contact",
 ]);

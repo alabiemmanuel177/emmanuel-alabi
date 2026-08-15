@@ -1,31 +1,35 @@
+import { focusLine, researchProfile } from "./research-profile";
+
 /**
  * Canonical site configuration.
  *
  * Everything identity-related lives here so that no page component hardcodes a
- * handle, URL, or descriptor. Update this file when a profile changes; the
- * header, footer, contact page, CV, sitemap and structured data all read from it.
+ * handle, URL, or descriptor. Research interests come from `research-profile.ts`
+ * — this file does not restate them.
  */
 
 export const site = {
-  name: "Emmanuel Alabi",
+  name: researchProfile.name,
 
   /**
-   * Primary descriptor. Spec §5 offers a weaker alternative for the earliest
-   * stage — swap `title` for `titleAlternative` if the "researcher" label is
-   * not yet supported by published output.
+   * Current public descriptor. Deliberately the weaker of the two: the
+   * "researcher" label is earned by published output, not asserted ahead of it.
+   * Swap to `titleAspirational` once the flagship research project is underway
+   * and has a page with methods and results behind it.
    */
-  title: "Software Engineer & AI/Robotics Researcher",
-  titleAlternative:
-    "Software Engineer exploring AI, Robotics & Intelligent Autonomous Systems",
+  title: "Software Engineer working toward AI & Robotics Research",
+  titleAspirational: "Software Engineer & AI/Robotics Researcher",
 
   tagline:
-    "I study and build intelligent systems that perceive, reason, learn, and act within complex environments.",
+    "I'm interested in intelligent systems that can perceive, reason, learn, and act in complex environments.",
 
-  interestLine:
-    "Embodied AI · Robot Learning · Computer Vision · Autonomous Systems · Multimodal Learning",
+  currentFocusStatement:
+    "My current focus is building deeper foundations in machine learning, robotics, computer vision, autonomous systems, and embodied intelligence.",
+
+  interestLine: focusLine,
 
   description:
-    "Personal research site of Emmanuel Alabi — software engineer working on embodied AI, robot learning, computer vision, autonomous systems, and multimodal intelligence.",
+    "Personal research site of Emmanuel Alabi — software engineer working toward research in embodied AI, robot learning, computer vision, autonomous systems, and multimodal intelligence.",
 
   /**
    * Set NEXT_PUBLIC_SITE_URL in the Vercel project once the domain is attached.
@@ -43,57 +47,26 @@ export const site = {
 
   /**
    * Profile links. A link is rendered only when its value is non-empty, so an
-   * unknown handle degrades to "absent" rather than "broken".
-   *
-   * TODO(emmanuel): fill in `linkedin`. Add `orcid` / `scholar` once formal
-   * publications exist (spec §54) — the footer and Person JSON-LD pick them up
-   * automatically.
+   * unknown handle degrades to "absent" rather than "broken". Add `orcid` /
+   * `scholar` once formal publications exist — the footer, CV, contact page and
+   * Person JSON-LD pick them up automatically.
    */
   links: {
     github: "https://github.com/alabiemmanuel177",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/olasub/",
     scholar: "",
     orcid: "",
     arxiv: "",
   },
 
   cv: {
-    path: "/cv/emmanuel-alabi-cv.pdf",
+    path: "/cv/emmanuel-alabi-academic-cv.pdf",
     version: "Academic CV v0",
     updated: "August 2026",
   },
 
-  /**
-   * Public research interests (spec §62). These are interests, not claims of
-   * expertise. Edit freely — the homepage, /about and /research all read them.
-   */
-  researchInterests: [
-    {
-      title: "Embodied AI",
-      description:
-        "How intelligent agents can perceive, reason about, and interact with physical environments.",
-    },
-    {
-      title: "Robot Learning",
-      description:
-        "Learning policies and representations for perception, navigation, manipulation, and control.",
-    },
-    {
-      title: "Computer Vision",
-      description:
-        "Visual perception and representation for autonomous systems.",
-    },
-    {
-      title: "Autonomous Systems",
-      description:
-        "Systems capable of sensing, planning, decision-making, and action.",
-    },
-    {
-      title: "Multimodal Intelligence",
-      description:
-        "Combining vision, language, sensor observations, and action.",
-    },
-  ],
+  /** Research interests, from the single machine-readable source. */
+  researchInterests: researchProfile.currentFocus,
 } as const;
 
 export type ProfileLink = { label: string; href: string };

@@ -12,6 +12,7 @@ import { DownloadIcon } from "@/components/ui/icons";
 import { featured, getProjects, getResearch, getWriting } from "@/lib/content/loader";
 import { cvAvailable } from "@/lib/cv-file";
 import { engineeringSummary, engineeringSystems } from "@/lib/engineering";
+import { researchProfile } from "@/lib/research-profile";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -38,7 +39,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero (spec §7) */}
+      {/* Hero */}
       <section className="border-line border-b">
         <Container>
           <div className="max-w-2xl py-16 sm:py-24">
@@ -52,16 +53,14 @@ export default function HomePage() {
             </p>
 
             <p className="text-ink-muted mt-4 text-[0.9375rem] leading-relaxed">
-              My current work combines a software-engineering background with
-              deeper study and experimentation in machine learning, robotics,
-              mathematical foundations, and autonomous systems.
+              {site.currentFocusStatement}
             </p>
 
             <p className="text-ink-subtle mt-6 text-sm">{site.interestLine}</p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <LinkButton href="/research" variant="primary">
-                View research
+                Research direction
               </LinkButton>
               {cvAvailable() ? (
                 <LinkButton href={site.cv.path} download>
@@ -81,12 +80,12 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Current research (spec §8) */}
+      {/* Current direction */}
       <section className="py-16">
         <Container>
           <SectionHeader
-            title="Current research"
-            description="Work in progress. Status labels describe maturity honestly — exploratory work is labelled as such."
+            title="Current direction"
+            description="Where the work is going, and how far along it actually is. Status labels describe maturity honestly — exploratory work is labelled as such."
             href="/research"
           />
           {currentResearch.length > 0 ? (
@@ -110,21 +109,21 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Research interests (spec §62) */}
+      {/* Areas being explored */}
       <section className="border-line border-t py-16">
         <Container>
           <SectionHeader
-            title="Research interests"
+            title="Areas I'm exploring"
             description="These are interests, not claims of expertise."
             href="/about"
             linkLabel="More about me"
           />
           <dl className="grid gap-x-10 gap-y-7 sm:grid-cols-2">
-            {site.researchInterests.map((interest) => (
-              <div key={interest.title}>
-                <dt className="text-ink font-medium">{interest.title}</dt>
+            {researchProfile.currentFocus.map((area) => (
+              <div key={area.title}>
+                <dt className="text-ink font-medium">{area.title}</dt>
                 <dd className="text-ink-muted mt-1.5 text-[0.9375rem] leading-relaxed">
-                  {interest.description}
+                  {area.description}
                 </dd>
               </div>
             ))}
@@ -132,7 +131,7 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* Selected projects (spec §10) */}
+      {/* Selected projects */}
       {projects.length > 0 ? (
         <section className="border-line border-t py-16">
           <Container>
@@ -153,7 +152,7 @@ export default function HomePage() {
         </section>
       ) : null}
 
-      {/* Latest research notes (spec §11) */}
+      {/* Latest research notes */}
       {notes.length > 0 ? (
         <section className="border-line border-t py-16">
           <Container>
@@ -176,7 +175,7 @@ export default function HomePage() {
         </section>
       ) : null}
 
-      {/* Engineering background (spec §12) — deliberately brief */}
+      {/* Engineering background — deliberately brief */}
       <section className="border-line border-t py-16">
         <Container>
           <SectionHeader title="Engineering background" />
@@ -190,7 +189,8 @@ export default function HomePage() {
                 <li key={system.name} className="border-line border-t pt-5">
                   <h3 className="text-ink font-medium">{system.name}</h3>
                   <p className="text-ink-subtle mt-0.5 text-xs">
-                    {system.context} · {system.period}
+                    {system.role}
+                    {system.period ? ` · ${system.period}` : ""}
                   </p>
                   <p className="text-ink-muted mt-2 text-sm leading-relaxed">
                     {system.contribution}
@@ -200,7 +200,7 @@ export default function HomePage() {
             </ul>
           ) : null}
 
-          <p className="mt-7">
+          <p className="mt-8">
             <Link
               href="/cv"
               className="text-accent text-sm underline underline-offset-4"

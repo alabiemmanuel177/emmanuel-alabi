@@ -22,8 +22,9 @@ export function formatDate(partial: string): string {
   return `${Number(day)} ${monthName} ${year}`;
 }
 
-/** "August 2026 — present" / "August 2026 — December 2026". */
-export function formatDateRange(start: string, end?: string): string {
+/** "August 2026 — present" / "August 2026 — December 2026". Empty when undated. */
+export function formatDateRange(start?: string, end?: string): string {
+  if (!start) return end ? formatDate(end) : "";
   return `${formatDate(start)} — ${end ? formatDate(end) : "present"}`;
 }
 

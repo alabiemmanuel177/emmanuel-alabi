@@ -1,0 +1,118 @@
+---
+title: "Obelo — Multimodal AI Infrastructure"
+slug: "obelo-multimodal-ai-infrastructure"
+type: "systems"
+topics:
+  - Multimodal AI
+  - Retrieval-Augmented Generation
+  - Distributed Systems
+  - Evaluation
+technologies:
+  - Multimodal pipelines
+  - Model routing
+  - Retrieval-augmented context
+  - Asynchronous orchestration
+  - Evaluation systems
+status: "active"
+# TODO(emmanuel): add `startDate: "YYYY-MM"` once confirmed. Omitted rather than
+# guessed — the card and page simply drop the date line while it is absent.
+summary: >
+  A production AI platform combining multimodal generation, retrieval-augmented
+  context, asynchronous orchestration, model routing, and evaluation systems.
+featured: true
+order: 1
+draft: false
+---
+
+## Overview
+
+Obelo is a production AI platform I designed and built as founder and lead
+engineer. The part that is relevant here is not the product but the
+infrastructure underneath it: running multimodal generation reliably enough that
+its output can be depended on, and measuring whether it is any good.
+
+I include it because it is the closest thing in my engineering background to the
+systems work that research on embodied, multimodal agents actually requires —
+heterogeneous models, long-running asynchronous pipelines, retrieval-conditioned
+context, and evaluation as a first-class component rather than an afterthought.
+
+## Problem
+
+Generating brand-consistent multimodal output in production is not a single
+model call. Model families disagree with each other and with themselves;
+requests are long-running and fail partway; the context a generation needs is
+scattered across prior assets and brand constraints; and "is this output good?"
+has no free answer.
+
+That makes it a systems problem: routing, conditioning, orchestration, and
+measurement, with generation as one component among several.
+
+## Architecture
+
+<ArchitectureDiagram
+  stages={[
+    "Request",
+    "Retrieval-augmented brand context",
+    "Model routing",
+    "Multimodal generation",
+    "Evaluation & quality checks",
+    "Asynchronous delivery",
+  ]}
+  caption="The production path a generation request takes. Each stage is separable and independently observable, which is what makes failures diagnosable rather than merely visible."
+/>
+
+## Implementation
+
+The parts worth describing technically:
+
+**Multimodal pipelines.** Structured creative pipelines that combine
+language-model reasoning with image generation, rather than treating them as
+independent endpoints. Intermediate representations are explicit so a stage can
+be inspected, replaced, or re-run without regenerating everything upstream.
+
+**Model routing.** Requests are routed across multiple image-generation and
+language-model families. Different families have materially different
+behaviour on the same prompt, so routing is a decision with quality
+consequences, not a cost optimisation.
+
+**Retrieval-augmented brand context.** Generation is conditioned on retrieved
+brand context rather than on a prompt that restates it. This keeps output
+consistent across requests that share no prompt text.
+
+**Asynchronous orchestration.** Generation is long-running, so the system is
+built around asynchronous jobs with reliability mechanisms for workflows that
+outlive a single request — retries, partial-failure handling, and state that
+survives a worker dying mid-pipeline.
+
+**Evaluation and quality systems.** Output quality is measured rather than
+assumed. This is the component with the most direct research relevance: it is
+the same problem as deciding whether a policy or a perception module actually
+improved, under conditions where the metric is contestable.
+
+## Technical decisions
+
+The decision I would defend most readily is treating evaluation as
+infrastructure rather than as tooling. It is more expensive up front, and it is
+the only reason claims about a change being an improvement mean anything.
+
+The decision with the clearest trade-off is model routing across families:
+it buys quality and resilience at the cost of a much larger behaviour surface to
+understand, and it makes reproducibility harder — the same input does not
+necessarily traverse the same path.
+
+## Relevance to research
+
+Three things carry over directly:
+
+1. Building an experimental pipeline is mostly a systems problem, and I have
+   already built one at production scale.
+2. Multimodal conditioning — combining language, images, and retrieved context
+   — is the same shape of problem as combining vision, language, and sensor
+   observations for an embodied agent.
+3. Evaluation under contestable metrics is exactly the discipline research
+   requires, and the habit is easier to carry across than to acquire.
+
+## Status
+
+Active. This entry describes engineering work, not a research result: there are
+no controlled experiments or reported metrics here, and none are claimed.

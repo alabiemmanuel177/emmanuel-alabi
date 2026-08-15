@@ -12,9 +12,11 @@ export function ProjectCard({ item }: { item: ProjectFrontmatter }) {
     <article className="border-line flex flex-col rounded-lg border p-6">
       <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
         <Badge>{label(item.type)}</Badge>
-        <span className="text-ink-subtle text-xs">
-          {formatDateRange(item.startDate, item.endDate)}
-        </span>
+        {item.startDate ? (
+          <span className="text-ink-subtle text-xs">
+            {formatDateRange(item.startDate, item.endDate)}
+          </span>
+        ) : null}
       </div>
 
       <h3 className="text-ink text-lg font-semibold tracking-tight">

@@ -95,7 +95,8 @@ export const ProjectSchema = z.object({
   topics: z.array(z.string().min(1)).min(1),
   technologies: z.array(z.string()).default([]),
   status: z.enum(researchStatuses),
-  startDate: partialDate,
+  /** Omit rather than guess — the UI drops the date line when it is absent. */
+  startDate: partialDate.optional(),
   endDate: partialDate.optional(),
   github: optionalUrl,
   demo: optionalUrl,

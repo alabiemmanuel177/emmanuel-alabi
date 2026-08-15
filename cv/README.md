@@ -8,19 +8,20 @@ cv/
 ├── cv.tex                      ← source
 ├── references.bib              ← for a publications section, once one exists
 └── generated/
-    └── emmanuel-alabi-cv.pdf   ← build output
+    └── emmanuel-alabi-academic-cv.pdf   ← build output
 ```
 
 ## Building
 
-Requires a TeX distribution (`brew install --cask mactex-no-gui`, or TeX Live).
+Requires a TeX distribution. BasicTeX is enough — the source deliberately uses
+only packages that ship with it (`brew install --cask basictex`).
 
 ```bash
 npm run cv:build
 ```
 
 That runs `pdflatex` twice (once to resolve references, once to typeset) and
-copies the result to `public/cv/emmanuel-alabi-cv.pdf`.
+copies the result to `public/cv/emmanuel-alabi-academic-cv.pdf`.
 
 The site checks whether that file exists: if it is missing, the download button
 is hidden rather than rendered as a broken link, and `/cv` tells the reader to

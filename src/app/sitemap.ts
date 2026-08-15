@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/writing"), priority: 0.8 },
     { url: absoluteUrl("/log"), priority: 0.6 },
     { url: absoluteUrl("/about"), priority: 0.8 },
+    { url: absoluteUrl("/now"), priority: 0.6 },
     { url: absoluteUrl("/cv"), priority: 0.8 },
     { url: absoluteUrl("/contact"), priority: 0.5 },
   ];
@@ -38,11 +39,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return entries;
   });
 
-  const projects = getProjects().map(({ frontmatter }) => ({
-    url: absoluteUrl(`/projects/${frontmatter.slug}`),
-    lastModified: isoDate(frontmatter.endDate ?? frontmatter.startDate),
-    priority: 0.7,
-  }));
+  const projects = getProjects().map(({ frontmatter }) => {
+    const date = frontmatter.endDate ?? frontmatter.startDate;
+    return {
+      url: absoluteUrl(`/projects/${frontmatter.slug}`),
+      ...(date ? { lastModified: isoDate(date) } : {}),
+      priority: 0.7,
+    };
+  });
 
   const writing = getWriting().map(({ frontmatter }) => ({
     url: absoluteUrl(`/writing/${frontmatter.slug}`),

@@ -154,7 +154,10 @@ export function getProjects(): Entry<ProjectFrontmatter>[] {
       (a.frontmatter.order ?? Number.MAX_SAFE_INTEGER) -
       (b.frontmatter.order ?? Number.MAX_SAFE_INTEGER);
     if (explicit !== 0) return explicit;
-    return byDateDesc(a.frontmatter.startDate, b.frontmatter.startDate);
+    return byDateDesc(
+      a.frontmatter.startDate ?? "",
+      b.frontmatter.startDate ?? "",
+    );
   });
 }
 

@@ -1,27 +1,29 @@
+import { engineeringSystems } from "./engineering";
+
 /**
  * Structured CV data, shared by /about and /cv.
  *
- * Nothing here is inferred or padded. Fields you have not verified should stay
- * empty — every renderer below omits empty sections rather than showing a
- * placeholder, so an incomplete CV reads as short rather than as false.
+ * Nothing here is inferred or padded. Fields you have not verified stay empty —
+ * every renderer omits empty sections rather than showing a placeholder, so an
+ * incomplete CV reads as short rather than as false.
  *
- * Ordering follows the academic CV priority in spec §25:
- * research interests → education → research experience → publications →
- * selected projects → engineering experience → open source → skills.
+ * Ordering follows the academic CV priority: research interests → education →
+ * research & technical experience → selected projects → engineering experience
+ * → open source → skills. There is deliberately no Publications section until a
+ * publication exists.
  */
 
 export type Education = {
   institution: string;
   qualification: string;
-  /** e.g. "2021 — 2025". Omit if you would otherwise be guessing. */
   period?: string;
   location?: string;
-  /** Only list courses you actually took. */
+  /** Only courses actually taken, using the titles from the official record. */
   coursework?: string[];
   notes?: string;
   /**
-   * Do not publish a GPA unless it is verified against the final official
-   * transcript and it is strategically useful to show (spec §24).
+   * Degree classification. Publish only if verified against the final official
+   * transcript and you have decided it helps your case.
    */
   grade?: string;
 };
@@ -37,7 +39,7 @@ export type ResearchExperience = {
 export type Experience = {
   role: string;
   organisation: string;
-  period: string;
+  period?: string;
   location?: string;
   /** Two or three lines. Technical contribution, not sales metrics. */
   highlights: string[];
@@ -51,27 +53,55 @@ export type SkillGroup = {
 };
 
 /**
- * TODO(emmanuel): confirm the exact period and, if you want it shown, the
- * degree classification from the final official transcript. Add the coursework
- * you actually took. Never upload the transcript itself to this repository.
+ * Verified against the official Babcock University transcript record
+ * (BSc (Hons) Software Engineering; admitted 2019, degree awarded 22 June 2023).
+ *
+ * Coursework lists the modules with genuine academic bearing on this
+ * application, using the titles exactly as they appear on the transcript.
+ *
+ * Classification is deliberately not published here. The transcript shows a
+ * final C-GPA of 4.00/5.00 — Second Class Upper under Babcock's scale. Set
+ * `grade` if you decide it helps a particular application; the CV page and PDF
+ * both render it when present.
  */
 export const education: Education[] = [
   {
     institution: "Babcock University",
     qualification: "BSc (Hons) Software Engineering",
-    coursework: [],
+    location: "Ilishan-Remo, Ogun State, Nigeria",
+    period: "2019 — 2023",
+    coursework: [
+      "Algorithms and Data Structures",
+      "Discrete Mathematics",
+      "Introductory Statistics",
+      "Introduction to Operations Research",
+      "Artificial Intelligence and Applications",
+      "Introduction to Big Data Engineering",
+      "Computer Organization and Assembly Language",
+      "Operating System I",
+      "Database System Design, Implementation and Management",
+    ],
   },
 ];
 
-/** Formal research positions only — not self-directed study. */
+/**
+ * Formal research positions only — not self-directed study.
+ *
+ * TODO(emmanuel): the final-year Research Project (SENG490) is a legitimate
+ * academic research entry. Add it once you can state its question, method, and
+ * outcome accurately.
+ */
 export const researchExperience: ResearchExperience[] = [];
 
-/**
- * TODO(emmanuel): add the engineering roles that support the research
- * trajectory — AI systems, multimodal systems, distributed systems, computer
- * vision, production ML infrastructure. Three or four is plenty.
- */
-export const experience: Experience[] = [];
+/** Engineering roles, derived from the single source in `engineering.ts`. */
+export const experience: Experience[] = engineeringSystems.map((system) => ({
+  role: system.role,
+  organisation: system.name.split(" — ")[0],
+  period: system.period,
+  highlights: [system.contribution, system.depth],
+  technologies: system.technologies,
+  url: system.url,
+}));
 
 export const openSource: Experience[] = [];
 

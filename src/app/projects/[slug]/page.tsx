@@ -57,9 +57,11 @@ export default async function ProjectPage({ params }: Params) {
         <header>
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <Badge>{label(fm.type)}</Badge>
-            <span className="text-ink-subtle text-xs">
-              {formatDateRange(fm.startDate, fm.endDate)}
-            </span>
+            {fm.startDate ? (
+              <span className="text-ink-subtle text-xs">
+                {formatDateRange(fm.startDate, fm.endDate)}
+              </span>
+            ) : null}
           </div>
 
           <h1 className="text-ink font-serif text-3xl font-semibold tracking-tight sm:text-4xl">

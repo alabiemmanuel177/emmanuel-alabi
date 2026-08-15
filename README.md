@@ -106,8 +106,36 @@ all derive from it.
 
 ## Identity and links
 
-`src/lib/site.ts` is the single source for name, descriptor, research
-interests, email, and profile links. A profile link is rendered only when it is
-non-empty, so an unset handle is absent rather than broken. Add `orcid` and
-`scholar` there once formal publications exist; the footer, CV, contact page,
-and `Person` JSON-LD pick them up automatically.
+Three small config files, each with one job:
+
+| file                          | owns                                                     |
+| ----------------------------- | -------------------------------------------------------- |
+| `src/lib/research-profile.ts` | current focus areas and broader interests                 |
+| `src/lib/site.ts`             | name, descriptor, email, profile links, CV metadata       |
+| `src/lib/now.ts`              | the `/now` snapshot — update roughly monthly              |
+| `src/lib/engineering.ts`      | selected engineering systems (also feeds the CV page)     |
+| `src/lib/cv.ts`               | education, research experience, skills                    |
+
+Research interests are defined once, in `research-profile.ts`. The homepage,
+`/about`, `/research`, `/cv` and the `Person` JSON-LD all read from it — no
+hardcoded interest labels anywhere else. Re-scoping interests over the year is a
+one-file edit.
+
+A profile link is rendered only when it is non-empty, so an unset handle is
+absent rather than broken. Add `orcid` and `scholar` once formal publications
+exist; the footer, CV, contact page and JSON-LD pick them up automatically.
+
+`site.title` is currently the conservative descriptor — "Software Engineer
+working toward AI & Robotics Research". `site.titleAspirational` holds the
+stronger label; swap them once the flagship research project has a page with
+methods and results behind it, not before.
+
+## The CV
+
+`cv/cv.tex` is the source; `npm run cv:build` produces
+`public/cv/emmanuel-alabi-academic-cv.pdf`, which **is** committed — Vercel has
+no TeX install, so the built PDF has to be in the repository. It uses only
+packages shipped with BasicTeX, so it builds on a minimal install.
+
+If the PDF is missing, the site hides the download button rather than rendering
+a broken link.
