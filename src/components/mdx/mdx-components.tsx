@@ -39,7 +39,9 @@ function Note({
   return (
     <aside className="border-line bg-surface rounded-lg border p-5 text-[0.9375rem] leading-relaxed">
       {title ? (
-        <p className="text-ink-subtle mb-2 text-xs font-medium tracking-wider uppercase">
+        // `text-ink-muted`, not `text-ink-subtle`: subtle-on-surface measures
+        // 4.33:1 in dark mode, below the 4.5:1 AA threshold for small text.
+        <p className="text-ink-muted mb-2 text-xs font-medium tracking-wider uppercase">
           {title}
         </p>
       ) : null}
