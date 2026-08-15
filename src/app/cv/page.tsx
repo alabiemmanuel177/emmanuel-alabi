@@ -8,6 +8,7 @@ import { getProjects, getResearch } from "@/lib/content/loader";
 import { getPublications } from "@/lib/content/publications";
 import { cvAvailable } from "@/lib/cv-file";
 import {
+  academicProjects,
   education,
   experience,
   openSource,
@@ -144,6 +145,35 @@ export default function CvPage() {
                 <p className="text-ink-muted mt-1 text-[0.9375rem]">
                   {item.description}
                 </p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
+      {academicProjects.length > 0 ? (
+        <Section title="Selected Academic Projects">
+          <ul className="space-y-6">
+            {academicProjects.map((item) => (
+              <li key={item.title}>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+                  <h3 className="text-ink font-medium">
+                    {item.url ? (
+                      <Link href={item.url} className="hover:text-accent">
+                        {item.title}
+                      </Link>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
+                  <span className="text-ink-subtle text-sm">{item.period}</span>
+                </div>
+                <p className="text-ink-muted mt-0.5 text-sm">{item.context}</p>
+                <ul className="text-ink-muted mt-2 list-disc space-y-1 pl-5 text-[0.9375rem]">
+                  {item.highlights.map((highlight) => (
+                    <li key={highlight}>{highlight}</li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>

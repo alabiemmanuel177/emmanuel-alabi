@@ -30,6 +30,7 @@ export function formatDateRange(start?: string, end?: string): string {
 
 const TITLE_CASE: Record<string, string> = {
   "research-engineering": "Research Engineering",
+  "academic-project": "Academic Project",
   "machine-learning": "Machine Learning",
   "computer-vision": "Computer Vision",
   research: "Research",

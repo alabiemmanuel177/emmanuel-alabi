@@ -10,7 +10,7 @@
 
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[margin=1.9cm]{geometry}
+\usepackage[top=1.5cm,bottom=1.6cm,left=1.7cm,right=1.7cm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -39,7 +39,7 @@
 
 % Section heading: small caps, bold, followed by a rule.
 \newcommand{\cvsection}[1]{%
-  \vspace{1.15em}%
+  \vspace{0.95em}%
   {\normalsize\bfseries\scshape #1}\par
   \vspace{0.25em}%
   \hrule height 0.4pt
@@ -61,7 +61,7 @@
     \setlength{\partopsep}{0pt}%
 }{%
   \end{itemize}%
-  \vspace{0.35em}%
+  \vspace{0.25em}%
 }
 
 \begin{document}
@@ -130,8 +130,24 @@ Design, Implementation and Management.}
         \href{https://emmanuelalabi.com/research/research-programme-2026}{emmanuelalabi.com/research/research-programme-2026}
 \end{cvitems}
 
-% TODO(emmanuel): add the final-year Research Project (SENG490, Babcock, 2023)
-% here once you can state its question, method and outcome accurately.
+%% -------------------------------------------- Selected academic projects ---
+\cvsection{Selected Academic Projects}
+
+\cventry{BUCODEL --- Learning Management System for Open \& Distance e-Learning}{2022 --- 2023}
+{\small Undergraduate Final-Year Project (SENG490, 72/100), Babcock University.
+Supervisor: Dr.\ Stephen Maitanmi.}
+\begin{cvitems}
+  \item Co-designed and implemented a web-based learning management system for
+        Babcock University's Centre for Open and Distance e-Learning, supporting
+        student, lecturer and administrator workflows.
+  \item Built course and resource management, assignments, authentication, user
+        administration, collaborative course activity and role-specific
+        interfaces using React, Node.js/Express and MongoDB.
+  \item Conducted requirements analysis, system design, iterative implementation
+        under a spiral methodology, and interface/usability, unit and
+        integration testing.
+  \item \href{https://emmanuelalabi.com/projects/bucodel-learning-management-system}{emmanuelalabi.com/projects/bucodel-learning-management-system}
+\end{cvitems}
 
 %% ------------------------------------------ Selected engineering projects ---
 \cvsection{Selected Engineering Projects}
@@ -148,7 +164,8 @@ Design, Implementation and Management.}
 \end{cvitems}
 
 % TODO(emmanuel): add Computer Vision Similarity Analysis once its write-up is
-% accurate, and one strong distributed/backend system.
+% accurate, and one strong distributed/backend system. The local drowsiness
+% detection project is deliberately excluded — see the forensic analysis.
 
 %% -------------------------------------- Selected technical experience -------
 \cvsection{Selected Technical Experience}
@@ -176,8 +193,20 @@ Design, Implementation and Management.}
 % \cvsection{Open Source / Technical Work}
 
 %% ------------------------------------------------------ Technical skills ----
-% TODO(emmanuel): list only what you would be comfortable being examined on.
-% Suggested grouping: Languages / ML & Robotics / Systems & Tools.
-% \cvsection{Technical Skills}
+\cvsection{Technical Skills}
+
+{\small
+\textbf{Programming} \quad Python, TypeScript, JavaScript, Java, SQL\par
+\vspace{0.25em}
+\textbf{AI systems} \quad Multimodal AI systems, retrieval-augmented generation,
+LLM and model integration, evaluation and quality systems\par
+\vspace{0.25em}
+\textbf{Systems \& engineering} \quad React, Next.js, Node.js, Express, MongoDB,
+PostgreSQL, Redis, Docker, CI/CD\par
+}
+
+% Deliberately absent until evidenced by real work: ROS 2, Gazebo, SLAM,
+% reinforcement learning, robot control, state estimation, motion planning.
+% Computer vision is also absent until a verified CV project is published.
 
 \end{document}

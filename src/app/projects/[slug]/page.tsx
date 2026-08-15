@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/components/layout/Container";
+import { AcademicMeta } from "@/components/projects/AcademicMeta";
 import { Badge } from "@/components/ui/Badge";
 import { EvidenceLinks } from "@/components/ui/EvidenceLinks";
 import { JsonLd } from "@/components/ui/JsonLd";
@@ -72,6 +73,12 @@ export default async function ProjectPage({ params }: Params) {
             {fm.summary}
           </p>
 
+          {fm.academic ? (
+            <div className="mt-7">
+              <AcademicMeta academic={fm.academic} />
+            </div>
+          ) : null}
+
           {fm.technologies.length > 0 ? (
             <p className="text-ink-subtle border-line mt-6 border-t pt-5 font-mono text-xs">
               {fm.technologies.join(" · ")}
@@ -81,7 +88,8 @@ export default async function ProjectPage({ params }: Params) {
           <EvidenceLinks
             className="mt-5"
             links={[
-              { label: "Code", href: fm.github },
+              { label: fm.github2 ? "Backend repository" : "Code", href: fm.github },
+              { label: fm.github2Label ?? "Frontend repository", href: fm.github2 },
               { label: "Demo", href: fm.demo },
               {
                 label: "Write-up",

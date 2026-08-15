@@ -39,7 +39,8 @@ export function ProjectCard({ item }: { item: ProjectFrontmatter }) {
         className="mt-5"
         links={[
           { label: "Details", href },
-          { label: "Code", href: item.github },
+          { label: item.github2 ? "Backend" : "Code", href: item.github },
+          { label: "Frontend", href: item.github2 },
           { label: "Demo", href: item.demo },
           {
             label: "Write-up",

@@ -9,7 +9,18 @@ import { focusLine, researchProfile } from "./research-profile";
  */
 
 export const site = {
+  /** Public display name. This is the site brand; do not swap it for the formal name. */
   name: researchProfile.name,
+
+  /**
+   * Formal legal/academic name, as it appears on the Babcock transcript.
+   *
+   * Deliberately not rendered anywhere on the public site. It exists here so
+   * that formal artefacts — university applications, transcript matching,
+   * ORCID registration, and any future publication byline — draw the correct
+   * name from one place instead of being retyped.
+   */
+  formalName: "Alabi Emmanuel Olasubomi",
 
   /**
    * Current public descriptor. Deliberately the weaker of the two: the

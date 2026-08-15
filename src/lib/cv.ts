@@ -85,13 +85,40 @@ export const education: Education[] = [
 ];
 
 /**
- * Formal research positions only — not self-directed study.
- *
- * TODO(emmanuel): the final-year Research Project (SENG490) is a legitimate
- * academic research entry. Add it once you can state its question, method, and
- * outcome accurately.
+ * Formal research positions only — not self-directed study, and not assessed
+ * coursework. Assessed academic work belongs in `academicProjects` below.
  */
 export const researchExperience: ResearchExperience[] = [];
+
+export type AcademicProject = {
+  title: string;
+  context: string;
+  period: string;
+  highlights: string[];
+  /** Site-relative path to the project page. */
+  url?: string;
+};
+
+/**
+ * Assessed academic work. Distinct from research: these were graded by an
+ * institution, and they are presented as coursework rather than as research
+ * output. Nothing here is a publication.
+ */
+export const academicProjects: AcademicProject[] = [
+  {
+    title:
+      "BUCODEL — Learning Management System for Open & Distance e-Learning",
+    context:
+      "Undergraduate Final-Year Project (SENG490, 72/100), Babcock University",
+    period: "2022 — 2023",
+    highlights: [
+      "Co-designed and implemented a web-based learning management system for Babcock University's Centre for Open and Distance e-Learning, supporting student, lecturer, and administrator workflows.",
+      "Built course and resource management, assignments, authentication, user administration, collaborative course activity, and role-specific interfaces using React, Node.js/Express, and MongoDB.",
+      "Conducted requirements analysis, system design, iterative implementation under a spiral methodology, and interface/usability, unit, and integration testing.",
+    ],
+    url: "/projects/bucodel-learning-management-system",
+  },
+];
 
 /** Engineering roles, derived from the single source in `engineering.ts`. */
 export const experience: Experience[] = engineeringSystems.map((system) => ({
@@ -106,7 +133,52 @@ export const experience: Experience[] = engineeringSystems.map((system) => ({
 export const openSource: Experience[] = [];
 
 /**
- * TODO(emmanuel): keep this to tools you would be comfortable being examined
- * on in an interview.
+ * Technical skills.
+ *
+ * Conservative by design: everything here should survive an interview question.
+ * Deliberately absent until there is real evidence — ROS 2, Gazebo, SLAM,
+ * reinforcement learning, robot control, state estimation, motion planning. Those
+ * are roadmap items, not skills, and they get added when a project demonstrates
+ * them.
+ *
+ * Entries marked below with (no public artefact yet) are supported by private or
+ * professional work but have nothing on this site a reviewer can click through
+ * to. They are truthful, but they are the first things to cut if the list needs
+ * to be defensible on published evidence alone.
  */
-export const skills: SkillGroup[] = [];
+export const skills: SkillGroup[] = [
+  {
+    group: "Programming",
+    // Java: Babcock coursework (Programming in JAVA, Hands-on JAVA training).
+    // JavaScript/TypeScript: BUCODEL, this site. Python, SQL: no public artefact yet.
+    items: ["Python", "TypeScript", "JavaScript", "Java", "SQL"],
+  },
+  {
+    group: "AI systems",
+    // All four evidenced by Obelo. Computer vision is deliberately absent: the
+    // two computer-vision projects are unverified and unpublished, so there is
+    // nothing to point at yet.
+    items: [
+      "Multimodal AI systems",
+      "Retrieval-augmented generation",
+      "LLM and model integration",
+      "Evaluation and quality systems",
+    ],
+  },
+  {
+    group: "Systems and engineering",
+    // React/Node/Express/MongoDB: BUCODEL. Next.js, CI/CD: this repository.
+    // PostgreSQL, Redis, Docker: no public artefact yet.
+    items: [
+      "React",
+      "Next.js",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "PostgreSQL",
+      "Redis",
+      "Docker",
+      "CI/CD",
+    ],
+  },
+];

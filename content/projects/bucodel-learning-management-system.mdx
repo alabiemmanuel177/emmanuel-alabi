@@ -1,0 +1,199 @@
+---
+title: "BUCODEL — Learning Management System"
+slug: "bucodel-learning-management-system"
+type: "academic-project"
+topics:
+  - Full-Stack Systems
+  - Web Application Architecture
+  - Software Engineering
+technologies:
+  - React
+  - JavaScript
+  - Bootstrap
+  - Node.js
+  - Express
+  - MongoDB
+  - Mongoose
+  - Socket.IO
+  - Cloudinary
+status: "completed"
+startDate: "2022-07"
+endDate: "2023-06"
+academic:
+  kind: "Undergraduate Final-Year Project"
+  institution: "Babcock University"
+  year: "2023"
+  course: "SENG490 Research Project (6 credits)"
+  grade: "72/100"
+  supervisor: "Dr. Stephen Maitanmi"
+  collaborators:
+    - Izu Onisokumen Preye
+summary: >
+  A web-based learning management system for Babcock University's Centre for
+  Open and Distance e-Learning, supporting student, lecturer, and administrator
+  workflows across courses, assignments, materials, and class interaction.
+github: "https://github.com/alabiemmanuel177/finalyearproject_backend"
+github2: "https://github.com/alabiemmanuel177/finalyearproject_frontend"
+github2Label: "Frontend repository"
+featured: true
+order: 2
+draft: false
+---
+
+## Overview
+
+*The Design and Implementation of a Learning Management System for Babcock
+University Centre for Open and Distance e-Learning (BUCODEL)* was my
+undergraduate final-year project, completed with Izu Onisokumen Preye under the
+supervision of Dr. Stephen Maitanmi.
+
+It is a full-stack web application that gives students, lecturers, and
+administrators role-specific access to courses, assignments, materials, and
+class interaction. Both repositories are public and linked above.
+
+I include it here as an academic software engineering project, not as research.
+It has a design, an implementation, and a testing process; it does not have a
+research question, a baseline, or quantitative evaluation, and I do not present
+it as though it does.
+
+## Problem
+
+Babcock's Centre for Open and Distance e-Learning served students who could not
+depend on physical classroom access, but the surrounding workflows still assumed
+it. The specific limitations the project set out to address were:
+
+- learning that depended on physical presence in a classroom;
+- assignments submitted as hard copies or through personal email;
+- no reliable way to distribute course resources;
+- little lecturer–student interaction outside physical spaces;
+- no support for virtual collaboration between students;
+- academic resources fragmented across places with no single point of access.
+
+Each of these is a coordination problem before it is a software problem, which
+is why the system is organised around roles rather than around features.
+
+## Objectives
+
+1. Review existing learning management systems.
+2. Design an e-learning platform suited to the Centre's requirements.
+3. Implement the platform.
+4. Evaluate the resulting prototype.
+
+## System design
+
+The system models three user classes, each with its own data model,
+authentication path, and interface.
+
+<ArchitectureDiagram
+  stages={[
+    "React client (student · lecturer · admin views)",
+    "Express REST API",
+    "Passport / bcrypt authentication",
+    "Mongoose models",
+    "MongoDB",
+  ]}
+  caption="Request path. Socket.IO runs alongside the REST layer, injected into every route so that state changes can emit events to connected clients."
+/>
+
+**Student** — authentication, course overview, course activity stream,
+assignments, course materials, class and group interaction, profile and
+settings.
+
+**Lecturer** — course management, assignment creation and grading, announcements
+and course activity, viewing course members, grouping students, resource
+uploads, settings.
+
+**Administrator** — authentication, dashboard, student and lecturer management,
+course management, user and database administration, settings.
+
+The data model follows the same shape. The backend defines separate `Student`,
+`Lecturer`, and `Admin` models alongside `Course`, `Assignment`,
+`AssignmentAnswer`, `CourseMaterial`, `Class`, `ClassPost`, `ClassComment`,
+`Group`, `GroupPost`, `GroupComment`, `Department`, `School`, and `Notice` — with
+a REST route module per model.
+
+## Implementation
+
+**Frontend.** React with JavaScript, CSS, and Bootstrap, organised into
+role-specific application areas.
+
+**Backend.** Node.js and Express with MongoDB via Mongoose. Routing is split one
+module per resource, mounted through a single router entry point.
+
+**Authentication.** Three separate registration and login paths — student,
+lecturer, and administrator — with passwords hashed using bcrypt (salt generated
+per user) before persistence. Sessions are handled with Passport and
+`express-session`.
+
+**File and resource handling.** Course materials and other uploads are received
+with Multer and stored on Cloudinary, with the returned URL and public ID
+persisted against the owning record rather than storing binaries in the
+database.
+
+**Assignment workflow.** Lecturers create assignments; students submit answers;
+answers and their attached files are modelled separately from the assignment
+itself, so a submission can carry multiple files.
+
+**Real-time events.** A Socket.IO server is attached to the HTTP server and
+injected into every route through middleware, so that a state change can notify
+connected clients directly from the handler that caused it — for example
+`NEW_ASSIGNMENT_UPLOADED`, `NEW_CLASSPOST_POSTED`, and `NEW_NOTICE_POSTED`.
+
+A video-conferencing endpoint issues a signed SDK JWT for joining sessions.
+Several other packages appear in the dependency list; I have only described the
+ones the code actually exercises.
+
+## Methodology
+
+The project followed a **spiral** development methodology: requirements
+analysis, literature review of existing systems, gap analysis, system analysis
+and design, then iterative implementation with testing at each pass.
+
+## Evaluation
+
+The project was evaluated through functionality checking against the specified
+requirements, interface and usability testing, unit testing, and integration
+testing.
+
+I am deliberately not reporting numbers here. The project report contains broad
+claims about user satisfaction, but the evidence behind them does not meet the
+standard I hold the rest of this site to — there was no controlled study, no
+defined metric, and no sample I would be willing to defend. Stating "it was
+tested for functionality and usability" is what the work actually supports.
+
+## Limitations
+
+- **Undergraduate project scope.** This was built to demonstrate a working
+  system within an academic timeframe, not to be operated.
+- **Production hardening is incomplete.** The session configuration uses a
+  hardcoded secret, and the deployment is no longer live.
+- **No rigorous evaluation.** There is no benchmark suite, no measured
+  performance, and no quantitative usability study. Some implemented
+  functionality was never evaluated in any structured way at all.
+- **Not all listed dependencies are load-bearing.** The dependency list is
+  broader than the functionality that was actually finished and tested.
+
+## What I learned
+
+The parts that carried forward:
+
+- Translating a set of stated institutional requirements into a multi-role
+  software system, where the roles — not the screens — are the primary
+  structure.
+- Designing role-specific workflows that share a data model without sharing
+  permissions.
+- Building and connecting a full stack end to end: client, API, data model,
+  persistence, and file storage.
+- Authentication and data modelling as correctness concerns rather than
+  features.
+- Iterative development against changing requirements, and enough exposure to
+  usability and integration testing to understand what a *rigorous* evaluation
+  would have required — which is most of why the evaluation section above is as
+  short as it is.
+
+## Source code
+
+- **Backend** — Node.js, Express, MongoDB:
+  [github.com/alabiemmanuel177/finalyearproject_backend](https://github.com/alabiemmanuel177/finalyearproject_backend)
+- **Frontend** — React:
+  [github.com/alabiemmanuel177/finalyearproject_frontend](https://github.com/alabiemmanuel177/finalyearproject_frontend)

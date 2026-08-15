@@ -83,11 +83,32 @@ export type ResearchFrontmatter = z.infer<typeof ResearchSchema>;
 export const projectTypes = [
   "research",
   "research-engineering",
+  "academic-project",
   "robotics",
   "machine-learning",
   "computer-vision",
   "systems",
 ] as const;
+
+/**
+ * Academic provenance for coursework and final-year projects.
+ *
+ * Present only on entries that were assessed by an institution. Every field
+ * here is a factual claim a reviewer could check against a transcript, so
+ * populate it only from the official record.
+ */
+const AcademicContext = z.object({
+  /** e.g. "Undergraduate Final-Year Project". */
+  kind: z.string().min(1),
+  institution: z.string().min(1),
+  /** Course code and title, e.g. "SENG490 Research Project (6 credits)". */
+  course: z.string().optional(),
+  year: z.string().optional(),
+  /** e.g. "72/100". Only from the official record. */
+  grade: z.string().optional(),
+  supervisor: z.string().optional(),
+  collaborators: z.array(z.string()).default([]),
+});
 
 export const ProjectSchema = z.object({
   ...base,
@@ -101,6 +122,10 @@ export const ProjectSchema = z.object({
   github: optionalUrl,
   demo: optionalUrl,
   article: z.string().optional(),
+  /** Second repository, for projects split across frontend and backend. */
+  github2: optionalUrl,
+  github2Label: z.string().optional(),
+  academic: AcademicContext.optional(),
   featured: z.boolean().default(false),
   order: z.number().int().optional(),
 });
