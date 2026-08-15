@@ -44,3 +44,6 @@ yarn-error.log*
 *.aux
 *.log
 *.out
+
+# TypeScript incremental build info
+*.tsbuildinfo
