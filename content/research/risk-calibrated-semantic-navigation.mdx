@@ -208,8 +208,9 @@ reclassified.
 
 At G7 a clean clone regenerated the H1–H4 JSON and every key-result table
 byte-for-byte, with 249 tests passing at that point. The current release suite
-passes 251 tests, after recovery-guard regressions were added for minimal-PATH
-execution. Paths and file timestamps are explicitly not treated as evidence.
+passes 258 tests, which includes recovery-guard regressions and separately
+scoped checks for a downstream study that shares this platform. Paths and file
+timestamps are explicitly not treated as evidence.
 
 ```bash
 python3 -m pip install -r requirements-analysis.lock.txt
@@ -235,15 +236,18 @@ results. No AI system is listed as an author. The repository's
 
 ## Status and links
 
-Tagged `v1.0.0-rc.1`. The confirmatory core dataset is archived and citable.
+The confirmatory core dataset is archived and citable. `v1.0.0-rc.1` is an
+immutable historical snapshot of the release candidate and has deliberately not
+been moved; the documents linked below track the current repository state, which
+carries the settled title.
 Independent technical review, the venue-format and citation audit, the final
 source release that follows that review, and preprint submission remain
 outstanding external actions — the repository's release checklist shows them
 unchecked rather than implied complete.
 
 - **Code** — [github.com/alabiemmanuel177/risk-calibrated-semantic-navigation](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation)
-- **Release** — [v1.0.0-rc.1](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/releases/tag/v1.0.0-rc.1)
+- **Release candidate snapshot** — [v1.0.0-rc.1](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/releases/tag/v1.0.0-rc.1)
 - **Dataset** — confirmatory core dataset archived at [10.5281/zenodo.22181941](https://doi.org/10.5281/zenodo.22181941)
-- **Technical manuscript (draft)** — [`paper/risk-calibrated-semantic-navigation.pdf`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/paper/risk-calibrated-semantic-navigation.pdf). Not submitted, not peer reviewed.
-- **Protocol** — [`docs/protocol.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/docs/protocol.md)
-- **Full disclosures** — [`paper/disclosures.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/paper/disclosures.md)
+- **Technical manuscript (draft)** — [`paper/risk-calibrated-semantic-navigation.pdf`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/main/paper/risk-calibrated-semantic-navigation.pdf). Not submitted, not peer reviewed.
+- **Protocol** — [`docs/protocol.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/main/docs/protocol.md)
+- **Full disclosures** — [`paper/disclosures.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/main/paper/disclosures.md)
