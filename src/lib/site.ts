@@ -23,13 +23,18 @@ export const site = {
   formalName: "Alabi Emmanuel Olasubomi",
 
   /**
-   * Current public descriptor. Deliberately the weaker of the two: the
-   * "researcher" label is earned by published output, not asserted ahead of it.
-   * Swap to `titleAspirational` once the flagship research project is underway
-   * and has a page with methods and results behind it.
+   * Public descriptor.
+   *
+   * Promoted from `titlePrior` on 2026-08-30, once the condition set at launch
+   * was actually met: a flagship research project with a public page carrying
+   * its question, preregistered hypotheses, methods, results and limitations —
+   * /research/risk-calibrated-semantic-navigation. The label is now supported
+   * by output rather than asserted ahead of it.
+   *
+   * `titlePrior` is kept only as a record of what this said before.
    */
-  title: "Software Engineer working toward AI & Robotics Research",
-  titleAspirational: "Software Engineer & AI/Robotics Researcher",
+  title: "Software Engineer & AI/Robotics Researcher",
+  titlePrior: "Software Engineer working toward AI & Robotics Research",
 
   tagline:
     "I'm interested in intelligent systems that can perceive, reason, learn, and act in complex environments.",

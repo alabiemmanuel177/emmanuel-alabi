@@ -11,7 +11,7 @@ import { researchProfile } from "@/lib/research-profile";
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "Emmanuel Alabi, software engineer working toward AI and robotics research. Background, research interests, current focus, and education.",
+    "Emmanuel Alabi, software engineer and AI/robotics researcher. Background, research interests, current focus, and education.",
   path: "/about",
 });
 

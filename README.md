@@ -125,10 +125,11 @@ A profile link is rendered only when it is non-empty, so an unset handle is
 absent rather than broken. Add `orcid` and `scholar` once formal publications
 exist; the footer, CV, contact page and JSON-LD pick them up automatically.
 
-`site.title` is currently the conservative descriptor — "Software Engineer
-working toward AI & Robotics Research". `site.titleAspirational` holds the
-stronger label; swap them once the flagship research project has a page with
-methods and results behind it, not before.
+`site.title` is "Software Engineer & AI/Robotics Researcher". It was promoted
+from the more conservative wording (kept in `site.titlePrior`) once the flagship
+research project had a public page carrying its question, preregistered
+hypotheses, methods, results and limitations. Descriptors follow evidence here;
+they do not precede it.
 
 ## The CV
 
