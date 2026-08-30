@@ -17,7 +17,7 @@ import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
-    absolute: `${site.name} — ${site.title}`,
+    absolute: `${site.name} | ${site.title}`,
   },
   description: site.description,
   alternates: { canonical: "/" },
@@ -85,7 +85,7 @@ export default function HomePage() {
         <Container>
           <SectionHeader
             title="Current direction"
-            description="Where the work is going, and how far along it actually is. Status labels describe maturity honestly — exploratory work is labelled as such."
+            description="Where the work is going, and how far along it actually is. Status labels describe maturity honestly; exploratory work is labelled as such."
             href="/research"
           />
           {currentResearch.length > 0 ? (
@@ -137,7 +137,7 @@ export default function HomePage() {
           <Container>
             <SectionHeader
               title="Selected projects"
-              description="Implementations, engineering systems, and experimental work — distinct from formal research."
+              description="Implementations, engineering systems, and experimental work, distinct from formal research."
               href="/projects"
             />
             <div className="grid gap-5 sm:grid-cols-2">

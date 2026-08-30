@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!entry) return {};
 
   return pageMetadata({
-    title: `Experiments — ${entry.frontmatter.title}`,
+    title: `Experiments | ${entry.frontmatter.title}`,
     description: `Experiment log for ${entry.frontmatter.title}: hypotheses, configurations, metrics, and outcomes.`,
     path: `/research/${slug}/experiments`,
   });
@@ -53,7 +53,7 @@ export default async function ExperimentsPage({ params }: Params) {
           {entry.frontmatter.title}
         </h1>
         <p className="text-ink-muted mt-4 text-base leading-relaxed">
-          Every run, in the order it happened — including the ones that
+          Every run, in the order it happened, including the ones that
           disproved the hypothesis. Configurations and seeds are recorded so each
           row can be re-run.
         </p>

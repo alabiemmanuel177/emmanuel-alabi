@@ -26,7 +26,7 @@ export default function WritingIndexPage() {
     <Container>
       <PageHeader
         title="Writing"
-        lead="Research notes, derivations, reproduction studies, and technical articles. Each one has to contain an implementation, an experiment, a derivation, or a reproduction — otherwise it does not get published."
+        lead="Research notes, derivations, reproduction studies, and technical articles. Each one has to contain an implementation, an experiment, a derivation, or a reproduction; otherwise it does not get published."
       />
 
       {types.length > 1 ? (
@@ -51,7 +51,7 @@ export default function WritingIndexPage() {
           <EmptyState>
             Nothing is published here yet. The publishing bar is deliberately
             high: a note appears once it contains original implementation,
-            experiment, derivation, reproduction, or failure analysis — not
+            experiment, derivation, reproduction, or failure analysis, not
             before.
           </EmptyState>
         )}

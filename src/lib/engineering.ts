@@ -34,7 +34,7 @@ export const engineeringSummary =
 
 export const engineeringSystems: EngineeringSystem[] = [
   {
-    name: "Obelo — AI Systems & Multimodal Content Infrastructure",
+    name: "Obelo: AI Systems & Multimodal Content Infrastructure",
     context: "Obelo",
     role: "Founder / Lead Engineer",
     problem:
@@ -52,7 +52,7 @@ export const engineeringSystems: EngineeringSystem[] = [
     ],
   },
   {
-    name: "SPay Business — Mobile & Financial Systems Engineering",
+    name: "SPay Business: Mobile & Financial Systems Engineering",
     context: "SPay",
     role: "Software Engineer",
     problem:

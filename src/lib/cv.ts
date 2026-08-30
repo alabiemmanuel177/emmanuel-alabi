@@ -69,7 +69,7 @@ export const education: Education[] = [
     institution: "Babcock University",
     qualification: "BSc (Hons) Software Engineering",
     location: "Ilishan-Remo, Ogun State, Nigeria",
-    period: "2019 — 2023",
+    period: "2019–2023",
     coursework: [
       "Algorithms and Data Structures",
       "Discrete Mathematics",
@@ -108,12 +108,12 @@ export type IndependentStudy = {
  */
 export const independentStudies: IndependentStudy[] = [
   {
-    title: "Driver Drowsiness Detection — Reproduction & Evaluation Study",
+    title: "Driver Drowsiness Detection: Reproduction & Evaluation Study",
     context: "Independent Computer Vision Study",
     period: "2026",
     highlights: [
       "Rebuilt and evaluated a classical eye-state and temporal-alerting pipeline under a subject-disjoint protocol on the MRL Eye Dataset (84,898 images, 37 subjects), training a lightweight CNN from scratch against a HOG+SVM baseline and measuring both frame-level and event-level behaviour.",
-      "Designed an oracle-classifier decomposition showing that once classification accuracy was sufficient, the historical temporal threshold — not residual classification error — remained the dominant source of false alerts under a simulated-sequence protocol.",
+      "Designed an oracle-classifier decomposition showing that, once classification accuracy was sufficient, the historical temporal threshold rather than residual classification error remained the dominant source of false alerts under a simulated-sequence protocol.",
       "Produced a fully reproducible pipeline: deterministic splits, automated leakage checks, three-seed ablations, generated result artifacts, structured failure analysis, a documented limitations and safety boundary, and 145 automated tests.",
     ],
     url: "/projects/driver-drowsiness-reproduction",
@@ -138,10 +138,10 @@ export type AcademicProject = {
 export const academicProjects: AcademicProject[] = [
   {
     title:
-      "BUCODEL — Learning Management System for Open & Distance e-Learning",
+      "BUCODEL: Learning Management System for Open & Distance e-Learning",
     context:
       "Undergraduate Final-Year Project (SENG490, 72/100), Babcock University",
-    period: "2022 — 2023",
+    period: "2022–2023",
     highlights: [
       "Co-designed and implemented a web-based learning management system for Babcock University's Centre for Open and Distance e-Learning, supporting student, lecturer, and administrator workflows.",
       "Built course and resource management, assignments, authentication, user administration, collaborative course activity, and role-specific interfaces using React, Node.js/Express, and MongoDB.",
@@ -154,7 +154,7 @@ export const academicProjects: AcademicProject[] = [
 /** Engineering roles, derived from the single source in `engineering.ts`. */
 export const experience: Experience[] = engineeringSystems.map((system) => ({
   role: system.role,
-  organisation: system.name.split(" — ")[0],
+  organisation: system.name.split(": ")[0],
   period: system.period,
   highlights: [system.contribution, system.depth],
   technologies: system.technologies,

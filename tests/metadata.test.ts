@@ -57,7 +57,7 @@ describe("date formatting", () => {
   });
 
   it("formats an open-ended range as 'present'", () => {
-    expect(formatDateRange("2026-08")).toBe("August 2026 — present");
+    expect(formatDateRange("2026-08")).toBe("August 2026–present");
   });
 
   it("normalises partial dates to ISO-8601", () => {

@@ -37,7 +37,7 @@ export default function NowPage() {
       <PageHeader
         eyebrow={now.period}
         title="Currently"
-        lead="A short snapshot of what I am actually working on, updated about monthly. For the technical detail — what was tried, what failed — see the research log."
+        lead="A short snapshot of what I am actually working on, updated about monthly. For the technical details, including what was tried and what failed, see the research log."
       />
 
       <List title="Studying" items={now.studying} />

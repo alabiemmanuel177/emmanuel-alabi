@@ -38,7 +38,7 @@ export const now: NowSnapshot = {
   building: ["Mathematics for Intelligent Systems", "ROS 2 Robotics Foundations"],
 
   recentlyCompleted: [
-    "Driver Drowsiness Detection — Reproduction & Evaluation Study: a reproducible computer-vision study of eye-state classification and temporal alerting for prolonged eye closure.",
+    "Driver Drowsiness Detection: Reproduction & Evaluation Study. A reproducible computer-vision study of eye-state classification and temporal alerting for prolonged eye closure.",
   ],
 
   research:

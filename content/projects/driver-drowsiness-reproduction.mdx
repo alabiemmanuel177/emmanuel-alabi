@@ -1,5 +1,5 @@
 ---
-title: "Driver Drowsiness Detection — Reproduction & Evaluation Study"
+title: "Driver Drowsiness Detection: Reproduction & Evaluation Study"
 slug: "driver-drowsiness-reproduction"
 type: "reproduction-study"
 topics:
@@ -41,7 +41,7 @@ system-level failures actually originate.
 The implementation that motivated it is a common one: Haar-cascade eye
 detection, a small grayscale CNN, and a hard-coded temporal score threshold.
 Versions of it appear in a great many student projects. Almost none of them are
-evaluated — the one I started from had no dataset, no data split, and no metric
+evaluated; the one I started from had no dataset, no data split, and no metric
 of any kind.
 
 This is a clean-room reproduction. No file, weight, or asset from the historical
@@ -62,21 +62,21 @@ an oracle decomposition, described below.
 
 ## Why reproduce it
 
-The historical style of project concentrates almost entirely on the classifier —
-its architecture, its accuracy — without ever establishing whether classification
+The historical style of project concentrates almost entirely on the classifier,
+particularly its architecture and accuracy, without ever establishing whether classification
 is the system's actual bottleneck. That is an empirical question, and it had not
 been asked of this pipeline. Reproducing it properly was the only way to find
 out.
 
 ## Experimental design
 
-**Dataset.** The MRL Eye Dataset (Fusek, VŠB-TUO) — 84,898 infrared grayscale
+**Dataset.** The MRL Eye Dataset (Fusek, VŠB-TUO) contains 84,898 infrared grayscale
 eye images across 37 subjects, annotated for subject, gender, eyewear, eye
 state, reflections, lighting and sensor. The dataset has no explicit
 redistribution licence, so the repository does not redistribute it; it verifies
 a SHA-256 checksum on download and hard-fails on mismatch.
 
-**Subject-disjoint splits.** 26 training, 5 validation and 6 test subjects —
+**Subject-disjoint splits.** 26 training, 5 validation and 6 test subjects:
 58,977 / 13,177 / 12,744 images. This matters more than it might appear:
 consecutive MRL frames of one person are near-duplicates, so a random
 image-level split would measure memorisation rather than generalisation. Three
@@ -86,8 +86,8 @@ validation.
 
 **Models.** A 287,138-parameter CNN trained from scratch, against a tuned
 HOG + linear SVM baseline under identical preprocessing. A second,
-historical-style architecture with 2,682,658 parameters — roughly 9.3× the size
-— was trained for comparison.
+historical-style architecture with 2,682,658 parameters, roughly 9.3× the size,
+was trained for comparison.
 
 **Temporal layer.** Four alerting rules compared on byte-identical sequences:
 a consecutive-frame rule, a rolling-fraction rule, a PERCLOS-like rule, and a
@@ -105,7 +105,7 @@ ground-truth labels, separating rule-induced from classifier-induced error.
     "Temporal rule (consecutive · rolling · PERCLOS · historical)",
     "Alert decision",
   ]}
-  caption="Figure 1 — The evaluated pipeline. The oracle decomposition substitutes ground-truth labels at the third stage while leaving everything downstream identical, which is what isolates rule-induced error."
+  caption="Figure 1: The evaluated pipeline. The oracle decomposition substitutes ground-truth labels at the third stage while leaving everything downstream identical, which is what isolates rule-induced error."
 />
 
 ## Frame-level evaluation
@@ -123,7 +123,7 @@ selection. They are not the headline of this project: 0.99 on a balanced
 two-class problem is unremarkable, and the repository says so directly. No
 comparison is made against published MRL accuracies, because the reported
 figures in the literature do not state whether their splits are
-subject-independent — they are not the same measurement.
+subject-independent; they are not the same measurement.
 
 ## Multi-seed ablations
 
@@ -171,7 +171,7 @@ longer blinks activate it.
 
 **This is not the claim that classifier quality is irrelevant.** Running the
 identical rule grid on the weaker HOG+SVM baseline collapses event F1 from 0.958
-to 0.759. Classifier accuracy clearly matters — up to a threshold of competence,
+to 0.759. Classifier accuracy clearly matters up to a threshold of competence,
 beyond which the temporal rule dominates. Frame-level errors compound
 temporally: a 7.4-point frame-accuracy gap becomes a much larger event-level gap,
 because a rule needs a run of correct frames rather than a single one.
@@ -182,8 +182,8 @@ because a rule needs a run of correct frames rather than a single one.
 Per-frame closure probabilities are the trained model's **real** scores on real
 held-out images, sampled as contiguous capture runs. The **episode timeline is
 simulated** by a documented Poisson process, because MRL is a still-image
-corpus. Comparisons between rules are sound — every rule sees byte-identical
-sequences — but **absolute alert rates are properties of the simulation and are
+corpus. Comparisons between rules are sound because every rule sees byte-identical
+sequences, but **absolute alert rates are properties of the simulation and are
 not transferable to deployed driving conditions.**
 </Note>
 
@@ -209,7 +209,7 @@ used, it produces the 19.2 per hour reported above.
 
 ## Failure analysis
 
-126 errors on 12,744 test images — 49 missed closures and 77 spurious closures.
+126 errors on 12,744 test images: 49 missed closures and 77 spurious closures.
 
 Errors concentrate sharply in one measured sensing condition: glasses under poor
 lighting with large infrared reflections, at 10.16% error over 374 images. That
@@ -224,7 +224,7 @@ lenses under particular lighting and sensing conditions, which suggests a
 sensing-geometry problem rather than eyewear alone.
 
 Head pose, gaze angle, partial closure, camera distance and motion blur are
-**untested rather than null** — the corpus does not annotate them.
+**untested rather than null** because the corpus does not annotate them.
 
 ## Runtime
 
@@ -243,7 +243,7 @@ worth keeping is that the classical Haar detector costs substantially more of
 the measured budget than the learned classifier does. The classifier is not the
 bottleneck.
 
-The live webcam execution path was smoke-tested on real hardware — 150 frames
+The live webcam execution path was smoke-tested on real hardware using 150 frames
 captured, face and eye detection, classification, temporal update, overlay
 rendering and clean teardown all exercised, with zero frames written to disk. No
 accuracy, false-alert or frame-rate claim in this study derives from that
@@ -258,7 +258,7 @@ make test       # 145 tests, plus a README-freshness check
 ```
 
 Every table and figure in the repository is generated from saved artifacts, and
-the README is rendered from them — the renderer hard-fails on an unresolved
+the README is rendered from them. The renderer hard-fails on an unresolved
 placeholder, so the documentation cannot drift from the results. Splits are
 deterministic, leakage checks are tested, dataset integrity is checksum-verified,
 and metrics and configuration are stored alongside each experiment. No cloud
@@ -269,13 +269,13 @@ experiment tracker is required to reproduce any of it.
 1. **Not a drowsiness detector.** It detects prolonged eye closure as an
    experimental proxy, and does not clinically diagnose drowsiness.
 2. **Every offline number starts from a correctly-cropped eye.** MRL supplies
-   pre-cropped images, so the Haar detection stage — the pipeline's dominant
-   real-world failure mode — is bypassed entirely. These results are an **upper
+   pre-cropped images, so the Haar detection stage, the pipeline's dominant
+   real-world failure mode, is bypassed entirely. These results are an **upper
    bound** on end-to-end performance.
 3. **Temporal episode timelines are simulated.** Rule comparisons and the oracle
    decomposition are sound; absolute alert rates are not transferable to
    deployment.
-4. **The corpus is not driving data** — it is infrared, indoor, seated and
+4. **The corpus is not driving data.** It is infrared, indoor, seated and
    near-frontal.
 5. **The test split contains no women.** That is an absent measurement, not a
    small effect.
@@ -295,10 +295,10 @@ own model was the problem.
 
 ## Links
 
-- **Code** — [github.com/alabiemmanuel177/driver-drowsiness-reproduction](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction)
-- **Release** — [v1.0.0](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/releases/tag/v1.0.0), frozen at commit `bd305a3`
-- **Manuscript draft** — [`paper/manuscript.tex`](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/blob/v1.0.0/paper/manuscript.tex). A working draft; not submitted and not peer-reviewed.
-- **Reproduction instructions** — [README](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction#readme)
-- **Generated reports and figures** — [`reports/`](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/tree/v1.0.0/reports)
+- **Code:** [github.com/alabiemmanuel177/driver-drowsiness-reproduction](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction)
+- **Release:** [v1.0.0](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/releases/tag/v1.0.0), frozen at commit `bd305a3`
+- **Manuscript draft:** [`paper/manuscript.tex`](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/blob/v1.0.0/paper/manuscript.tex). A working draft; not submitted and not peer-reviewed.
+- **Reproduction instructions:** [README](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction#readme)
+- **Generated reports and figures:** [`reports/`](https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/tree/v1.0.0/reports)
 
 MIT licensed (code only; the dataset is not redistributed).

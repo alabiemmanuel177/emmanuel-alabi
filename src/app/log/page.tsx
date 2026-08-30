@@ -10,7 +10,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = pageMetadata({
   title: "Research log",
   description:
-    "A running record of what was studied, tested, and learned — including the experiments that did not work.",
+    "A running record of what was studied, tested, and learned, including the experiments that did not work.",
   path: "/log",
 });
 

@@ -22,7 +22,7 @@ import { profileLinks, site } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "CV",
-  description: `Academic CV for ${site.name} — research interests, education, projects, engineering experience, and technical skills.`,
+  description: `Academic CV for ${site.name}: research interests, education, projects, engineering experience, and technical skills.`,
   path: "/cv",
 });
 
@@ -98,7 +98,7 @@ export default function CvPage() {
           {site.researchInterests.map((interest) => (
             <li key={interest.title}>
               <span className="text-ink font-medium">{interest.title}</span>
-              <span className="text-ink-muted"> — {interest.description}</span>
+              <span className="text-ink-muted">: {interest.description}</span>
             </li>
           ))}
         </ul>
@@ -350,7 +350,7 @@ export default function CvPage() {
         {pdfAvailable ? (
           <p>
             {site.cv.version}, updated {site.cv.updated}. The PDF is the
-            canonical version —{" "}
+            canonical version:{" "}
             <a
               href={site.cv.path}
               download
@@ -363,7 +363,7 @@ export default function CvPage() {
         ) : (
           <p>
             A PDF version is not yet available for download. Until it is, this
-            page is the current CV — or{" "}
+            page is the current CV, or{" "}
             <a
               href={`mailto:${site.email}`}
               className="text-accent underline underline-offset-4"

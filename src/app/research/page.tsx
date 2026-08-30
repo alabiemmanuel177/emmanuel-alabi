@@ -19,7 +19,13 @@ export const metadata: Metadata = pageMetadata({
 
 export default function ResearchIndexPage() {
   const research = getResearch();
-  const [programme, ...investigations] = research;
+  // The programme statement is looked up by slug rather than by position, so
+  // that ordering the investigations cannot displace it into the list below.
+  const PROGRAMME_SLUG = "research-programme-2026";
+  const programme = research.find((e) => e.frontmatter.slug === PROGRAMME_SLUG);
+  const investigations = research.filter(
+    (e) => e.frontmatter.slug !== PROGRAMME_SLUG,
+  );
 
   return (
     <Container>
@@ -37,7 +43,7 @@ export default function ResearchIndexPage() {
         </p>
         <p className="text-ink-muted mt-4 max-w-2xl text-[0.9375rem] leading-relaxed">
           This page is intentionally sparse. Investigations appear here once they
-          have a research question, a method, and something a reader can check —
+          have a research question, a method, and something a reader can check,
           not before.
         </p>
 

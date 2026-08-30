@@ -1,0 +1,244 @@
+---
+title: "Risk-Calibrated Semantic Navigation Under Distribution Shift"
+slug: "risk-calibrated-semantic-navigation"
+status: "completed"
+startDate: "2026-08"
+endDate: "2026-08"
+researchAreas:
+  - Embodied AI
+  - Autonomous Systems
+  - Computer Vision
+  - Uncertainty Calibration
+summary: >
+  A preregistered ROS 2 and Gazebo benchmark testing whether converting
+  calibrated semantic uncertainty into navigation cost makes a Nav2 robot safer
+  under controlled distribution shift. Calibration improved; navigation safety
+  did not.
+question: >
+  Does converting calibrated semantic perception uncertainty into navigation
+  cost improve closed-loop robot outcomes under controlled distribution shift?
+result: >
+  Calibration improved substantially and clean-route efficiency was preserved,
+  but the preregistered collision-reduction and severity-interaction hypotheses
+  did not pass. Better component calibration did not establish safer navigation.
+github: "https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation"
+featured: true
+order: 1
+draft: false
+---
+
+<Note title="Scope">
+This is a simulation-only study. Gazebo contacts, rendering, dynamics and sensor
+noise do not establish physical-robot safety, and nothing here is a safety
+certification. A physical deployment would require hardware contact validation,
+fail-safe braking, real-world perception evaluation, operational hazard analysis
+and independent safety review.
+</Note>
+
+## Abstract
+
+A robot should not treat every semantic prediction as equally trustworthy. The
+intuition behind this study is that if perception uncertainty is well
+calibrated, a planner can be made more cautious exactly when perception becomes
+unreliable — and that this should reduce collisions under distribution shift
+without sacrificing efficiency on clean routes.
+
+I built a manifest-scoped ROS 2 and Gazebo benchmark to test that intuition
+properly rather than demonstrate it. Four navigation systems share identical
+maps, routes, velocity limits, localisation, planner family and controller
+family; only the prespecified treatment component changes. Hypotheses,
+exclusion rules, thresholds and analysis code were hash-locked before the
+confirmatory campaign executed.
+
+The confirmatory campaign produced 6,840 unique schema-valid episodes, of which
+6,820 entered analysis. **Calibration improved and clean-route efficiency was
+preserved. The collision-reduction and severity-interaction hypotheses did
+not pass.** Better component calibration did not establish safer navigation —
+which is the result, not a failure of the study.
+
+## Research question
+
+> Does converting calibrated semantic perception uncertainty into navigation
+> cost improve closed-loop robot outcomes under controlled distribution shift?
+
+Decomposed into four preregistered hypotheses, each with its pass criterion
+fixed in advance:
+
+| | Hypothesis | Criterion |
+| --- | --- | --- |
+| H1 | Temperature scaling improves calibration | lower 95% bound of ECE and NLL improvement above a floor |
+| H2 | Risk-calibrated navigation reduces collisions under shift | upper 95% bound below 0 **and** estimate ≤ −0.05 |
+| H3 | Clean-route efficiency is not sacrificed | lower 95% bound of median SPL ratio ≥ 0.90 |
+| H4 | The benefit grows with shift severity | upper 95% bound of the severity slope below 0 |
+
+## System variants
+
+| ID | System | Use of uncertainty |
+| --- | --- | --- |
+| S0 | Classical Nav2, LiDAR occupancy only | none |
+| S1 | Semantic Nav2, raw max-softmax confidence | uncalibrated |
+| S2 | Semantic Nav2, temperature-scaled | calibrated cost, no ensemble |
+| S3 | Risk-calibrated semantic navigation | calibrated cost plus ensemble-disagreement term |
+
+A fifth variant, S4, was **withdrawn before the confirmatory freeze** because no
+distinct recovery controller met admission requirements. It is absent from the
+confirmatory manifest rather than quietly reported.
+
+<ArchitectureDiagram
+  stages={[
+    "RGB + LiDAR observation",
+    "Semantic segmentation ensemble",
+    "Temperature scaling (fit on validation maps only)",
+    "Calibrated probability + ensemble disagreement",
+    "Risk cost layer → Nav2 costmap",
+    "Global planner + local controller",
+    "Robot",
+  ]}
+  caption="Figure 1 — The S3 pipeline. Simulator ground truth is evaluation-only and never reaches the planner; temperature and risk weights are fit on validation maps only."
+/>
+
+## Method
+
+The study is organised around eight gates, G0 to G7, each of which had to pass
+on evidence before the next began — environment, baseline, logging provenance,
+perception, integration, unattended pilot, confirmatory freeze, and independent
+release reproduction.
+
+**Preregistration.** At G6 the protocol, manifest, models, thresholds,
+exclusions and analysis code were hash-locked before any protected execution.
+The analysis is hard-scoped to a single manifest so that eligibility, smoke,
+aborted, pilot and confirmatory rows can never be pooled.
+
+**Perception.** A five-member ensemble reaches 0.7777 mIoU on a paired Gazebo
+corpus against a 0.0658 trivial baseline. Temperature scaling is fit on
+validation maps only; the test split is never used for tuning.
+
+**Integration.** Dual-frame costmaps run at 10.72 Hz with the risk cost verified
+monotonic and hard-obstacle safety preserved.
+
+**Execution.** Every result row resolves to a committed config hash and model
+checkpoint hash. No episode is manually rerun or deleted; invalid episodes
+follow frozen rules and are recorded in an append-only exclusion ledger.
+
+## Results
+
+All three prespecified analysis sets — balanced replacement, originally
+eligible, and the v2.2 execution-integrity sensitivity — agree on every
+hypothesis decision. Figures below are from the balanced replacement set.
+
+| Hypothesis | Estimand | Estimate | 95% CI | Outcome |
+| --- | --- | ---: | ---: | --- |
+| H1 | ECE, raw − calibrated (15 bins) | 0.0636 | [0.0608, 0.0661] | **pass** |
+| H1 | NLL, raw − calibrated | 0.8459 | [0.7515, 0.9660] | **pass** |
+| H2 | S3 − S1 shifted collision risk | −0.0008 | [−0.0101, 0.0095] | **does not pass** |
+| H3 | Median clean SPL ratio, S3 / S0 | 0.9906 | [0.9823, 1.0034] | **pass** |
+| H4 | Severity slope of S3 − S2 collision risk | 0.0033 | [−0.0068, 0.0139] | **does not pass** |
+
+Collision rates across the four systems sit within roughly one percentage point
+of each other — S0 0.1294, S1 0.1205, S2 0.1205, S3 0.1188. H2 required an
+estimate of at most −0.05 with a confidence interval excluding zero; the
+observed effect is −0.0008 with an interval straddling zero. That is not a
+marginal miss. It is a null result, and the interval is tight enough to say so.
+
+H3 is the quieter useful finding: adding the semantic risk layer cost
+essentially nothing on clean routes, with a median SPL ratio of 0.99 against the
+classical baseline. The treatment is not harmful — it simply is not helpful in
+the way the study predicted.
+
+## Interpretation
+
+The honest reading is that improving a component metric did not propagate to the
+system outcome. Calibration got substantially better by both ECE and NLL, with
+comfortable margins over the preregistered floors, and it changed collision
+behaviour by less than a percentage point.
+
+Two disclosed measurements explain much of it. Absolute calibration remained
+poor even after relative improvement — pooled 15-bin ECE around 0.269 before
+scaling and 0.206 after — and mean mutual information across the ensemble was
+only 0.00192, which caps how much signal the disagreement term can contribute
+once probabilities are scaled. A risk layer built on an uncertainty signal that
+carries almost no information will not change a planner's behaviour much,
+regardless of how well that signal is calibrated.
+
+There is also a power story. Clean navigation showed a ceiling effect and the
+novelty family a floor effect, which reduces the ability to separate systems
+even under paired execution.
+
+## Integrity deviations
+
+Recorded because they happened, not because they help.
+
+A post-campaign journal audit found three automatic reexecutions whose
+pre-reboot writes were not durable after an unclean shutdown. Surviving result
+coverage is exact and no manifest key is duplicated, but *execution-attempt
+exactly-once is false*. Protocol v2.2 preserves that evidence and makes dropping
+the three affected matched strata a mandatory sensitivity analysis across every
+system. All four hypothesis decisions are unchanged under it.
+
+The teardown audit also records 442 post-snapshot nonzero process exits, mostly
+a known Gazebo bridge allocator defect. No valid row has a pre-snapshot process
+death. These rows were retained and disclosed rather than retrospectively
+reclassified.
+
+## Limitations
+
+- **Simulation only.** Gazebo contacts, rendering, dynamics and sensor noise do
+  not establish physical-robot safety.
+- **The perception model is not a production segmentation network.** It is a
+  dependency-light five-member diagonal-Gaussian pixel classifier, adequate for
+  testing the integration and hypothesis pipeline but limited in capacity and
+  uncertainty behaviour.
+- **The paired Gazebo corpus uses staged primitive props**, not naturalistic
+  robotics vision data.
+- **Absolute calibration remained poor** despite relative improvement.
+- **Mean mutual information was 0.00192**, limiting the practical contribution
+  of the uncertainty term.
+- **Base worlds contain walls and conventional obstacles**, not a broad ecology
+  of transparent or below-scan-plane hazards.
+- **Ceiling and floor effects** reduce power to distinguish systems.
+- **The GEE sensitivity fit returned non-finite estimates**, consistent with
+  numerical instability or separation, and is non-interpretable; the frozen
+  hierarchical Bayesian model remains primary.
+- **One workstation.** Routes, shifts and seeds are replicated; hardware and
+  simulator implementation are not.
+
+## Reproducibility
+
+At G7 a clean clone regenerated the H1–H4 JSON and every key-result table
+byte-for-byte, with 249 tests passing. Paths and file timestamps are explicitly
+not treated as evidence.
+
+```bash
+python3 -m pip install -r requirements-analysis.lock.txt
+make analyse
+```
+
+The protocol, amendments, immutable manifest, dependency lock, model and
+configuration hashes, analysis code, exclusion ledger, scheduling journal and
+release inventory are all versioned. The 6,840 episode summaries, per-run
+process logs and retained bags are release data rather than Git source; the
+compact summary release is packaged separately from the roughly 1 TB retained
+bag corpus.
+
+## AI assistance
+
+Generative AI assisted with code review, experiment orchestration, documentation
+drafting, figure and release-asset generation, and consistency checks. I
+approved the protocol amendments, controlled the workstation, and am responsible
+for the study, its claims, the data release and its authorship. AI-generated
+text and code were checked against committed source and machine-readable
+results. No AI system is listed as an author. The repository's
+`paper/disclosures.md` states this in the same terms.
+
+## Status and links
+
+Frozen at `v1.0.0-rc.1`. Independent technical review, venue-format audit,
+dataset DOI and preprint submission remain outstanding external actions, and the
+repository's release checklist shows them unchecked rather than implied
+complete.
+
+- **Code** — [github.com/alabiemmanuel177/risk-calibrated-semantic-navigation](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation)
+- **Release** — [v1.0.0-rc.1](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/releases/tag/v1.0.0-rc.1)
+- **Technical manuscript (draft)** — [`paper/risk-calibrated-semantic-navigation.pdf`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/paper/risk-calibrated-semantic-navigation.pdf). Not submitted, not peer reviewed.
+- **Protocol** — [`docs/protocol.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/docs/protocol.md)
+- **Full disclosures** — [`paper/disclosures.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/paper/disclosures.md)

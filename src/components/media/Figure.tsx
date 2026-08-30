@@ -41,7 +41,7 @@ export function Figure({
       />
       <figcaption>
         {number ? (
-          <span className="text-ink font-medium">Figure {number} — </span>
+          <span className="text-ink font-medium">Figure {number}: </span>
         ) : null}
         {caption}
         {context ? <span className="block mt-1">{context}</span> : null}

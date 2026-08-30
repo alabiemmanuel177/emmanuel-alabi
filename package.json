@@ -33,6 +33,7 @@
     "remark-math": "^6.0.0",
     "server-only": "^0.0.1",
     "shiki": "^4.4.3",
+    "vercel": "^59.5.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

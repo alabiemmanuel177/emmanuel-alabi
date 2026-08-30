@@ -17,7 +17,7 @@ draft: true
 ---
 
 {/*
-  DRAFT — not published. This file exists so the writing pipeline (math, code
+  DRAFT: not published. This file exists so the writing pipeline (math, code
   highlighting, references, related research) is exercised end to end before
   there is finished work to publish.
 
@@ -38,7 +38,7 @@ $$
 p(x_t \mid z_{1:t}, u_{1:t})
 $$
 
-recursively — updating it as each new measurement arrives, without re-processing
+recursively: updating it as each new measurement arrives, without re-processing
 the entire history.
 
 Under two assumptions, that posterior stays Gaussian and the recursion closes in
@@ -75,7 +75,7 @@ K_t = P_{t|t-1} H_t^\top S_t^{-1}
 P_{t|t} = (I - K_t H_t) P_{t|t-1}
 $$
 
-TODO — the derivation of $K_t$ as the gain minimising $\mathrm{tr}(P_{t|t})$, in
+TODO: the derivation of $K_t$ as the gain minimising $\mathrm{tr}(P_{t|t})$, in
 my own steps rather than quoted.
 
 ## Implementation
@@ -85,7 +85,7 @@ import numpy as np
 
 
 class KalmanFilter:
-    """Linear Kalman filter. No filtering library — the point is the mechanics."""
+    """Linear Kalman filter. No filtering library: the point is the mechanics."""
 
     def __init__(self, F, B, H, Q, R, x0, P0):
         self.F, self.B, self.H = F, B, H
@@ -108,18 +108,18 @@ class KalmanFilter:
         return self.x, self.P
 ```
 
-TODO — the numerical failure I hit with the naive $(I - K_t H_t) P$ update, and
+TODO: the numerical failure I hit with the naive $(I - K_t H_t) P$ update, and
 why the Joseph form fixed it.
 
 ## Evaluation
 
-TODO — run against a simulated differential-drive trajectory with known ground
+TODO: run against a simulated differential-drive trajectory with known ground
 truth. Report RMSE against a dead-reckoning baseline over fixed seeds, and show
 where the filter's covariance is overconfident.
 
 ## Limitations
 
-TODO — where linearity stops being defensible for a real robot, and what that
+TODO: where linearity stops being defensible for a real robot, and what that
 implies about the EKF and UKF as the next notes in this sequence.
 
 <References

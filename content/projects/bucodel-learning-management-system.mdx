@@ -1,5 +1,5 @@
 ---
-title: "BUCODEL — Learning Management System"
+title: "BUCODEL: Learning Management System"
 slug: "bucodel-learning-management-system"
 type: "academic-project"
 topics:
@@ -95,21 +95,21 @@ authentication path, and interface.
   caption="Request path. Socket.IO runs alongside the REST layer, injected into every route so that state changes can emit events to connected clients."
 />
 
-**Student** — authentication, course overview, course activity stream,
+**Student:** authentication, course overview, course activity stream,
 assignments, course materials, class and group interaction, profile and
 settings.
 
-**Lecturer** — course management, assignment creation and grading, announcements
+**Lecturer:** course management, assignment creation and grading, announcements
 and course activity, viewing course members, grouping students, resource
 uploads, settings.
 
-**Administrator** — authentication, dashboard, student and lecturer management,
+**Administrator:** authentication, dashboard, student and lecturer management,
 course management, user and database administration, settings.
 
 The data model follows the same shape. The backend defines separate `Student`,
 `Lecturer`, and `Admin` models alongside `Course`, `Assignment`,
 `AssignmentAnswer`, `CourseMaterial`, `Class`, `ClassPost`, `ClassComment`,
-`Group`, `GroupPost`, `GroupComment`, `Department`, `School`, and `Notice` — with
+`Group`, `GroupPost`, `GroupComment`, `Department`, `School`, and `Notice`, with
 a REST route module per model.
 
 ## Implementation
@@ -120,8 +120,8 @@ role-specific application areas.
 **Backend.** Node.js and Express with MongoDB via Mongoose. Routing is split one
 module per resource, mounted through a single router entry point.
 
-**Authentication.** Three separate registration and login paths — student,
-lecturer, and administrator — with passwords hashed using bcrypt (salt generated
+**Authentication.** Three separate registration and login paths for students,
+lecturers, and administrators, with passwords hashed using bcrypt (salt generated
 per user) before persistence. Sessions are handled with Passport and
 `express-session`.
 
@@ -136,7 +136,7 @@ itself, so a submission can carry multiple files.
 
 **Real-time events.** A Socket.IO server is attached to the HTTP server and
 injected into every route through middleware, so that a state change can notify
-connected clients directly from the handler that caused it — for example
+connected clients directly from the handler that caused it. For example,
 `NEW_ASSIGNMENT_UPLOADED`, `NEW_CLASSPOST_POSTED`, and `NEW_NOTICE_POSTED`.
 
 A video-conferencing endpoint issues a signed SDK JWT for joining sessions.
@@ -157,7 +157,7 @@ testing.
 
 I am deliberately not reporting numbers here. The project report contains broad
 claims about user satisfaction, but the evidence behind them does not meet the
-standard I hold the rest of this site to — there was no controlled study, no
+standard I hold the rest of this site to: there was no controlled study, no
 defined metric, and no sample I would be willing to defend. Stating "it was
 tested for functionality and usability" is what the work actually supports.
 
@@ -178,7 +178,7 @@ tested for functionality and usability" is what the work actually supports.
 The parts that carried forward:
 
 - Translating a set of stated institutional requirements into a multi-role
-  software system, where the roles — not the screens — are the primary
+  software system, where the roles rather than the screens are the primary
   structure.
 - Designing role-specific workflows that share a data model without sharing
   permissions.
@@ -188,12 +188,12 @@ The parts that carried forward:
   features.
 - Iterative development against changing requirements, and enough exposure to
   usability and integration testing to understand what a *rigorous* evaluation
-  would have required — which is most of why the evaluation section above is as
+  would have required. This is most of why the evaluation section above is as
   short as it is.
 
 ## Source code
 
-- **Backend** — Node.js, Express, MongoDB:
+- **Backend:** Node.js, Express, MongoDB:
   [github.com/alabiemmanuel177/finalyearproject_backend](https://github.com/alabiemmanuel177/finalyearproject_backend)
-- **Frontend** — React:
+- **Frontend:** React:
   [github.com/alabiemmanuel177/finalyearproject_frontend](https://github.com/alabiemmanuel177/finalyearproject_frontend)

@@ -11,7 +11,7 @@ import { researchProfile } from "@/lib/research-profile";
 export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
-    "Emmanuel Alabi — software engineer working toward AI and robotics research. Background, research interests, current focus, and education.",
+    "Emmanuel Alabi, software engineer working toward AI and robotics research. Background, research interests, current focus, and education.",
   path: "/about",
 });
 
@@ -26,7 +26,7 @@ export default function AboutPage() {
           intelligence and robotics. My interest is in systems that have to
           operate in the physical world: agents that perceive an environment,
           build some representation of it, reason about what to do, and then act
-          — where being wrong has consequences that a benchmark score does not
+          in settings where being wrong has consequences that a benchmark score does not
           capture.
         </p>
 
@@ -36,7 +36,7 @@ export default function AboutPage() {
           ability to build and operate non-trivial systems, which is most of what
           an experimental pipeline turns out to be. It did not give me the
           mathematical and methodological preparation that research requires, so
-          I am building that deliberately and in public — implementations I
+          I am building that deliberately and in public through implementations I
           wrote, experiments I ran, and notes on the parts I got wrong.
         </p>
 
@@ -92,7 +92,7 @@ export default function AboutPage() {
         <p>
           For what I am working on this month specifically, see{" "}
           <Link href="/now">what I&rsquo;m doing now</Link>. For the programme
-          itself — how I intend to work, and what will be published — see{" "}
+          itself, including how I intend to work and what will be published, see{" "}
           <Link href="/research">Research</Link>.
         </p>
 
@@ -105,7 +105,7 @@ export default function AboutPage() {
             {engineeringSystems.map((system) => (
               <li key={system.name}>
                 <strong>{system.name}</strong>
-                {system.role ? ` (${system.role})` : ""} — {system.contribution}
+                {system.role ? ` (${system.role})` : ""}: {system.contribution}
               </li>
             ))}
           </ul>

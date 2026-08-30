@@ -55,7 +55,7 @@ export default function ProjectsPage() {
           <EmptyState>
             <p>
               No projects are published yet. Only genuinely completed or active
-              technical work appears here — the list is not padded to look
+              technical work appears here; the list is not padded to look
               fuller than it is.
             </p>
             <p className="mt-3">

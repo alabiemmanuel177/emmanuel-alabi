@@ -40,7 +40,7 @@ export const site = {
   interestLine: focusLine,
 
   description:
-    "Personal research site of Emmanuel Alabi — software engineer working toward research in embodied AI, robot learning, computer vision, autonomous systems, and multimodal intelligence.",
+    "Personal research site of Emmanuel Alabi, a software engineer working toward research in embodied AI, robot learning, computer vision, autonomous systems, and multimodal intelligence.",
 
   /**
    * The canonical hostname is **www.emmanuelalabi.com**; the apex 308-redirects

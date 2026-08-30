@@ -13,10 +13,10 @@ type Status =
  */
 const labels: Record<Status, string> = {
   manuscript: "Manuscript in preparation",
-  preprint: "Preprint — not peer reviewed",
-  submitted: "Submitted — under review",
+  preprint: "Preprint (not peer reviewed)",
+  submitted: "Submitted (under review)",
   accepted: "Accepted",
-  published: "Published — peer reviewed",
+  published: "Published (peer reviewed)",
 };
 
 const tones: Record<Status, "neutral" | "accent" | "exploring" | "completed"> = {

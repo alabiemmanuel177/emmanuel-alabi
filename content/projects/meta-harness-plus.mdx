@@ -1,5 +1,5 @@
 ---
-title: "Meta-Harness Plus — Experimental Search Over LLM Agent Harnesses"
+title: "Meta-Harness Plus: Experimental Search Over LLM Agent Harnesses"
 slug: "meta-harness-plus"
 type: "research-engineering"
 topics:
@@ -30,13 +30,13 @@ This project was heavily AI-assisted. Roughly three quarters of its commits
 carry `Co-Authored-By: Claude` trailers, and the repository history shows that
 plainly rather than hiding it. I am stating it here for the same reason: what
 should be assessed is whether I can account for the design decisions, the
-experimental setup, and the conclusions — not how many characters I typed.
+experimental setup and conclusions, not how many characters I typed.
 Everything below is what I would defend in an interview.
 </Note>
 
 ## Overview
 
-A *harness* is the code around a fixed language model — prompting, retrieval,
+A *harness* is the code around a fixed language model: prompting, retrieval,
 few-shot selection, sampling, voting. Recent work automates the search over that
 code rather than over model weights. This project takes one such system,
 Meta-Harness (Lee et al., arXiv:2603.28052), identifies three limitations that
@@ -65,7 +65,7 @@ harness was responsible for the win. Each of those has a consequence:
 **Pareto search.** Candidates are ranked by non-dominated sorting over a vector
 objective rather than collapsed to a scalar, so the search maintains a frontier
 instead of a single best. The point is to surface the cost curve rather than
-hide it — the interesting output is "same accuracy, half the tokens", which a
+hide it. The interesting output is "same accuracy, half the tokens", which a
 scalar objective cannot express.
 
 **Successive halving.** Each iteration screens candidates on a small fixed
@@ -87,13 +87,13 @@ used to weight how aggressively the proposer mutates each one.
     "Pareto frontier (accuracy · tokens · latency)",
     "Drop-one ablation → per-component attribution",
   ]}
-  caption="Figure 1 — One search iteration. Attribution feeds back into the proposer's mutation weights, so the loop is closed rather than open."
+  caption="Figure 1: One search iteration. Attribution feeds back into the proposer's mutation weights, so the loop is closed rather than open."
 />
 
 ## Experimental setup
 
 Runs cover a deterministic offline toy classification task and public
-benchmarks — GSM8K, LawBench, AG News, 20 Newsgroups, Symptom2Disease — across
+benchmarks (GSM8K, LawBench, AG News, 20 Newsgroups, and Symptom2Disease) across
 more than one model provider, with multiple seeds per cell. Baselines include
 DSPy-style bootstrapped few-shot and OPRO-style instruction bootstrapping, so
 the comparison is against real methods rather than against an unoptimised
@@ -103,11 +103,11 @@ via Ollama. The suite is 394 tests.
 ## Results, including the ones that did not work
 
 On the local bakeoff, both models reached 0.80 accuracy with three-point
-frontiers, from baselines of 0.65 and 0.60 respectively — for `gpt-oss:20b`,
+frontiers, from baselines of 0.65 and 0.60 respectively. For `gpt-oss:20b`,
 0.65 → 0.80 in 24 minutes.
 
 The attribution results are the more honest finding. On those runs, every
-component reported a mean delta at noise level — `−0.019`, `−0.056`, and in the
+component reported a mean delta at noise level: `−0.019`, `−0.056`, and in the
 second model `0.000` with variance around `0.008`. The ablation machinery worked
 and reported, correctly, that on a six-item screening subset it could not
 distinguish any component's contribution from noise. A framework that reports
@@ -115,18 +115,18 @@ distinguish any component's contribution from noise. A framework that reports
 those numbers as a component ranking is exactly what the method is meant to
 prevent.
 
-Across the public benchmarks the wins are small — roughly 1 to 10 points — and
+Across the public benchmarks, the wins are small, roughly 1 to 10 points, and
 one headline cell, AG News, still loses to OPRO. That loss is documented in the
 repository rather than dropped.
 
 ## Limitations
 
 The repository contains its own assessment, `HONEST_ASSESSMENT.md`, which opens:
-*"Would this wow the world? No — not in its current form."* It is accurate.
+*"Would this wow the world? No, not in its current form."* It is accurate.
 
 - The wins are on mid-tier benchmarks against modest baselines. A +2 point gain
   on AG News is a footnote.
-- The thesis that harnesses are an optimisable layer is not new — DSPy, OPRO,
+- The thesis that harnesses are an optimisable layer is not new. DSPy, OPRO,
   TextGrad and ProTeGi all stake versions of it.
 - Total experimental spend was under five dollars, which is charming and also
   tells you the experiments are small.
@@ -136,9 +136,9 @@ The repository contains its own assessment, `HONEST_ASSESSMENT.md`, which opens:
 
 ## What I would do next
 
-Pick one frontier benchmark where the effect size cannot be waved away — SWE-bench
-Verified is the obvious candidate, since the agent infrastructure already exists
-— and run it hard with a real budget. Failing that, run the attribution machinery
+Pick one frontier benchmark where the effect size cannot be waved away.
+SWE-bench Verified is the obvious candidate because the agent infrastructure
+already exists. Run it hard with a real budget. Failing that, run the attribution machinery
 on a screening set large enough to resolve component contributions above noise,
 which is the cheaper experiment and answers a cleaner question.
 
