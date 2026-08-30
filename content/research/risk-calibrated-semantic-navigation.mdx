@@ -1,5 +1,5 @@
 ---
-title: "Risk-Calibrated Semantic Navigation Under Distribution Shift"
+title: "Better Calibration Without Demonstrated Safety Gains: Risk-Calibrated Semantic Navigation Under Distribution Shift"
 slug: "risk-calibrated-semantic-navigation"
 status: "completed"
 startDate: "2026-08"
@@ -28,9 +28,10 @@ draft: false
 ---
 
 <Note title="Scope">
-This is a simulation-only study. Gazebo contacts, rendering, dynamics and sensor
-noise do not establish physical-robot safety, and nothing here is a safety
-certification. A physical deployment would require hardware contact validation,
+This is a simulation-only study across three protected Gazebo maps, using a
+lightweight diagonal-Gaussian classifier. Gazebo contacts, rendering, dynamics
+and sensor noise do not establish physical-robot safety, and nothing here is a
+safety certification. A physical deployment would require hardware contact validation,
 fail-safe braking, real-world perception evaluation, operational hazard analysis
 and independent safety review.
 </Note>
@@ -193,8 +194,9 @@ reclassified.
 - **Absolute calibration remained poor** despite relative improvement.
 - **Mean mutual information was 0.00192**, limiting the practical contribution
   of the uncertainty term.
-- **Base worlds contain walls and conventional obstacles**, not a broad ecology
-  of transparent or below-scan-plane hazards.
+- **Three protected Gazebo maps.** The base worlds contain walls and
+  conventional obstacles, not a broad ecology of transparent or
+  below-scan-plane hazards.
 - **Ceiling and floor effects** reduce power to distinguish systems.
 - **The GEE sensitivity fit returned non-finite estimates**, consistent with
   numerical instability or separation, and is non-interpretable; the frozen
@@ -205,8 +207,9 @@ reclassified.
 ## Reproducibility
 
 At G7 a clean clone regenerated the H1–H4 JSON and every key-result table
-byte-for-byte, with 249 tests passing. Paths and file timestamps are explicitly
-not treated as evidence.
+byte-for-byte, with 249 tests passing at that point. The current release suite
+passes 251 tests, after recovery-guard regressions were added for minimal-PATH
+execution. Paths and file timestamps are explicitly not treated as evidence.
 
 ```bash
 python3 -m pip install -r requirements-analysis.lock.txt
@@ -232,13 +235,15 @@ results. No AI system is listed as an author. The repository's
 
 ## Status and links
 
-Frozen at `v1.0.0-rc.1`. Independent technical review, venue-format audit,
-dataset DOI and preprint submission remain outstanding external actions, and the
-repository's release checklist shows them unchecked rather than implied
-complete.
+Tagged `v1.0.0-rc.1`. The confirmatory core dataset is archived and citable.
+Independent technical review, the venue-format and citation audit, the final
+source release that follows that review, and preprint submission remain
+outstanding external actions — the repository's release checklist shows them
+unchecked rather than implied complete.
 
 - **Code** — [github.com/alabiemmanuel177/risk-calibrated-semantic-navigation](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation)
 - **Release** — [v1.0.0-rc.1](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/releases/tag/v1.0.0-rc.1)
+- **Dataset** — confirmatory core dataset archived at [10.5281/zenodo.22181941](https://doi.org/10.5281/zenodo.22181941)
 - **Technical manuscript (draft)** — [`paper/risk-calibrated-semantic-navigation.pdf`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/paper/risk-calibrated-semantic-navigation.pdf). Not submitted, not peer reviewed.
 - **Protocol** — [`docs/protocol.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/docs/protocol.md)
 - **Full disclosures** — [`paper/disclosures.md`](https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/v1.0.0-rc.1/paper/disclosures.md)
