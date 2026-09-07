@@ -9,9 +9,10 @@
  * Dates verified against the LinkedIn record, September 2026. The set is chosen
  * to leave no unexplained gap between graduation and the present: Union Bank
  * from July 2023, SPay from November 2023, Punch Group through 2025, Obelo from
- * October 2025. Concurrent founder roles (TechAdes, TechGate, Royal Gate,
- * Acadu) are deliberately omitted from the academic CV for length, not hidden —
- * they are on LinkedIn.
+ * October 2025. Concurrent founder roles at TechAdes and TechGate
+ * are omitted from the academic CV for length, not hidden — they are on
+ * LinkedIn. Royal Gate and Acadu are included: eight years of continuous
+ * technology ownership, and the closest thing here to research infrastructure.
  */
 
 export type EngineeringSystem = {
@@ -80,6 +81,39 @@ export const engineeringSystems: EngineeringSystem[] = [
     depth:
       "Production engineering maturity: release automation, over-the-air delivery, and performance work under real usage rather than in a demo environment.",
     technologies: ["React Native", "CI/CD", "OTA deployment", "Authentication"],
+  },
+  {
+    name: "Acadu — Educational Platform",
+    context: "Acadu",
+    role: "Founder",
+    period: "Feb 2022 — Sep 2025",
+    problem:
+      "Serving learners across mobile and web from one backend, with real-time delivery and geolocation, on a budget that ruled out managed everything.",
+    contribution:
+      "Led product, architecture and engineering: React Native mobile, Next.js web, NestJS backend, PostgreSQL, deployed on Fly.io and GCP with Redis and RabbitMQ for caching, message queuing and real-time event processing.",
+    depth:
+      "The closest commercial analogue to research infrastructure on this list: queue-backed asynchronous processing, cache invalidation and event delivery across services, with CI/CD on GitHub Workflows. Paused; its architecture informed Obelo's orchestration design.",
+    technologies: [
+      "NestJS",
+      "PostgreSQL",
+      "Redis",
+      "RabbitMQ",
+      "GCP",
+      "React Native",
+    ],
+  },
+  {
+    name: "Royal Gate Group — Technology & Digital Strategy",
+    context: "Royal Gate Group",
+    role: "Head of Technology and Digital Strategy (part-time)",
+    period: "May 2018 — present",
+    problem:
+      "Running technology across a multi-sector group of ten-plus subsidiaries with no prior standardisation, alongside full-time study and later full-time engineering roles.",
+    contribution:
+      "Led technology and digital strategy for eight years: group-wide digital infrastructure and corporate email standardisation, IT and network systems maintenance, and ongoing digital transformation programmes including e-commerce platforms and internal systems across subsidiaries.",
+    depth:
+      "Sustained ownership rather than project work — eight continuous years, predating and running alongside the degree.",
+    technologies: ["Systems administration", "Networking", "Web platforms"],
   },
   {
     name: "Union Bank of Nigeria — Enterprise Systems & Security",
