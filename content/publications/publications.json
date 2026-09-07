@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "title": "Risk-Calibrated Semantic Navigation Under Distribution Shift: confirmatory evaluation dataset",
+    "slug": "risk-calibrated-semantic-navigation-dataset",
+    "authors": ["Emmanuel Alabi Olasubomi"],
+    "year": 2026,
+    "status": "dataset",
+    "venue": "Zenodo",
+    "abstract": "The confirmatory core dataset for the risk-calibrated semantic navigation study: 6,840 episode summaries across four navigation systems under controlled distribution shift, with the manifest, exclusion ledger and release inventory needed to reproduce every reported result. Archived separately from the approximately 1 TB retained bag corpus.",
+    "doi": "10.5281/zenodo.22181941",
+    "codeUrl": "https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation",
+    "projectUrl": "/research/risk-calibrated-semantic-navigation"
+  },
+  {
+    "title": "Better Calibration Without Demonstrated Safety Gains: Risk-Calibrated Semantic Navigation Under Distribution Shift",
+    "slug": "risk-calibrated-semantic-navigation-manuscript",
+    "authors": ["Emmanuel Alabi Olasubomi"],
+    "year": 2026,
+    "status": "manuscript",
+    "abstract": "A preregistered ROS 2 and Gazebo benchmark testing whether calibrated semantic perception uncertainty, converted into navigation cost, improves closed-loop outcomes under controlled distribution shift. Calibration improved and clean-route efficiency held; the preregistered collision-reduction and severity-interaction hypotheses did not pass.",
+    "paperUrl": "https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation/blob/main/paper/risk-calibrated-semantic-navigation.pdf",
+    "codeUrl": "https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation",
+    "projectUrl": "/research/risk-calibrated-semantic-navigation"
+  },
+  {
+    "title": "Reproducing a Classic Driver Drowsiness Pipeline: Where the Errors Actually Come From",
+    "slug": "driver-drowsiness-reproduction-manuscript",
+    "authors": ["Emmanuel Alabi"],
+    "year": 2026,
+    "status": "manuscript",
+    "abstract": "A leakage-safe reproduction of a widely replicated eye-state and temporal-alerting pipeline under a subject-independent protocol. An oracle-classifier decomposition locates the residual false alerts in the temporal decision rule rather than in classification error, above a threshold of classifier competence.",
+    "paperUrl": "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/blob/v1.0.0/paper/manuscript.tex",
+    "codeUrl": "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction",
+    "projectUrl": "/projects/driver-drowsiness-reproduction"
+  }
+]

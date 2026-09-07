@@ -49,6 +49,7 @@ export function getPublications(): Publication[] {
  * peer-reviewed).
  */
 export const publicationGroupOrder = [
+  { status: "dataset", label: "Datasets" },
   { status: "published", label: "Published" },
   { status: "accepted", label: "Accepted" },
   { status: "submitted", label: "Under review" },

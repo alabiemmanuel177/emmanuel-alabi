@@ -48,7 +48,9 @@ export function articleJsonLd(input: {
 export function scholarlyArticleJsonLd(publication: Publication): Json {
   return {
     "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
+    // An archived dataset is marked up as a Dataset. Emitting ScholarlyArticle
+    // for it would assert a paper that does not exist.
+    "@type": publication.status === "dataset" ? "Dataset" : "ScholarlyArticle",
     headline: publication.title,
     author: publication.authors.map((name) => ({ "@type": "Person", name })),
     datePublished: String(publication.year),

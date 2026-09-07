@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/Badge";
 
 type Status =
+  | "dataset"
   | "manuscript"
   | "preprint"
   | "submitted"
@@ -12,6 +13,7 @@ type Status =
  * allowed to read as peer-reviewed work.
  */
 const labels: Record<Status, string> = {
+  dataset: "Dataset — archived and citable",
   manuscript: "Manuscript in preparation",
   preprint: "Preprint (not peer reviewed)",
   submitted: "Submitted (under review)",
@@ -20,6 +22,7 @@ const labels: Record<Status, string> = {
 };
 
 const tones: Record<Status, "neutral" | "accent" | "exploring" | "completed"> = {
+  dataset: "accent",
   manuscript: "neutral",
   preprint: "exploring",
   submitted: "exploring",

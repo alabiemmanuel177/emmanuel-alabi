@@ -25,7 +25,7 @@ export default function PublicationsPage() {
     <Container>
       <PageHeader
         title="Publications"
-        lead="Each entry states where the work actually is: manuscript, preprint, under review, accepted, or peer-reviewed and published. Nothing is listed above its true status."
+        lead="Each entry states where the work actually is: an archived dataset, a manuscript in preparation, a preprint, under review, accepted, or peer-reviewed and published. Nothing is listed above its true status, and no draft is described as a paper."
       />
 
       <div className="py-14">

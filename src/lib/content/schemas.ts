@@ -206,6 +206,12 @@ export type ExperimentLog = z.infer<typeof ExperimentLogSchema>;
 /* -------------------------------------------------------------------------- */
 
 export const publicationStatuses = [
+  /**
+   * An archived, DOI-citable dataset. Not a paper and never presented as one —
+   * it groups first because it is the only genuinely published item, and it is
+   * labelled and marked up as a Dataset rather than an article.
+   */
+  "dataset",
   "manuscript",
   "preprint",
   "submitted",
