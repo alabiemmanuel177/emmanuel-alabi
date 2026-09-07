@@ -70,6 +70,7 @@ export const education: Education[] = [
     qualification: "BSc (Hons) Software Engineering",
     location: "Ilishan-Remo, Ogun State, Nigeria",
     period: "2019–2023",
+    grade: "Second Class Upper Division, CGPA 4.00/5.00",
     coursework: [
       "Algorithms and Data Structures",
       "Discrete Mathematics",
@@ -112,9 +113,8 @@ export const independentStudies: IndependentStudy[] = [
     context: "Independent Computer Vision Study",
     period: "2026",
     highlights: [
-      "Rebuilt and evaluated a classical eye-state and temporal-alerting pipeline under a subject-disjoint protocol on the MRL Eye Dataset (84,898 images, 37 subjects), training a lightweight CNN from scratch against a HOG+SVM baseline and measuring both frame-level and event-level behaviour.",
-      "Designed an oracle-classifier decomposition showing that, once classification accuracy was sufficient, the historical temporal threshold rather than residual classification error remained the dominant source of false alerts under a simulated-sequence protocol.",
-      "Produced a fully reproducible pipeline: deterministic splits, automated leakage checks, three-seed ablations, generated result artifacts, structured failure analysis, a documented limitations and safety boundary, and 145 automated tests.",
+      "An oracle-classifier decomposition showed the historical temporal threshold, not residual classification error, dominated false alerts once classifier accuracy was sufficient.",
+      "Subject-disjoint reproduction on the MRL Eye Dataset; CNN trained from scratch against a HOG+SVM baseline, with deterministic splits, automated leakage checks and three-seed ablations.",
     ],
     url: "/projects/driver-drowsiness-reproduction",
     github: "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction",

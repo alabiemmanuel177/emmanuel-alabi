@@ -45,6 +45,11 @@ function Section({
 
 export default function CvPage() {
   const research = getResearch();
+  // The programme statement is self-directed training, not a study. Committees
+  // read them very differently, so they are not shown under one heading.
+  const TRAINING_SLUGS = new Set(["research-programme-2026"]);
+  const studies = research.filter((e) => !TRAINING_SLUGS.has(e.frontmatter.slug));
+  const training = research.filter((e) => TRAINING_SLUGS.has(e.frontmatter.slug));
   const projects = getProjects();
   const publications = getPublications();
   const pdfAvailable = cvAvailable();
@@ -153,7 +158,7 @@ export default function CvPage() {
       ) : null}
 
       {independentStudies.length > 0 ? (
-        <Section title="Independent Research &amp; Reproduction Studies">
+        <Section title="Independent research">
           <ul className="space-y-6">
             {independentStudies.map((item) => (
               <li key={item.title}>
@@ -215,10 +220,10 @@ export default function CvPage() {
         </Section>
       ) : null}
 
-      {research.length > 0 ? (
+      {studies.length > 0 ? (
         <Section title="Research">
           <ul className="space-y-4">
-            {research.map(({ frontmatter: item }) => (
+            {studies.map(({ frontmatter: item }) => (
               <li key={item.slug}>
                 <h3 className="text-ink font-medium">
                   <Link
@@ -238,6 +243,31 @@ export default function CvPage() {
                 <p className="text-ink-subtle mt-1 font-mono text-xs break-all">
                   {site.url.replace(/^https?:\/\//, "")}/research/{item.slug}
                   {item.github ? ` · ${item.github}` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
+
+      {training.length > 0 ? (
+        <Section title="Research training">
+          <ul className="space-y-4">
+            {training.map(({ frontmatter: item }) => (
+              <li key={item.slug}>
+                <h3 className="text-ink font-medium">
+                  <Link
+                    href={`/research/${item.slug}`}
+                    className="hover:text-accent"
+                  >
+                    {item.title}
+                  </Link>
+                </h3>
+                <p className="text-ink-subtle text-sm">
+                  {formatDateRange(item.startDate, item.endDate)}
+                </p>
+                <p className="text-ink-muted mt-1 text-[0.9375rem]">
+                  {item.summary}
                 </p>
               </li>
             ))}
