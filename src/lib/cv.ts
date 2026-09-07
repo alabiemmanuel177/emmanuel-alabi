@@ -177,6 +177,40 @@ export const openSource: Experience[] = [];
  * to. They are truthful, but they are the first things to cut if the list needs
  * to be defensible on published evidence alone.
  */
+export type Referee = {
+  name: string;
+  position: string;
+  organisation: string;
+  /** Why this person can speak to the work. */
+  relationship: string;
+};
+
+/**
+ * Referees, published with consent (September 2026).
+ *
+ * Contact details are deliberately NOT published. This CV is served at a public
+ * URL, and putting a referee's institutional email on a scrapeable page is a
+ * cost they did not agree to. Addresses are held in the private admissions
+ * workspace and supplied through application forms, which is where they are
+ * actually needed.
+ */
+export const referees: Referee[] = [
+  {
+    name: "Prof. Stephen Maitanmi",
+    position: "Professor and Head of Department, Software Engineering",
+    organisation: "Babcock University",
+    relationship:
+      "Supervised the assessed final-year research project (SENG490, 2023).",
+  },
+  {
+    name: "Mr. Akinwale Ojo",
+    position: "Founder and Chief Executive Officer",
+    organisation: "SPay Business Solutions Ltd.",
+    relationship:
+      "Software engineering role, November 2023 to December 2024.",
+  },
+];
+
 export const skills: SkillGroup[] = [
   {
     group: "Research computing",

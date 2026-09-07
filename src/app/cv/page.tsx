@@ -9,6 +9,7 @@ import { getPublications } from "@/lib/content/publications";
 import { cvAvailable } from "@/lib/cv-file";
 import {
   academicProjects,
+  referees,
   independentStudies,
   education,
   experience,
@@ -373,6 +374,27 @@ export default function CvPage() {
               </div>
             ))}
           </dl>
+        </Section>
+      ) : null}
+
+      {referees.length > 0 ? (
+        <Section title="References">
+          <ul className="space-y-4">
+            {referees.map((r) => (
+              <li key={r.name}>
+                <h3 className="text-ink font-medium">{r.name}</h3>
+                <p className="text-ink-muted text-[0.9375rem]">
+                  {r.position}, {r.organisation}
+                </p>
+                <p className="text-ink-subtle mt-0.5 text-sm">
+                  {r.relationship}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <p className="text-ink-subtle mt-4 text-sm">
+            Contact details available on request.
+          </p>
         </Section>
       ) : null}
 
