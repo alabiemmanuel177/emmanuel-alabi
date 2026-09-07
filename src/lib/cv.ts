@@ -179,41 +179,48 @@ export const openSource: Experience[] = [];
  */
 export const skills: SkillGroup[] = [
   {
-    group: "Programming",
-    // Java: Babcock coursework (Programming in JAVA, Hands-on JAVA training).
-    // JavaScript/TypeScript: BUCODEL, this site. Python, SQL: no public artefact yet.
-    items: ["Python", "TypeScript", "JavaScript", "Java", "SQL"],
-  },
-  {
-    group: "AI/ML",
-    // Computer vision is evidenced by the driver-drowsiness reproduction study
-    // (public, reproducible, subject-disjoint evaluation). The rest is Obelo.
-    // Still deliberately absent until a project demonstrates them: ROS 2,
-    // Gazebo, SLAM, reinforcement learning, robot control, state estimation,
-    // motion planning. Areas before libraries — keep this list short.
+    group: "Research computing",
+    // ROS 2, Gazebo and Nav2 added September 2026: the risk-calibrated semantic
+    // navigation study is a public, DOI-archived ROS 2/Gazebo/Nav2 benchmark,
+    // which is the evidence that was previously missing. Still absent for lack
+    // of an artefact: SLAM, reinforcement learning, robot control, motion
+    // planning.
     items: [
-      "Computer Vision",
-      "Multimodal AI systems",
-      "Retrieval-augmented generation",
-      "LLM and model integration",
-      "Evaluation and quality systems",
+      "Python",
+      "PyTorch",
+      "NumPy",
+      "ROS 2",
+      "Gazebo",
+      "Nav2",
+      "Statistical evaluation",
+      "Uncertainty calibration",
+      "Experiment design",
     ],
   },
   {
-    group: "Systems and engineering",
-    // React/Node/Express/MongoDB: BUCODEL. Next.js, CI/CD: this repository.
-    // PostgreSQL, Redis, Docker: no public artefact yet.
+    group: "AI systems",
     items: [
-      "React",
-      "Next.js",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "PyTorch",
-      "PostgreSQL",
-      "Redis",
+      "Computer vision",
+      "Multimodal systems",
+      "Retrieval-augmented generation",
+      "LLM and model integration",
+      "Evaluation systems",
+    ],
+  },
+  {
+    group: "Software and infrastructure",
+    // Deliberately last. The reader is an admissions committee, not a hiring
+    // manager for a web role.
+    items: [
+      "TypeScript",
+      "SQL",
       "Docker",
       "CI/CD",
+      "PostgreSQL",
+      "MongoDB",
+      "Node.js",
+      "React",
+      "Next.js",
     ],
   },
 ];

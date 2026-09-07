@@ -1,4 +1,4 @@
-% Academic CV v0 — Emmanuel Alabi
+% Academic CV — Emmanuel Alabi
 % Build with: npm run cv:build   (see cv/README.md)
 %
 % v0 is deliberately conservative. There is no Publications section, and no
@@ -18,6 +18,9 @@
 \usepackage{xcolor}
 \usepackage{fancyhdr}
 \usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\Urlmuskip=0mu plus 1mu  % allow URLs to break across lines
+\sloppy
 
 \definecolor{accent}{HTML}{1B4F8F}
 \hypersetup{
@@ -30,7 +33,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\fancyfoot[L]{\footnotesize Emmanuel Alabi --- Academic CV v0, August 2026}
+\fancyfoot[L]{\footnotesize Emmanuel Alabi --- Academic CV, September 2026}
 \fancyfoot[R]{\footnotesize\thepage}
 
 \setlength{\parindent}{0pt}
@@ -98,8 +101,8 @@ planning, reinforcement learning.}
 \cvsection{Education}
 
 \cventry{Babcock University --- BSc (Hons) Software Engineering}{2019 --- 2023}
-{\small Ilishan-Remo, Ogun State, Nigeria. School of Computing and Engineering
-Sciences.}
+{\small Second Class Upper Division, CGPA 4.00/5.00. Ilishan-Remo, Ogun State,
+Nigeria. School of Computing and Engineering Sciences.}
 
 \vspace{0.4em}
 {\small\textit{Relevant coursework:} Algorithms and Data Structures; Discrete
@@ -108,71 +111,51 @@ Artificial Intelligence and Applications; Introduction to Big Data Engineering;
 Computer Organization and Assembly Language; Operating System I; Database System
 Design, Implementation and Management.}
 
-% Degree classification deliberately omitted from v0. Verified value, if you
-% choose to include it: Second Class Upper (C-GPA 4.00 / 5.00).
+% Classification verified against the official Babcock transcript. Cambridge
+% maps a Nigerian GPA 4/5 to a UK 2:1 and 4.5/5 to a First; UCL and Imperial
+% state the requirement as a classification, which this meets outright.
 
 %% --------------------------------------- Research & technical experience ----
-\cvsection{Research \& Technical Experience}
+\cvsection{Research}
 
 \cventry{Risk-Calibrated Semantic Navigation Under Distribution Shift}{2026}
-{\small Preregistered ROS 2 / Gazebo benchmark.
-\href{https://github.com/alabiemmanuel177/risk-calibrated-semantic-navigation}{github.com/alabiemmanuel177/risk-calibrated-semantic-navigation}}
+{\small Preregistered ROS 2 / Gazebo / Nav2 benchmark.
+\href{https://doi.org/10.5281/zenodo.22181941}{doi.org/10.5281/zenodo.22181941}}
 \begin{cvitems}
-  \item Designed and executed a preregistered simulation study testing whether
-        calibrated semantic perception uncertainty, converted into Nav2
-        navigation cost, improves closed-loop robot outcomes under controlled
-        distribution shift; four systems share identical maps, routes, planner
-        and controller families, varying only the treatment component.
-  \item Hash-locked the protocol, manifest, models, thresholds, exclusions and
-        analysis code before protected execution; the confirmatory campaign
-        produced 6,840 unique schema-valid episodes, 6,820 entering analysis.
-  \item Calibration (H1) and clean-route efficiency noninferiority (H3) passed;
-        the preregistered collision-reduction (H2) and severity-interaction (H4)
-        hypotheses did not. Better component calibration did not establish safer
-        navigation --- reported as the result, with integrity deviations and
-        limitations disclosed.
-  \item Independent clean-clone reproduction regenerated all hypothesis JSON and
-        key tables byte-for-byte; release suite now 258 tests. Confirmatory core
-        dataset archived at \href{https://doi.org/10.5281/zenodo.22181941}{doi.org/10.5281/zenodo.22181941}.
-        \href{https://www.emmanuelalabi.com/research/risk-calibrated-semantic-navigation}{emmanuelalabi.com/research/risk-calibrated-semantic-navigation}
+  \item Calibration improved and clean-route efficiency held, but the
+        preregistered collision-reduction and severity hypotheses did not:
+        better component calibration did not establish safer navigation.
+  \item Four systems differing only in the treatment component; protocol,
+        manifest, thresholds and analysis code hash-locked before execution.
+        6,840 episodes; independent clean-clone reproduction byte-identical.
+  \item \href{https://www.emmanuelalabi.com/research/risk-calibrated-semantic-navigation}{emmanuelalabi.com/research/risk-calibrated-semantic-navigation}
 \end{cvitems}
-
-\cventry{Independent Research Programme --- Embodied \& Multimodal Autonomy}{2026 --- present}
-\begin{cvitems}
-  \item Self-directed programme building the mathematical, machine-learning and
-        robotics foundations required to conduct independent research: linear
-        algebra, probability, optimisation, state estimation and rigid-body
-        geometry, each with implementations written from first principles.
-  \item Reproducing published baselines in perception and navigation before
-        extending them, on the principle that a reproduction which fails is
-        itself a result worth documenting.
-  \item Working toward a research question in embodied, multimodal autonomy
-        precise enough to investigate with controlled experiments rather than
-        demonstrations.
-  \item Programme and progress documented publicly at
-        \href{https://emmanuelalabi.com/research/research-programme-2026}{emmanuelalabi.com/research/research-programme-2026}
-\end{cvitems}
-
-%% ------------------------ Independent research & reproduction studies ------
-\cvsection{Independent Research \& Reproduction Studies}
 
 \cventry{Driver Drowsiness Detection --- Reproduction \& Evaluation Study}{2026}
 {\small Independent computer vision study.
 \href{https://github.com/alabiemmanuel177/driver-drowsiness-reproduction}{github.com/alabiemmanuel177/driver-drowsiness-reproduction}}
 \begin{cvitems}
-  \item Rebuilt and evaluated a classical eye-state and temporal-alerting
-        pipeline under a subject-disjoint protocol on the MRL Eye Dataset
-        (84,898 images, 37 subjects), training a lightweight CNN from scratch
-        against a HOG+SVM baseline and measuring frame- and event-level
-        behaviour.
-  \item Designed an oracle-classifier decomposition showing that once
-        classification accuracy was sufficient, the historical temporal
-        threshold --- not residual classification error --- remained the
-        dominant source of false alerts under a simulated-sequence protocol.
-  \item Built a fully reproducible pipeline: deterministic splits, automated
-        leakage checks, three-seed ablations, generated result artifacts,
-        structured failure analysis, and 145 automated tests.
+  \item An oracle-classifier decomposition showed the historical temporal
+        threshold, not residual classification error, dominated false alerts
+        once classifier accuracy was sufficient.
+  \item Subject-disjoint reproduction on the MRL Eye Dataset; CNN trained from
+        scratch against a HOG+SVM baseline, with deterministic splits, automated
+        leakage checks and three-seed ablations.
   \item \href{https://www.emmanuelalabi.com/projects/driver-drowsiness-reproduction}{emmanuelalabi.com/projects/driver-drowsiness-reproduction}
+\end{cvitems}
+
+%% ------------------------------------------------- Research training --------
+\cvsection{Research Training}
+
+\cventry{Independent Research Programme --- Embodied \& Multimodal Autonomy}{2026 --- present}
+\begin{cvitems}
+  \item Self-directed programme in the mathematical, machine-learning and
+        robotics foundations for independent research: linear algebra,
+        probability, optimisation, state estimation and rigid-body geometry,
+        each implemented from first principles.
+  \item Reproducing published baselines in perception and navigation before
+        extending them.
+  \item \href{https://www.emmanuelalabi.com/research/research-programme-2026}{emmanuelalabi.com/research/research-programme-2026}
 \end{cvitems}
 
 %% -------------------------------------------- Selected academic projects ---
@@ -194,32 +177,17 @@ Supervisor: Dr.\ Stephen Maitanmi.}
   \item \href{https://emmanuelalabi.com/projects/bucodel-learning-management-system}{emmanuelalabi.com/projects/bucodel-learning-management-system}
 \end{cvitems}
 
-%% ------------------------------------------ Selected engineering projects ---
-\cvsection{Selected Engineering Projects}
-
-\cventry{Obelo --- Multimodal AI Infrastructure}{}
-\begin{cvitems}
-  \item Production AI platform combining multimodal generation,
-        retrieval-augmented context, asynchronous orchestration, model routing
-        and evaluation systems.
-  \item Experimentation across multiple image-generation and language-model
-        families; structured creative pipelines; reliability mechanisms for
-        long-running AI workflows.
-  \item \href{https://emmanuelalabi.com/projects/obelo-multimodal-ai-infrastructure}{emmanuelalabi.com/projects/obelo-multimodal-ai-infrastructure}
-\end{cvitems}
-
-% TODO(emmanuel): add Computer Vision Similarity Analysis once its write-up is
-% accurate, and one strong distributed/backend system. The local drowsiness
-% detection project is deliberately excluded — see the forensic analysis.
-
 %% -------------------------------------- Selected technical experience -------
 \cvsection{Selected Technical Experience}
 
+% TODO(emmanuel): add dates to both roles below. Committees read a missing
+% date range as a gap. Left blank rather than guessed.
 \cventry{Founder / Lead Engineer --- Obelo}{}
 \begin{cvitems}
-  \item Designed and developed a production AI platform: multimodal generation,
-        retrieval-augmented brand context, model routing across model families,
-        asynchronous orchestration, and evaluation and quality systems.
+  \item Production AI platform: multimodal generation, retrieval-augmented
+        context, model routing across model families, asynchronous orchestration,
+        and evaluation and quality systems.
+  \item \href{https://www.emmanuelalabi.com/projects/obelo-multimodal-ai-infrastructure}{emmanuelalabi.com/projects/obelo-multimodal-ai-infrastructure}
 \end{cvitems}
 
 \cventry{Software Engineer --- SPay Business}{}
@@ -229,10 +197,6 @@ Supervisor: Dr.\ Stephen Maitanmi.}
         over-the-air mobile deployments.
 \end{cvitems}
 
-% TODO(emmanuel): add dates to both entries, plus two further roles chosen for
-% technical substance (distributed systems, ML infrastructure, computer vision)
-% rather than commercial story.
-
 %% ---------------------------------------- Open source / technical work ------
 % TODO(emmanuel): uncomment and fill once there is something substantive.
 % \cvsection{Open Source / Technical Work}
@@ -241,17 +205,32 @@ Supervisor: Dr.\ Stephen Maitanmi.}
 \cvsection{Technical Skills}
 
 {\small
-\textbf{Programming} \quad Python, TypeScript, JavaScript, Java, SQL\par
+\textbf{Research computing} \quad Python, PyTorch, NumPy, ROS 2, Gazebo, Nav2,
+statistical evaluation, uncertainty calibration, experiment design\par
 \vspace{0.25em}
-\textbf{AI/ML} \quad Computer vision, multimodal AI systems,
+\textbf{AI systems} \quad Computer vision, multimodal systems,
 retrieval-augmented generation, LLM and model integration, evaluation systems\par
 \vspace{0.25em}
-\textbf{Systems \& engineering} \quad React, Next.js, Node.js, Express, MongoDB,
-PyTorch, PostgreSQL, Redis, Docker, CI/CD\par
+\textbf{Software \& infrastructure} \quad TypeScript, SQL, Docker, CI/CD,
+PostgreSQL, MongoDB, Node.js, React, Next.js\par
 }
 
-% Deliberately absent until evidenced by real work: ROS 2, Gazebo, SLAM,
-% reinforcement learning, robot control, state estimation, motion planning.
-% Computer vision is now evidenced by the driver-drowsiness reproduction study.
+% ROS 2, Gazebo and Nav2 are listed from September 2026: the risk-calibrated
+% semantic navigation study is a public, DOI-archived ROS 2/Gazebo/Nav2
+% benchmark, which is the evidence that was previously missing.
+%
+% Still deliberately absent, no supporting artefact yet: SLAM, reinforcement
+% learning, robot control, motion planning.
+
+%% ----------------------------------------------------------- References -----
+\cvsection{References}
+
+{\small References available on request.}
+
+% TODO(emmanuel): replace the line above with named referees ONCE BOTH HAVE
+% AGREED. Do not publish a referee's name before asking them.
+%   1. Dr. Stephen Maitanmi --- Babcock University; supervised the assessed
+%      final-year research project (SENG490).
+%   2. An industry referee who can speak to production engineering ownership.
 
 \end{document}
