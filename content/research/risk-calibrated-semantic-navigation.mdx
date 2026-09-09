@@ -165,6 +165,29 @@ There is also a power story. Clean navigation showed a ceiling effect and the
 novelty family a floor effect, which reduces the ability to separate systems
 even under paired execution.
 
+## Follow-up: a second, larger test of the same question
+
+A separately frozen follow-up compared 48 maps and completed all 2,592 episodes
+with no invalid or replaced attempts. It asked the narrower question directly:
+does the ensemble-disagreement penalty reduce collisions?
+
+It does not. With the penalty, 194 of 864 episodes ended in collision; without
+it, 179 of 864 — a difference of **+1.736 percentage points** (95% working
+interval +0.002 to +3.470), failing the frozen benefit criterion. Costs and
+behaviour changed without a demonstrated safety benefit, and the direction of
+the point estimate is the wrong way round.
+
+This does not overturn the confirmatory result; it agrees with it on a larger
+and independently frozen comparison. The original frozen estimates and the
+published dataset are unchanged.
+
+<Note title="Status of the follow-up evidence">
+The follow-up analysis and its artefacts are in the repository, but its raw
+recordings have not been externally deposited, and the archived Zenodo dataset
+covers the confirmatory campaign only. Treat the follow-up as documented and
+reproducible from the repository, not as independently archived.
+</Note>
+
 ## Integrity deviations
 
 Recorded because they happened, not because they help.
@@ -207,10 +230,10 @@ reclassified.
 ## Reproducibility
 
 At G7 a clean clone regenerated the H1–H4 JSON and every key-result table
-byte-for-byte, with 249 tests passing at that point. The current release suite
-passes 258 tests, which includes recovery-guard regressions and separately
-scoped checks for a downstream study that shares this platform. Paths and file
-timestamps are explicitly not treated as evidence.
+byte-for-byte, with 249 tests passing at that point. The suite has grown with the
+follow-up work and now passes 283 tests, adding supplementary estimator
+reproduction, mechanism-audit checks, per-attempt clock validation and sampler
+diagnostics. Paths and file timestamps are explicitly not treated as evidence.
 
 ```bash
 python3 -m pip install -r requirements-analysis.lock.txt
