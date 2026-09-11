@@ -1,0 +1,128 @@
+---
+title: "Early Failure Prediction and Recovery for Mobile Robot Navigation"
+slug: "early-failure-prediction-navigation"
+status: "active"
+startDate: "2026-08"
+researchAreas:
+  - Embodied AI
+  - Autonomous Systems
+  - Failure Prediction
+  - Uncertainty Calibration
+summary: >
+  A preregistered study of whether navigation failure can be predicted early
+  enough to act on, and whether a guarded recovery can use that prediction
+  without making the outcome worse. Data collection and model development are
+  under way; no results exist yet.
+question: >
+  How early can mobile robot navigation failure be predicted from onboard
+  signals, and can a guarded recovery act on that prediction without degrading
+  outcomes?
+featured: true
+order: 2
+draft: false
+---
+
+<Note title="Status">
+In progress. The experimental design is frozen and the development and
+validation campaigns are complete, but **no results exist yet** — no model is
+frozen, no protected-map evaluation has run, and nothing on this page is a
+finding. Protected routes are deliberately unassigned and must not be inspected
+before the model, calibration, alarm policy and analysis are frozen.
+</Note>
+
+## The question
+
+Research 1 asked whether calibrated perception uncertainty should change how a
+planner moves, and found that it did not improve safety. This study asks the
+adjacent question: rather than acting on uncertainty continuously, can the
+system *anticipate* a specific failure early enough to do something about it —
+and does acting on that anticipation help?
+
+Two halves, deliberately separated:
+
+1. **Prediction.** How early can failure be predicted from onboard signals, and
+   at what cost in false alarms?
+2. **Recovery.** Given a prediction, does a guarded recovery improve the
+   outcome, or does intervening on an uncertain warning make things worse?
+
+The second half is the one that matters, and it is the one most work in this
+area skips.
+
+## Design
+
+The study is an overlay on the platform frozen at the end of Research 1, running
+isolated on its own ROS domain so the two cannot interfere. Reusing a pinned,
+already-validated platform means the failure behaviour under test is not
+confounded by changes to the navigation stack itself.
+
+**Fault families.** Seven fault families are frozen, admitted after a 21/21
+family-and-severity treatment-integrity gate.
+
+**Development campaign.** Complete at 648 of 648 artefact-usable episodes across
+a frozen six-map design — 125 terminal events and 523 non-events. Two pre-goal
+infrastructure invalids are retained rather than discarded, each replaced exactly
+once by a same-cell, same-seed episode under a linked replacement campaign.
+
+**Validation campaign.** Complete at 324 of 324 episodes, hash-addressed, and
+barred from selecting models, calibration or thresholds until the human
+admission gate passes.
+
+**Baseline.** A transparent threshold baseline, so any learned predictor has to
+beat something interpretable rather than nothing.
+
+<ArchitectureDiagram
+  stages={[
+    "Onboard signals (2 Hz decisions)",
+    "Causal feature extraction",
+    "Predictor P1–P6 or threshold baseline",
+    "Calibration and alarm policy",
+    "Event-level evaluation",
+    "Guarded recovery (recommendation-only)",
+  ]}
+  caption="Figure 1 — The evaluated pipeline. The recovery manager is recommendation-only in the current stage: it proposes, it does not act."
+/>
+
+## How the gates work
+
+The part worth describing is not the model but the sequence of locks, because
+they are what will make any eventual result credible.
+
+Feature extraction for model fitting stayed **fail-closed** until two conditions
+were met independently: a researcher threshold sign-off, and a review of all
+twenty audit-sample episodes with exact agreement on the causal fields. That
+gate passed under a recorded protocol amendment. No inter-rater reliability is
+claimed, because only one reviewer has completed the review — a second reviewer
+must be a different real person, and the interface records attestations
+append-safe rather than allowing edits.
+
+A feature definition was corrected before any model was fitted — goal distance
+now uses the map-frame pose rather than odometry-frame coordinates — and the
+superseded derived artefacts are kept rather than deleted, under a dated
+directory, with the correction recorded in the research log.
+
+Reuse of Research 1 data is staged through an outcome-blind structural catalogue.
+Of the structurally eligible development bags, an audit admitted 647; 646 of
+those end in a terminal event, because Research 1 retained failure bags, so they
+are excluded from the fitting pool and kept as a separately reported
+natural-failure and domain-shift set. Zero protected-test rows are exported.
+
+## What exists, and what does not
+
+**Implemented:** literature review, failure taxonomy, event contract, causal
+label and feature pipelines, transparent threshold baseline, event-level
+evaluator, replay-only recovery guards, recommendation-only recovery manager,
+retained recording, health reconciliation, and predictors P1–P6 with
+calibration, thresholding, comparison, ablation and freeze tooling.
+
+**Not established:** anything. A preliminary validation-only pass is recorded
+explicitly as a rehearsal — nothing is frozen, and the final pass reruns on the
+complete fitting pool. Protected-map collection is prohibited until the model and
+analysis freeze. There is no result to report and none is implied.
+
+## Why it is not public yet
+
+The repository is private while the study is running, for the same reason
+Research 1's was: a preregistered study should open when its analysis plan
+freezes, not while thresholds are still being chosen. It will be published in
+full — protocol, amendments, manifests, exclusion ledger and analysis code — at
+freeze, as Research 1 was.
