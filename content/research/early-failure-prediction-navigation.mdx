@@ -151,6 +151,38 @@ multiplicity control covers them. They are reported so the record is complete,
 not to be read as a result.
 </Note>
 
+## Demonstrations
+
+Two clips, and the difference between them matters more than either one.
+
+<Video
+  src="/video/r2-held-out-replay.mp4"
+  width={1000}
+  height={900}
+  number={2}
+  caption="Faithful replay of a held-out episode, rendered from its recorded bag as a top-down view, with the risk trace beneath. The predictor raises a useful warning 7.9 seconds before the failure. This is an episode from the protected evaluation — the run whose numbers are in the hypothesis table above."
+/>
+
+<Video
+  src="/video/r2-gazebo-rerun.mp4"
+  width={1000}
+  height={1152}
+  number={3}
+  caption="An engineering re-run, not evidence. Validation episode val_02, route 0, planner oscillation, same seed and fault, with the GUI camera following the robot and the frozen predictor running live in recommendation mode. It shows two things honestly: an early alert at 62 s, which counts as a false alert under the preregistered 10-second window, and a useful warning at 72.9 s — 6.3 seconds before the planner failure at 79.1 s. The risk trace is that run's own, so both halves are synchronised to within a frame."
+/>
+
+**Why both.** The first clip is drawn from the protected evaluation and is the
+one the reported numbers come from. The second is a fresh re-run made to be
+watchable: a live camera view rather than a top-down replay, with the predictor
+running in recommendation mode. It is a demonstration and nothing in the
+hypothesis table depends on it.
+
+It is included precisely because it contains a false alert. A single cherry-picked
+run showing a clean save would misrepresent a system whose confirmatory result
+was that it could not be shown to beat a transparent baseline. What this run
+shows — one spurious early alert, then a genuine warning six seconds out — is a
+fairer picture of the behaviour than the successful replay alone.
+
 ## Reproducibility
 
 The release record checksums 67 manifests, 37 configurations, 2 model

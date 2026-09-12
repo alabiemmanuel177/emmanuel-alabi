@@ -3,6 +3,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 import { ArchitectureDiagram } from "@/components/media/ArchitectureDiagram";
 import { Figure } from "@/components/media/Figure";
+import { Video } from "@/components/media/Video";
 import { VideoEmbed } from "@/components/media/VideoEmbed";
 import { Cite, References } from "@/components/writing/Citation";
 
@@ -56,6 +57,7 @@ export const mdxComponents = {
   Figure,
   ArchitectureDiagram,
   VideoEmbed,
+  Video,
   Cite,
   References,
   Note,
