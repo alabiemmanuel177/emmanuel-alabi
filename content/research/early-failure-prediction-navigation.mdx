@@ -208,14 +208,25 @@ metric improves, and the system-level outcome does not follow. Establishing that
 carefully, twice, with the analysis frozen in advance both times, is a more useful
 contribution than a positive result obtained without those constraints.
 
-## Why the repository is not public yet
+## Code, data and links
 
-Frozen but not yet released. The raw bags and derived datasets — roughly 175 GB —
-are registered by manifest and mirrored, but not deposited, so the dataset card's
-checksums are not yet citable the way Research 1's are. A second reviewer has not
-yet worked through the evidence, and the manuscript is a first draft.
+- **Code** — [github.com/alabiemmanuel177/failure-prediction](https://github.com/alabiemmanuel177/failure-prediction). MIT for code; CC BY 4.0 for data, results, figures, checkpoints and documentation.
+- **Core evidence dataset** — [10.5281/zenodo.22723258](https://doi.org/10.5281/zenodo.22723258). A 39.6 MB archive of 2,225 files: every report and manifest, the frozen configurations, and all 34 trained checkpoints with their normalisation and training records.
+- **Reviewer packet** — [`docs/review/reviewer-packet.md`](https://github.com/alabiemmanuel177/failure-prediction/blob/main/docs/review/reviewer-packet.md)
+- **Hypothesis table** — [`reports/confirmatory/final/hypotheses.md`](https://github.com/alabiemmanuel177/failure-prediction/blob/main/reports/confirmatory/final/hypotheses.md), with the source file named for every row
 
-The repository opens when those are done, on the same rule Research 1 followed.
-Nothing above depends on that: the hypothesis table, the release record and the
-rerun record are what they are, and this page will not change when the code goes
-public.
+<Note title="What the deposit does and does not support">
+The archive carries everything needed to verify each reported number and to
+inspect or compare any trained model. It does not by itself let you regenerate
+the predictions from scratch: the per-window prediction tables (~3 GB) were
+excluded as regenerable, and doing so requires the derived model-input sequences
+(~13 GB), which are registered by manifest but not deposited. The ~175 GB of raw
+recordings are likewise archived rather than deposited.
+</Note>
+
+## What is still outstanding
+
+A second reviewer has not yet worked through the evidence — the packet above
+exists for that purpose, and the label audit carries a completed single-reviewer
+review with **no inter-rater reliability claimed**. The manuscript is a draft and
+has not been submitted anywhere.
