@@ -1,8 +1,9 @@
 ---
 title: "Early Failure Prediction and Recovery for Mobile Robot Navigation"
 slug: "early-failure-prediction-navigation"
-status: "active"
+status: "completed"
 startDate: "2026-08"
+endDate: "2026-09"
 researchAreas:
   - Embodied AI
   - Autonomous Systems
@@ -10,24 +11,27 @@ researchAreas:
   - Uncertainty Calibration
 summary: >
   A preregistered study of whether navigation failure can be predicted early
-  enough to act on, and whether a guarded recovery can use that prediction
-  without making the outcome worse. Data collection and model development are
-  under way; no results exist yet.
+  enough to act on. Failures are detectable roughly four seconds ahead, but the
+  learned predictor did not beat a transparent baseline at a fixed false-alert
+  budget, and prediction-triggered recovery did not improve mission completion.
 question: >
   How early can mobile robot navigation failure be predicted from onboard
   signals, and can a guarded recovery act on that prediction without degrading
   outcomes?
+result: >
+  Both confirmatory hypotheses were not supported. Lead time and calibration
+  held; the comparison against the transparent baseline, generalisation to
+  unseen fault families, and the recovery benefit did not.
 featured: true
 order: 2
 draft: false
 ---
 
 <Note title="Status">
-In progress. The experimental design is frozen and the development and
-validation campaigns are complete, but **no results exist yet** — no model is
-frozen, no protected-map evaluation has run, and nothing on this page is a
-finding. Protected routes are deliberately unassigned and must not be inspected
-before the model, calibration, alarm policy and analysis are frozen.
+Complete and frozen. All six hypotheses were evaluated against a threshold and
+model frozen before the protected split was touched, the completion audit
+passes, and an independent clean-worktree rerun reproduced the release. The
+repository is not yet public — see the note at the end.
 </Note>
 
 ## The question
@@ -106,23 +110,80 @@ those end in a terminal event, because Research 1 retained failure bags, so they
 are excluded from the fitting pool and kept as a separately reported
 natural-failure and domain-shift set. Zero protected-test rows are exported.
 
-## What exists, and what does not
+## Results
 
-**Implemented:** literature review, failure taxonomy, event contract, causal
-label and feature pipelines, transparent threshold baseline, event-level
-evaluator, replay-only recovery guards, recommendation-only recovery manager,
-retained recording, health reconciliation, and predictors P1–P6 with
-calibration, thresholding, comparison, ablation and freeze tooling.
+Six hypotheses, all evaluated against a threshold of 0.235 and a model checkpoint
+frozen before the protected split was touched. Two were confirmatory; four were
+prespecified supporting hypotheses.
 
-**Not established:** anything. A preliminary validation-only pass is recorded
-explicitly as a rehearsal — nothing is frozen, and the final pass reruns on the
-complete fitting pool. Protected-map collection is prohibited until the model and
-analysis freeze. There is no result to report and none is implied.
+| | Hypothesis | Estimate | 95% CI | Outcome |
+| --- | --- | ---: | ---: | --- |
+| **H1** | Learned predictor beats the transparent baseline at the fixed false-alert budget | 0.197 | [−0.000, 0.447] | **not supported** |
+| H2 | Median useful lead time of detected failures ≥ 3 s | 3.818 s | [1.745, 6.120] | **supported** |
+| H3 | Calibration reduces Brier score and ECE on validation | −0.019 | — | **supported** |
+| H4 | Removing planner and localisation health features degrades early warning | 0.102 | — | reported; no numeric threshold was prespecified |
+| H5 | Leave-one-family-out recall beats baseline in ≥ 5 of 7 fault families | 4 of 7 | — | **not supported** |
+| **H6** | Prediction-triggered recovery improves mission completion without more collisions | — | — | **not supported** |
 
-## Why it is not public yet
+**Both confirmatory hypotheses failed.** H1's interval touches zero at the lower
+bound, which is the whole question: at a false-alert budget fixed on validation,
+the learned predictor could not be shown to beat a transparent threshold
+baseline. H6, the one that mattered operationally, also failed — acting on the
+prediction did not improve mission completion.
 
-The repository is private while the study is running, for the same reason
-Research 1's was: a preregistered study should open when its analysis plan
-freezes, not while thresholds are still being chosen. It will be published in
-full — protocol, amendments, manifests, exclusion ledger and analysis code — at
-freeze, as Research 1 was.
+What did hold is worth stating precisely, because it is the part that survives.
+Failures in this system **are** visible in advance: the median useful lead time
+on detected events is roughly 3.8 seconds, with the interval comfortably above
+the 3-second bar set in advance. Calibration behaved as expected. The signal is
+real; what could not be established is that a learned model exploits it better
+than a simple rule, or that acting on it helps.
+
+Generalisation is the sharper negative. Held out one fault family at a time, the
+predictor beat the baseline in four of seven families against a preregistered bar
+of five. A predictor that works on the faults it has seen and not reliably on the
+ones it has not is not yet an early-warning system.
+
+<Note title="Exploratory items are not findings">
+Other model variants were run and are recorded, one of which has an interval
+excluding zero. They are flagged in the repository as exploratory and are not
+independent significance claims — they were not preregistered, and no
+multiplicity control covers them. They are reported so the record is complete,
+not to be read as a result.
+</Note>
+
+## Reproducibility
+
+The release record checksums 67 manifests, 37 configurations, 2 model
+checkpoints, 773 reports and 11 documents. An independent rerun was executed from
+a clean worktree against the frozen checkpoint, with the full test suite passing.
+Protected-split use is recorded explicitly in both the release record and the
+rerun record rather than left implicit.
+
+Three earlier rerun attempts failed and are kept alongside the successful one —
+the first because tables were not shared, the second and third on tests. They are
+retained rather than deleted, because a reproduction record that shows only the
+attempt that worked is not a reproduction record.
+
+## What this says next to Research 1
+
+Two studies, two interventions that did not deliver. Research 1 found that
+calibrated perception uncertainty did not make navigation safer; Research 2 finds
+that predicting failure — which is genuinely possible several seconds ahead — did
+not translate into a demonstrated operational benefit either.
+
+That is not a discouraging pattern. It is the same pattern twice: a component
+metric improves, and the system-level outcome does not follow. Establishing that
+carefully, twice, with the analysis frozen in advance both times, is a more useful
+contribution than a positive result obtained without those constraints.
+
+## Why the repository is not public yet
+
+Frozen but not yet released. The raw bags and derived datasets — roughly 175 GB —
+are registered by manifest and mirrored, but not deposited, so the dataset card's
+checksums are not yet citable the way Research 1's are. A second reviewer has not
+yet worked through the evidence, and the manuscript is a first draft.
+
+The repository opens when those are done, on the same rule Research 1 followed.
+Nothing above depends on that: the hypothesis table, the release record and the
+rerun record are what they are, and this page will not change when the code goes
+public.
