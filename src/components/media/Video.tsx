@@ -10,6 +10,11 @@ type Props = {
   /** Rendered aspect, so the page does not reflow while the file loads. */
   width: number;
   height: number;
+  /**
+   * A frame from the clip, shown before playback. Without it the element paints
+   * a black box until the first frame decodes, which reads as a broken embed.
+   */
+  poster?: string;
 };
 
 /**
@@ -24,13 +29,14 @@ type Props = {
  * surrounding prose — which is also where the numbers belong, since a reader
  * should not have to watch a video to learn what it shows.
  */
-export function Video({ src, caption, number, width, height }: Props) {
+export function Video({ src, caption, number, width, height, poster }: Props) {
   return (
     <figure>
       <video
         controls
         preload="metadata"
         playsInline
+        poster={poster}
         width={width}
         height={height}
         className="border-line h-auto w-full rounded-md border"

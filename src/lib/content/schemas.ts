@@ -65,6 +65,13 @@ export const ResearchSchema = z.object({
   result: z.string().optional(),
   image: z.string().optional(),
   imageAlt: z.string().optional(),
+  /**
+   * A representative clip from the work, under public/. When set, listings show
+   * `image` as its thumbnail with a play affordance, so a reader can see at a
+   * glance which investigations have something to watch. The thumbnail should
+   * be a frame from this clip rather than an unrelated illustration.
+   */
+  video: z.string().optional(),
   github: optionalUrl,
   paper: optionalUrl,
   preprint: optionalUrl,

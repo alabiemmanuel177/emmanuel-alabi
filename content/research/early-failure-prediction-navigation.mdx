@@ -25,6 +25,14 @@ result: >
 featured: true
 order: 2
 draft: false
+github: "https://github.com/alabiemmanuel177/failure-prediction"
+dataset: "https://doi.org/10.5281/zenodo.22723258"
+image: "/video/r2-held-out-replay.jpg"
+imageAlt: >
+  A frame from the held-out replay: a top-down view of the robot's path through
+  a corridor map with the planned route and laser returns, above a risk trace
+  that has crossed the warning threshold ahead of the failure.
+video: "/video/r2-held-out-replay.mp4"
 ---
 
 <Note title="Status">
@@ -159,6 +167,7 @@ Two clips, and the difference between them matters more than either one.
   src="/video/r2-held-out-replay.mp4"
   width={1000}
   height={900}
+  poster="/video/r2-held-out-replay.jpg"
   number={2}
   caption="Faithful replay of a held-out episode, rendered from its recorded bag as a top-down view, with the risk trace beneath. The predictor raises a useful warning 7.9 seconds before the failure. This is an episode from the protected evaluation — the run whose numbers are in the hypothesis table above."
 />
@@ -167,6 +176,7 @@ Two clips, and the difference between them matters more than either one.
   src="/video/r2-gazebo-rerun.mp4"
   width={1000}
   height={1152}
+  poster="/video/r2-gazebo-rerun.jpg"
   number={3}
   caption="An engineering re-run, not evidence. Validation episode val_02, route 0, planner oscillation, same seed and fault, with the GUI camera following the robot and the frozen predictor running live in recommendation mode. It shows two things honestly: an early alert at 62 s, which counts as a false alert under the preregistered 10-second window, and a useful warning at 72.9 s — 6.3 seconds before the planner failure at 79.1 s. The risk trace is that run's own, so both halves are synchronised to within a frame."
 />

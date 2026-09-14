@@ -83,3 +83,17 @@ export function DownloadIcon({ className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function PlayIcon({ className = "" }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      aria-hidden="true"
+      focusable="false"
+      fill="currentColor"
+      className={`h-[14px] w-[14px] ${className}`}
+    >
+      <path d="M5 3.2v9.6a.6.6 0 0 0 .92.5l7.2-4.8a.6.6 0 0 0 0-1l-7.2-4.8a.6.6 0 0 0-.92.5Z" />
+    </svg>
+  );
+}
