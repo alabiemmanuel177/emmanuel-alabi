@@ -23,4 +23,10 @@ for _ in 1 2; do
 done
 
 cp "$out/$name.pdf" "$public/$name.pdf"
+
+# Record the source this PDF was built from. tests/cv-consistency.test.ts compares
+# this against cv.tex so an edit without a rebuild fails the build. A committed
+# hash works in a fresh clone; file mtimes do not.
+shasum -a 256 "$src/cv.tex" | cut -d" " -f1 > "$src/.built-from.sha256"
+
 echo "built $public/$name.pdf"
