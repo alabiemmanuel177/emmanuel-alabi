@@ -118,6 +118,21 @@ Design, Implementation and Management.}
 %% --------------------------------------- Research & technical experience ----
 \cvsection{Research}
 
+\cventry{Early Failure Prediction and Recovery for Mobile Robot Navigation}{2026}
+{\small Preregistered ROS 2 / Gazebo / Nav2 study.
+\href{https://doi.org/10.5281/zenodo.22723258}{doi.org/10.5281/zenodo.22723258}}
+\begin{cvitems}
+  \item Failures were detectable several seconds ahead --- median useful lead time
+        3.8 s against a 3 s bar set in advance --- but both confirmatory
+        hypotheses failed: the learned predictor could not be shown to beat a
+        transparent baseline at a fixed false-alert budget, and prediction-triggered
+        recovery did not improve mission completion.
+  \item Six hypotheses evaluated against a threshold and checkpoint frozen before
+        the protected split was touched; independent clean-worktree rerun
+        reproduced every released table byte-identically.
+  \item \href{https://www.emmanuelalabi.com/research/early-failure-prediction-navigation}{emmanuelalabi.com/research/early-failure-prediction-navigation}
+\end{cvitems}
+
 \cventry{Risk-Calibrated Semantic Navigation Under Distribution Shift}{2026}
 {\small Preregistered ROS 2 / Gazebo / Nav2 benchmark.
 \href{https://doi.org/10.5281/zenodo.22181941}{doi.org/10.5281/zenodo.22181941}}
@@ -142,6 +157,16 @@ Design, Implementation and Management.}
         scratch against a HOG+SVM baseline, with deterministic splits, automated
         leakage checks and three-seed ablations.
   \item \href{https://www.emmanuelalabi.com/projects/driver-drowsiness-reproduction}{emmanuelalabi.com/projects/driver-drowsiness-reproduction}
+\end{cvitems}
+
+\cventry{Language as an Uncertain Sensor for Robot Navigation}{2026 --- present}
+{\small Preregistered; in progress, no confirmatory results.}
+\begin{cvitems}
+  \item Treats a navigation instruction as a noisy observation rather than a
+        command, with inspect / ignore / commit / abstain decisions behind an
+        explicit route guard and Nav2 retaining sole ownership of feasibility,
+        collision checking and motion.
+  \item \href{https://www.emmanuelalabi.com/research/language-uncertain-sensor-navigation}{emmanuelalabi.com/research/language-uncertain-sensor-navigation}
 \end{cvitems}
 
 %% ------------------------------------------------- Research training --------
