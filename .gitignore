@@ -47,3 +47,10 @@ yarn-error.log*
 
 # TypeScript incremental build info
 *.tsbuildinfo
+
+# Scratch and personal material that must never reach this public repo.
+# tmp/pdfs held scans of academic transcripts and a certificate until they were
+# removed; they were committed by an over-broad `git add`, not deliberately.
+tmp/
+output/
+job-search/
