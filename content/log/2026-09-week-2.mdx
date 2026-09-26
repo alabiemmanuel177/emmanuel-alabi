@@ -1,0 +1,80 @@
+---
+title: "Releasing a study whose hypotheses failed"
+slug: "2026-09-week-2"
+publishedAt: "2026-09-13"
+period: "7–13 September 2026"
+summary: >
+  Research 2 went out: archived evidence, a reviewer packet, two demonstration
+  clips, and a manuscript reporting that both confirmatory hypotheses were not
+  supported. The awkward part of the release was deciding what to do about a
+  second reviewer who did not exist.
+topics:
+  - Research 2
+  - Release engineering
+  - Reproducibility
+relatedResearch:
+  - early-failure-prediction-navigation
+draft: false
+---
+
+## This week
+
+Research 2 was packaged and released. The code repository went public, the core
+evidence was deposited with a DOI, and the manuscript was rewritten into the same
+voice as Research 1 rather than the more defensive register the draft had drifted
+into.
+
+The substance of the result had not changed since the freeze, and that is the
+point of freezing: lead time and calibration held, but the comparison against a
+transparent baseline, generalisation to unseen fault families, and the recovery
+benefit all failed. A release is not an argument, and packaging it well does not
+make a negative result positive.
+
+## What went into the deposit
+
+The deposit is core evidence rather than everything: every report and manifest,
+the frozen configurations, and all trained checkpoints with their normalisation
+and training records. The roughly 1 TB retained bag corpus stayed out, referenced
+by hash.
+
+The deciding argument for including the checkpoints was that they let someone
+re-run inference rather than only re-check arithmetic. A deposit that can only be
+audited is weaker than one that can be exercised.
+
+I also miscalculated the deposit size on the first pass — batching a `du` through
+`xargs` and reading the last line gives the last batch's total, not the sum. The
+real figure was 83.1 MB, not the 8.8 MB I first reported. Recomputing it properly
+in Python took a minute; noticing it was wrong took considerably longer, because
+a plausible small number does not look like an error.
+
+## Demonstrations
+
+Two clips, and the distinction between them mattered more than either. One is a
+faithful replay of a held-out episode, rendered from its recorded bag, in which
+the predictor raises a useful warning 7.9 seconds before the failure. That is the
+episode whose numbers appear in the hypothesis table.
+
+The second is a Gazebo re-run made to be watchable, with the frozen predictor in
+recommendation mode. It is a demonstration and nothing in the results depends on
+it. It was kept specifically because it contains a false alert at 62 s — which
+counts as a false alert under the preregistered 10-second window — alongside a
+useful warning at 72.9 s, 6.3 s before the planner failed at 79.1 s. A clip that
+only shows the system succeeding is advertising.
+
+## Failures
+
+No independent second reviewer was obtained. The reviewer packet was assembled
+and the release went ahead without one, and that fact is recorded in the
+repository rather than left as an absence a reader might not notice. It is a real
+weakness in the release and it is not repaired by describing the packet as
+thorough.
+
+## Open questions
+
+Whether the lead-time result survives contact with a fault family the predictor
+was never trained on remains the interesting question, and the leave-one-family-out
+analysis says it does not. That is the thread Research 4 would have to pick up.
+
+## Next
+
+Return to Research 3, where the expansion collection tooling is mid-build.

@@ -1,0 +1,86 @@
+---
+title: "The gate was not missed, it was unreachable"
+slug: "2026-09-week-4"
+publishedAt: "2026-09-26"
+period: "21–26 September 2026"
+summary: >
+  Research 3 closed under a narrowed scope. The preregistered calibration could
+  not be fitted for two independent reasons, and neither was a modelling
+  failure: a frozen filter made the required evidence impossible to collect, and
+  the benchmark was too easy to produce the errors the models needed.
+topics:
+  - Research 3
+  - Calibration
+  - Negative results
+relatedResearch:
+  - language-uncertain-sensor-navigation
+draft: false
+---
+
+## This week
+
+Research 3 was formally closed under a descriptive and exploratory feasibility
+scope, narrowed from the four-class runtime calibration study it was planned as.
+The two remaining collection waves were cancelled rather than run.
+
+The week was spent establishing that cancelling them was correct rather than
+convenient.
+
+## Results
+
+**The low-confidence bin cannot be populated.** The admission criterion required
+at least five scoreable emissions in the `[0, 0.5)` confidence bin per class. The
+pinned OCR stage enforces `text_score >= 0.5` internally and discards weaker
+proposals before emitting anything, and the localizer copies that retained score
+through unchanged. Entrance scores are therefore confined to `[0.5, 1.0]`, and
+the maximum attainable count in `[0, 0.5)` is zero.
+
+This was checked by auditing the filter's source and by synthetic boundary
+testing against the real filter, not inferred from the sample. That distinction
+is what makes it a structural finding rather than an unlucky run: no amount of
+further collection can produce a score the upstream component refuses to emit.
+
+**Clean views saturated.** All 287 scoreable emissions were reviewed by hand
+across category, physical instance, and reference localisation to 0.35 m: 281
+correct, 6 incorrect, none unreviewable.
+
+| Class | Correct | Incorrect | Views |
+| --- | ---: | ---: | ---: |
+| `chair` | 99 | 0 | 99 |
+| `laboratory_entrance` | 84 | 0 | 84 |
+| `office_entrance` | 78 | 0 | 78 |
+| `doorway` | 20 | 6 | 26 |
+
+Every error was in one class, and every one of those was a reference-point error
+— right category, right physical object, wrong located point. Three classes
+returned no negatives at all, against a floor of five per class. The models could
+not be fitted.
+
+## Failures
+
+The honest failure is a planning one. The gate was preregistered against a
+component that was pinned rather than instrumented, so nobody checked what score
+range it could actually emit until the data would not fit the analysis. The cost
+of finding that out at analysis time rather than at design time is the entire
+calibration arm of the study.
+
+I also had to walk back a causal claim. An earlier record described the doorway
+errors as caused by depth rays passing through the open portal. The labels
+establish only which dimension failed, not why, so the superseding record marks
+portal-void causation as not independently established and the explanation is
+written as proposed rather than demonstrated.
+
+## Open questions
+
+Whether the clean-view precision reflects the classes or the scenes. Repeated
+views share worlds, 72 abstentions and 39 nondetections are excluded by
+construction, and a system that emits less is easier to be right about. Nothing
+here measures recall.
+
+## Next
+
+Nothing further on Research 3. The retained scoring candidate stays exploratory
+and is not admitted to runtime. The transferable lesson is small and general: a
+frozen upstream filter silently determines what calibration is possible
+downstream, and a benchmark with no failures in it hands you nothing to learn
+from.

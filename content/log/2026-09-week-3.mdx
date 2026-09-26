@@ -1,0 +1,73 @@
+---
+title: "A transform race, two host restarts, and evidence that will not be re-run"
+slug: "2026-09-week-3"
+publishedAt: "2026-09-20"
+period: "14–20 September 2026"
+summary: >
+  Research 3's collection schedule finished, but only after two instrumentation
+  snapshots failed on a timestamp race. Two completed attempts lost their bytes
+  to a host restart and were written off rather than repeated, which is a
+  smaller loss than the alternative.
+topics:
+  - Research 3
+  - ROS 2
+  - Experiment infrastructure
+relatedResearch:
+  - language-uncertain-sensor-navigation
+draft: false
+---
+
+## This week
+
+The 400-attempt development expansion schedule completed: 399 emitted, zero
+nondetections, one infrastructure failure that used its single permitted retry.
+The 160-attempt validation schedule emitted all 160. Both ran under
+instrumentation snapshot v7.
+
+Getting to v7 was the week's actual work.
+
+## Experiments
+
+Snapshots v4 and v6 both failed, and they failed the same way: an exact-stamp
+transform race. The capture path asked for a transform at a precise timestamp
+before the provider was guaranteed to have published it, so whether a frame
+captured correctly depended on scheduling rather than on anything about the
+scene.
+
+v7 gates arming on a provider transform-readiness file instead of assuming
+readiness. The fix is unglamorous and it is the difference between a schedule
+that completes and one that produces frames nobody can trust.
+
+An earlier diagnostic pass had a related problem: the v1 assets were placed using
+the localisation `camera_depth_frame` transform, which sits about 0.06 m behind
+the frame they should have used. Six centimetres is small enough to look like
+noise in an aggregate and large enough to matter for a reference-point judgement
+measured to 0.35 m.
+
+## Failures
+
+The host restarted twice on the morning of 14 September, at 07:17 and 07:38 UTC.
+Two attempts had completed just before the second restart but had not flushed
+their retained bytes, so the evidence is gone.
+
+They are recorded as `evidence_unrecoverable` in both the collection report and
+the kit accounting, and **they were not re-run**. Re-running them would have
+produced two attempts drawn under different conditions from the rest of the
+schedule and then filed as though they were part of it. A schedule with two
+declared holes is more honest than one that is quietly complete.
+
+## Results
+
+Nothing that bears on the research question. This was an infrastructure week, and
+the emissions it produced are inputs to a review that had not yet happened.
+
+## Open questions
+
+Whether the review of these emissions will yield enough negative outcomes to fit
+the per-class models the analysis plan requires. The floor is five incorrect
+outcomes per class, and nothing so far indicates the detector is making that many
+mistakes.
+
+## Next
+
+Hand review of every scoreable emission, then fit against the preregistered gate.
