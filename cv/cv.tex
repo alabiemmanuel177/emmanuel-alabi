@@ -159,13 +159,21 @@ Design, Implementation and Management.}
   \item \href{https://www.emmanuelalabi.com/projects/driver-drowsiness-reproduction}{emmanuelalabi.com/projects/driver-drowsiness-reproduction}
 \end{cvitems}
 
-\cventry{Language as an Uncertain Sensor for Robot Navigation}{2026 --- present}
-{\small Preregistered; in progress, no confirmatory results.}
+\cventry{Language as an Uncertain Sensor for Robot Navigation}{2026}
+{\small Preregistered; closed under a descriptive and exploratory feasibility scope.
+No validated runtime calibration is claimed.}
 \begin{cvitems}
   \item Treats a navigation instruction as a noisy observation rather than a
         command, with inspect / ignore / commit / abstain decisions behind an
         explicit route guard and Nav2 retaining sole ownership of feasibility,
         collision checking and motion.
+  \item The preregistered calibration proved unreachable rather than unmet: a
+        pinned upstream filter confines score support to $[0.5, 1.0]$, so the
+        required low-confidence bin can hold at most zero emissions against a
+        floor of five. The remaining collection waves were cancelled, not run.
+  \item Hand review of all 287 scoreable detections found 281 correct, every
+        error confined to one of four classes --- leaving three classes without
+        the negatives their models needed. 1{,}339 regression tests pass.
   \item \href{https://www.emmanuelalabi.com/research/language-uncertain-sensor-navigation}{emmanuelalabi.com/research/language-uncertain-sensor-navigation}
 \end{cvitems}
 

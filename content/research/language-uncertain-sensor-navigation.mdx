@@ -1,8 +1,9 @@
 ---
 title: "Language as an Uncertain Sensor for Robot Navigation"
 slug: "language-uncertain-sensor-navigation"
-status: "active"
+status: "completed"
 startDate: "2026-08"
+endDate: "2026-09"
 researchAreas:
   - Embodied AI
   - Multimodal Intelligence
@@ -10,23 +11,32 @@ researchAreas:
   - Uncertainty Calibration
 summary: >
   A preregistered study treating a natural-language instruction as a noisy
-  sensor rather than a command, so a robot can weigh what it was told against
-  what it observes. Development campaigns have run; no confirmatory results
-  exist yet.
+  sensor rather than a command. It closed under a deliberately narrowed scope:
+  a frozen upstream threshold made the preregistered calibration
+  mathematically unreachable, and clean-view grounding saturated at zero
+  errors, which removed the negative outcomes the planned models needed.
 question: >
   If a navigation instruction is treated as an uncertain observation rather than
   a command, can a robot recover from instructions that are wrong, ambiguous, or
   contradicted by what it sees?
+result: >
+  The preregistered four-class runtime calibration was not achieved and is not
+  claimed. Two findings stand in its place: the pinned OCR stage truncates score
+  support to [0.5, 1.0], so the required low-confidence bin cannot be populated
+  at all; and human review of all 287 scoreable detections found every error
+  confined to one class, leaving three classes with no negatives to fit.
 featured: true
 order: 3
 draft: false
 ---
 
 <Note title="Status">
-In progress. Deterministic graph-world campaigns have completed and are
-checksum-verified, but those are **development diagnostics, not evidence for
-robot-navigation claims**. No confirmatory result exists, and nothing on this
-page is a finding.
+Closed on 26 September 2026 under a **descriptive and exploratory feasibility
+scope**, narrowed from the original plan by the researcher's recorded decision.
+Validated four-class runtime calibration **is not claimed**, the frozen scoring
+candidate is **not admitted to runtime navigation**, and the two remaining
+collection waves were cancelled rather than run. What follows is a feasibility
+and limitation report, not a confirmatory result.
 </Note>
 
 ## The question
@@ -44,75 +54,131 @@ attached and be weighed against what the robot actually sees.
 
 That reframing is the thread back to the rest of this work: Research 1 asked
 whether calibrated perceptual uncertainty should change navigation, Research 2
-asks whether failure can be anticipated, and this asks where else uncertainty
+asked whether failure can be anticipated, and this asks where else uncertainty
 enters the system. The answer it tests is: the instruction itself.
 
-## Design
+But weighing an instruction against what the robot sees only works if what the
+robot sees carries a trustworthy confidence. That is the part this study reached,
+and the part where it stopped.
 
-**The decision set is the contribution.** Rather than forcing a commit, the
-policy can *inspect*, *ignore*, *commit*, or *abstain*, each behind an explicit
-route guard. Abstention is a first-class outcome — a robot that declines to act
-on an instruction it cannot ground is behaving correctly, and a benchmark that
-cannot express that will score it as a failure.
+## Why the study narrowed
 
-**Benchmark.** Twenty base routes across twelve map identifiers aligned with the
-Research 1 platform, three protected paraphrases per route, eight instruction
-conditions, exact edit and environment manifests, and explicit annotations for
-ambiguous grounding. Deployed variants and evaluator-only fields are kept in
-separate namespaces, with evaluator-only fields denylisted from deployed inputs
-and that separation covered by regression tests.
+The preregistered plan called for a calibrated four-class grounding stage —
+`chair`, `laboratory_entrance`, `office_entrance`, `doorway` — admitted to runtime
+only after passing a fixed coverage gate. Neither of the two things that gate
+required turned out to be obtainable. Both reasons are reported below, because
+both are results.
 
-**Method.** Deterministic parsing of movement, landmark, turn, topology and
-terminal clauses; top-K semantic grounding with a language-only predicted
-hypothesis; capped log-odds evidence updates with per-clause reliability. Five
-system variants share one deployable input contract.
+### 1. The required low-confidence bin cannot exist
 
-**Safety boundary.** Nav2 remains the sole owner of path feasibility, collision
-checking and motion. The language layer influences where the robot tries to go;
-it cannot override what the navigation stack considers safe.
+The admission criterion asked for at least **5** scoreable emissions in the
+`[0, 0.5)` confidence bin for each class. The pinned OCR component enforces
+`text_score >= 0.5` internally and discards weaker text proposals before it emits
+anything. The entrance localizer copies that retained score through unchanged.
 
-<ArchitectureDiagram
-  stages={[
-    "Instruction + observations",
-    "Clause parsing (movement · landmark · turn · topology · terminal)",
-    "Top-K semantic grounding",
-    "Capped log-odds evidence update",
-    "Decision: inspect · ignore · commit · abstain",
-    "Route guard",
-    "Nav2 (sole owner of feasibility, collision, motion)",
-  ]}
-  caption="Figure 1 — Instructions enter as evidence with a confidence, not as commands. The route guard and Nav2 bound what any language-derived belief is permitted to do."
-/>
+Under that pass-through, entrance scores are mathematically confined to
+**[0.5, 1.0]**, so the maximum attainable number of emissions in `[0, 0.5)` is
+**identically zero** against a requirement of five. This was checked both by
+auditing the filter's source and by synthetic boundary testing against the real
+filter, not inferred from the observed data.
 
-## Evidence discipline
+<Note title="Why this matters more than a failed run">
+The gate was not narrowly missed; it was unreachable. Running the two remaining
+collection waves could not have changed the outcome, because no quantity of
+additional sampling can produce a score the upstream filter refuses to emit.
+Cancelling them was the correct call, and the cost of finding this out late is
+the honest price of having preregistered a criterion against a component that
+was frozen rather than instrumented.
+</Note>
 
-Campaign outputs are create-once: every record carries a checksum, each complete
-file has a sidecar SHA-256, and rerunning against an existing path is rejected
-rather than silently overwriting. Summaries always report completion and
-critical-failure rates together, so a run cannot be described as successful
-without also stating how it failed.
+### 2. Clean-view grounding saturated, leaving nothing to fit
 
-The same typed boundaries are implemented across graph-world, ROS-message,
-rosbag-replay, Nav2 and failure-monitor adapters, which is what lets a result
-obtained in the deterministic graph world be compared against one obtained in
-simulation without changing the system under test.
+A fixed serial 400-attempt protocol ran across ten development environments,
+yielding 398 successful captures (2 Nav2 lifecycle failures), of which 287 were
+scoreable — alongside 72 detector or depth abstentions and 39 intact-frame
+nondetections. **Every one of the 287 was reviewed by hand** for category,
+physical instance identity, and planar reference localization to 0.35 m: 281
+correct, 6 incorrect, 0 unreviewable.
 
-## What exists, and what does not
+| Class | Correct | Incorrect | Views |
+| --- | ---: | ---: | ---: |
+| `chair` | 99 | 0 | 99 |
+| `laboratory_entrance` | 84 | 0 | 84 |
+| `office_entrance` | 78 | 0 | 78 |
+| `doorway` | 20 | 6 | 26 |
 
-**Implemented:** parsing, grounding, evidence updates, graph corridors and
-junctions with visibility and blocked edges, the five system variants, seeded
-corruptions, protected instruction and split manifests, immutable paired logging
-with replay equivalence, intervention budgets, temperature and isotonic
-calibration, reliability and risk-coverage curves, SPL and route fidelity, paired
-risk difference, contradiction recovery, hierarchical bootstrap, and the ROS 2
-message, node, QoS and launch scaffolding.
+All six errors fell in a single class, and all six were **reference-point**
+errors — the category and the physical instance were right, the located point was
+not. The planned per-class models required at least 5 incorrect outcomes each to
+fit. Three classes returned zero. The models could not be fitted, for the same
+structural reason as above rather than a modelling failure.
 
-**Not established:** any confirmatory claim. The completed development and
-validation graph-world campaigns are diagnostics. Protected paraphrases and
-splits remain protected. There is no result to report and none is implied.
+<Note title="What these proportions are not">
+These are empirical joint-correctness proportions **conditional on the
+observations the system chose to emit**, in scheduled development scenes where
+repeated views share worlds. Zero observed errors is not a probability of one.
+None of this measures recall, none of it is a calibrated uncertainty, and none of
+it generalises to unseen scenes. The 72 abstentions and 39 nondetections are
+excluded from these counts by construction — a system that emits less is easier
+to be right about.
+</Note>
 
-## Why it is not public yet
+A proposed explanation for the doorway errors is that depth rays pass through the
+open portal rather than striking the jamb; the implemented estimator uses
+side-jamb support. The labels establish *which dimension* failed. They do not
+establish the physical cause, and it is recorded as a proposed mechanism rather
+than a demonstrated one.
 
-Private while the study runs, opening at freeze — the same rule Research 1
-followed. A benchmark whose protected paraphrases and splits are visible before
-the analysis plan freezes is not a protected benchmark.
+## What was retained
+
+A frozen hybrid scoring candidate is kept as an **exploratory artifact only**. Its
+doorway component is a five-feature regularised logistic regression fitted on the
+26 valid doorway emissions, converging after 578 updates. Its chair and signage
+components are **identity pass-throughs of the raw matching scores** and are
+explicitly labelled uncalibrated — they are not models, and calling them
+calibrated would be the exact error this study exists to avoid.
+
+Of seven leave-one-map-out folds, three failed the unchanged negative-outcome
+floor. They are reported as unfit rather than dropped, because silently excluding
+the folds that would not fit is how a weak result is made to look clean.
+
+## The earlier graph-world campaign
+
+An authorised create-once campaign produced 240 records across six routes, three
+test maps, eight conditions, five systems and one seed, every record SHA-256
+verified, with 48 complete five-system blocks.
+
+Between two of the variants the completion difference was **+25 percentage
+points** (hierarchical bootstrap 95% interval +12.5 to +37.5; 5,000 resamples,
+analysis seed 303) and the critical-failure difference −25 points (−37.5 to
+−12.5). Two qualifications travel with that number and are not separable from it:
+a third variant **also completed every case**, so these results do not show the
+proposed system beating the strongest baseline; and the protected partition has
+since been accessed, so it is no longer sealed and must not be reused to support
+a further confirmatory claim.
+
+## Verification
+
+The closure bundle carries a per-file SHA-256 manifest, the recorded authority
+for the scope change, the full human review return, and the audit that
+establishes the threshold limitation. The regression suite passes 1,339 tests
+with no failures and one skip.
+
+The bundle deliberately references raw captures and model weights by hash rather
+than containing them; it is an evidence archive, not a self-contained simulator
+distribution.
+
+## What this study does not claim
+
+It does not claim a validated four-class runtime calibration. It does not claim
+the retained candidate is fit for navigation. It does not claim the observed
+clean-view precision is a property of the classes rather than of these scenes and
+this emission policy. It does not claim the doorway error mechanism has been
+demonstrated. And it does not claim the language layer was shown to improve
+navigation — the study closed before reaching that question.
+
+What it does establish is narrower and, for a grounding stage anyone else might
+build on the same components, more immediately useful: a frozen upstream filter
+silently determines what calibration is possible downstream, and a benchmark
+whose clean views are too easy will hide that by handing you no errors to learn
+from.
