@@ -31,10 +31,10 @@ function Thumbnail({ item }: { item: ResearchFrontmatter }) {
       <Image
         src={item.image}
         alt={item.imageAlt ?? ""}
-        width={1000}
-        height={900}
+        width={item.imageWidth ?? 1000}
+        height={item.imageHeight ?? 900}
         sizes="(max-width: 640px) 100vw, 208px"
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        className="h-auto w-full transition-transform duration-300 group-hover:scale-[1.03]"
       />
       {item.video ? (
         <span className="pointer-events-none absolute inset-0 flex items-center justify-center">

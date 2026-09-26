@@ -1,0 +1,70 @@
+---
+title: "Making the paper say only what the analysis licenses"
+slug: "2026-09-week-1"
+publishedAt: "2026-09-06"
+period: "31 August – 6 September 2026"
+summary: >
+  A week of walking claims back. The title and the release boundary disagreed,
+  the safety language was stronger than the evidence, and a recovery path only
+  worked on the machine it was written on. Also built the perception bridge
+  Research 3 would later depend on.
+topics:
+  - Research 1
+  - Research 3
+  - Scientific writing
+relatedResearch:
+  - risk-calibrated-semantic-navigation
+  - language-uncertain-sensor-navigation
+draft: false
+---
+
+## This week
+
+No new experiments. The work was reconciling what the publication surfaces said
+against what the frozen analysis actually supports, which turned out to be a
+longer list than expected.
+
+## What changed
+
+**The title and the release boundary disagreed.** The title implied a scope the
+release candidate did not cover. One of them had to move, and it was the title,
+because the boundary was fixed at freeze and moving it afterwards is how a study
+quietly becomes a different study.
+
+**Safety claims were clarified.** Language that read as "this makes navigation
+safer" was narrowed to what the hypotheses licensed, which is that calibration
+improved and the safety hypotheses did not pass. The gap between those two
+sentences is the entire result.
+
+**Recovery portability.** The recovery path had absolute assumptions baked in and
+worked only where it was written. A reproduction step that depends on the author's
+filesystem is not a reproduction step.
+
+## Building for a study that had not started
+
+The landmark perception bridge for Research 3 was defined and tested in the ROS
+overlay this week — built inside Research 1's repository because that is where
+the perception stack and the verified platform already were.
+
+That decision looks efficient now and it carries an obvious risk: a component
+shared across studies means a defect propagates across studies too. It is worth
+recording that Research 3's grounding stage descends from here, because when
+Research 3 later hit a hard limit in its scoring pipeline, the provenance of that
+pipeline was part of the diagnosis.
+
+## Failures
+
+Nothing broke. The uncomfortable observation is how much of this week was
+correcting overstatement I had written myself a fortnight earlier, when the
+result was fresh and the temptation to describe it generously was strongest.
+Freezing the analysis protects the numbers. It does not protect the prose, and
+the prose is what most readers actually read.
+
+## Open questions
+
+Whether an independent reader will agree the claims are now correctly bounded, or
+find more of the same.
+
+## Next
+
+Assemble the reviewer packet and send it out.

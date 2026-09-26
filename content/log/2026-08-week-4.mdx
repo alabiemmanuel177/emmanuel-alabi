@@ -1,0 +1,66 @@
+---
+title: "Better calibration, no safer robot"
+slug: "2026-08-week-4"
+publishedAt: "2026-08-30"
+period: "24–30 August 2026"
+summary: >
+  Research 1's confirmatory analysis ran against a plan frozen before the data
+  was touched. Calibration improved and clean-route efficiency held, and both
+  preregistered safety hypotheses failed anyway. Freezing the analysis is what
+  made that an answer rather than an embarrassment.
+topics:
+  - Research 1
+  - Preregistration
+  - Uncertainty calibration
+relatedResearch:
+  - risk-calibrated-semantic-navigation
+draft: false
+---
+
+## This week
+
+The confirmatory analysis for Research 1 was executed, the release inventory was
+verified against a clean clone, and the core dataset was deposited.
+
+The question was whether converting calibrated semantic perception uncertainty
+into navigation cost makes a Nav2 robot safer under controlled distribution
+shift. The answer is no, or at least not demonstrably, and the useful part is
+that the analysis plan said what would count as yes before anyone looked.
+
+## Results
+
+Calibration improved substantially. Clean-route efficiency was preserved, which
+matters because the cheap way to reduce collisions is to make the robot timid and
+slow, and that would have shown up here.
+
+The preregistered collision-reduction and severity-interaction hypotheses did not
+pass. Better component calibration did not establish safer navigation. Those are
+two separate claims and the study only supports the first.
+
+Underneath the aggregate, the paired comparison holds 29 worsenings against 14
+improvements — a distribution that a headline mean would have flattened into
+something more flattering than the evidence supports.
+
+## Failures
+
+Several fault families produced zero events, which drives quasi-complete
+separation and makes the model estimates unstable rather than merely imprecise.
+It is named as that in the write-up instead of being reported as a very large
+effect, which is what an unexamined fit would have produced.
+
+A related trap: sampling convergence is not calibration. A chain that has
+converged tells you the sampler behaved, not that the resulting uncertainties are
+trustworthy, and the two get conflated constantly.
+
+## Open questions
+
+Whether the null is a property of this pipeline or of the idea. The costmap path
+fuses semantic cost softly and generically, so a negative result here is
+consistent both with "calibrated uncertainty does not help navigation" and with
+"this particular fusion wastes it". Distinguishing those needs a different
+experiment, not a reanalysis of this one.
+
+## Next
+
+Freeze the taxonomy, reconcile the publication surfaces with what the analysis
+actually licenses, then put the whole thing in front of an independent reader.

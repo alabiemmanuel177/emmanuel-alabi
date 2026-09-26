@@ -66,6 +66,13 @@ export const ResearchSchema = z.object({
   image: z.string().optional(),
   imageAlt: z.string().optional(),
   /**
+   * The image's intrinsic pixel size. Listings render thumbnails at the real
+   * aspect ratio, because these are research figures: a forest plot cropped to
+   * a square loses the panels that carry the result.
+   */
+  imageWidth: z.number().int().positive().optional(),
+  imageHeight: z.number().int().positive().optional(),
+  /**
    * A representative clip from the work, under public/. When set, listings show
    * `image` as its thumbnail with a play affordance, so a reader can see at a
    * glance which investigations have something to watch. The thumbnail should
