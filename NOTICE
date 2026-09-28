@@ -1,0 +1,12 @@
+SCOPE OF THE MIT LICENCE IN THIS REPOSITORY
+
+This licence covers the source code in this repository: the application, its
+components, styles, scripts and configuration.
+
+It does NOT cover the written content or figures — the files under `content/`
+and the images under `public/`, including the research write-ups, log entries,
+the CV, and the research figures. Those remain © 2026 Alabi Emmanuel Olasubomi,
+all rights reserved, and are published here to be read rather than reused.
+
+Research code and data are licensed separately in their own repositories; the
+archived datasets carry their own terms at their DOIs.
