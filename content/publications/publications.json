@@ -52,5 +52,18 @@
     "paperUrl": "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction/blob/v1.0.0/paper/manuscript.tex",
     "codeUrl": "https://github.com/alabiemmanuel177/driver-drowsiness-reproduction",
     "projectUrl": "/projects/driver-drowsiness-reproduction"
+  },
+  {
+    "title": "Early Warning Without Demonstrated Recovery Benefit: Failure Prediction and Guarded Recovery for Mobile Robot Navigation",
+    "slug": "failure-prediction-manuscript",
+    "authors": [
+      "Emmanuel Alabi Olasubomi"
+    ],
+    "year": 2026,
+    "status": "manuscript",
+    "abstract": "A preregistered ROS 2/Gazebo/Nav2 study of whether mission-ending navigation failure can be forecast early enough to support a bounded recovery, and whether acting on the forecast improves the mission. Warning was timely where it occurred, with a median useful lead time of 3.8 s, but the primary recall interval included zero and guarded recovery did not improve completion. Both confirmatory hypotheses are unsupported, leaving a signal-to-decision gap.",
+    "paperUrl": "https://github.com/alabiemmanuel177/failure-prediction/blob/v1.0.0/manuscript/main.md",
+    "codeUrl": "https://github.com/alabiemmanuel177/failure-prediction",
+    "projectUrl": "/research/early-failure-prediction-navigation"
   }
 ]
