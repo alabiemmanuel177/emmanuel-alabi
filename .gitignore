@@ -54,3 +54,7 @@ yarn-error.log*
 tmp/
 output/
 job-search/
+
+# Stray personal screenshots dropped into the project root.
+*_recommendation_status.png
+JHU_*.png
