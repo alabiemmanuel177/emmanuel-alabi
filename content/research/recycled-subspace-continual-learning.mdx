@@ -1,0 +1,121 @@
+---
+title: "Recycling the Stability–Plasticity Conflict in Continual Learning"
+slug: "recycled-subspace-continual-learning"
+status: "active"
+startDate: "2026-10"
+researchAreas:
+  - Continual Learning
+  - Robot Learning
+  - Representation Learning
+summary: >
+  Continual Backprop keeps learning forever but forgets; subspace methods
+  remember but go rigid. This asks whether one shared recycling budget can
+  govern both, so a network protects what it has learned without losing the
+  capacity to learn more. Predictions are written down; no results exist yet.
+question: >
+  Can a single recycling budget govern both unit reinitialisation and subspace
+  eviction, so that a network retains old tasks without losing the plasticity
+  that lets it keep learning new ones?
+featured: true
+order: 4
+draft: false
+---
+
+<Note title="Status">
+Started October 2026. The design, the prior-art scan and a falsifiable
+prediction ladder exist; the implementation runs end to end. **No results are
+reported here.** Every run so far is single-seed calibration against a
+provisional rubric, which is enough to tell whether the machinery works and not
+nearly enough to claim anything about whether the idea does.
+</Note>
+
+## The conflict
+
+Two lines of work each solve half of continual learning and break the other
+half.
+
+**Continual Backprop** keeps a network learning indefinitely by continually
+reinitialising low-utility units. It never saturates, it never goes rigid, and
+it stores no data. It also forgets: nothing protects what earlier tasks built,
+so a reset is free to destroy it.
+
+**Subspace methods** — GPM, and TRGP for transfer — do the opposite. They
+record the directions earlier tasks relied on and project new gradients away
+from them. Old tasks survive. But the protected subspace only ever grows, the
+space of permitted updates only ever shrinks, and the network eventually
+cannot learn at all.
+
+Grafting one onto the other naively fails in a specific way, and the failure is
+the interesting part: reinitialisation and projection are *fighting over the
+same resource*. The reset mechanism does not know which units carry protected
+structure, so it destroys exactly what the projection is trying to preserve.
+
+## The idea being tested
+
+**One budget, two worlds.** Units are recycled at a constant rate; directions
+are evicted when the subspace budget is full; and the same budget governs both.
+Three couplings are what make that more than a bolt-on:
+
+1. **Unit → direction.** A memory-aware utility makes reinitialisation defer to
+   protected directions, so a reset stops destroying retained structure.
+2. **Direction → unit.** Recycled placement makes new units grow *out of* the
+   protected subspace rather than beside it, which is where transfer should
+   come from if it comes from anywhere.
+3. **Budget coupling.** A single recycling rate governs both, under a memory
+   ledger that stays flat as tasks accumulate — no stored samples, ever.
+
+Whether those couplings do anything is precisely what is unresolved.
+
+## Predictions, written first
+
+The design fixes a stage ladder and states, in advance, what each stage should
+do to a five-criterion report card — retention, memory growth, plasticity,
+freedom from task labels, and forward transfer.
+
+| Stage | Added mechanism | Prediction |
+| --- | --- | --- |
+| S0 | Continual Backprop baseline | Reproduces the published behaviour: plasticity holds, retention fails |
+| S1 | Protected subspace + projection | Retention rises and **plasticity collapses** — the tension, reproduced inside the method |
+| S2 | Memory-aware utility | Retention restored, plasticity partially recovered |
+| S3 | Budgeted eviction and recycling | **Plasticity returns while retention holds** — the core claim |
+| S4 | Trust-region transfer | Transfer appears without costing retention |
+| S5 | Recycled reinitialisation placement | Transfer improves further |
+
+S1 is a prediction that the method will get *worse*, and S3 is the one the whole
+idea stands or falls on. Stating both in advance is the point: a ladder written
+after the fact can be made to fit whatever happened.
+
+## What exists
+
+Implemented and running end to end: permuted-MNIST and split-MNIST streams, an
+MLP exposing per-layer activations, the Continual Backprop utility and
+reinitialisation path, the subspace memory with online second-moment estimation,
+budgeted selection with lease carry, projection with a transfer gate, and the
+metrics — task accuracy, effective feature rank, dead-unit fraction, prototype
+bank, memory ledger.
+
+**Not established:** anything at all about whether the couplings work. The runs
+to date are single-seed and hand-tuned while the mechanisms were being
+calibrated. They told me the basis timescale matters and that protecting a
+classifier head is useless if the features underneath it drift — both of which
+are facts about the testbed, not findings about the method.
+
+<Note title="Why no numbers appear here">
+It would be easy to post the most encouraging calibration run. But a single seed
+chosen after looking at several is not evidence, and the prediction ladder above
+only means something if the numbers that test it are produced under a frozen
+configuration and multiple seeds, after the predictions were fixed. Results will
+appear here when that has happened, including if they contradict the ladder.
+</Note>
+
+## Where it connects
+
+Research 1 to 3 asked how a robot should represent and act on uncertainty that
+already exists. This asks a question underneath that: what a network may safely
+*change about itself* while it keeps learning, and what it must hold still.
+
+That is the same question Research 4 was scaffolded around — what may adapt
+online and what must stay fixed — approached from the learning-algorithm side
+rather than the navigation stack. The testbeds here are deliberately small and
+standard, because the mechanism has to be shown to work somewhere clean before
+it is worth putting near a robot.
